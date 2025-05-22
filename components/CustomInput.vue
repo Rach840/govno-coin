@@ -105,6 +105,8 @@ watch(localValue, (val) => {
       break
   }
 
+
+
   if (props.maxValue !== undefined && value !== '') {
     const numericValue = parseFloat(value)
     if (!isNaN(numericValue) && numericValue > props.maxValue) {
