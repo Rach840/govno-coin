@@ -23,13 +23,9 @@
           <button id="select-withdrawal" @click="actionSelect = 'withdrawal'" :class="['px-4 py-2 rounded-lg transition-colors', actionSelect === 'withdrawal' ? 'bg-primary text-white' : 'bg-muted text-muted-foreground']">Вывод</button>
         </div>
         <div class="flex flex-col items-center gap-2 w-full">
-          <CustomInput class="flex-1" v-model="userValue" placeholderText="" filterMode="numericAndDot"/>
-          <button class="bg-reder text-white p-4">Криптой</button>
-
-          
-         <div class="bg-blue">
-  
-  </div>
+          <input class="w-full flex justify-center items-center border-solid border-2 border-[#616161] rounded-[3vw] h-[13.1vw]" v-model="userValue" placeholderText="" filterMode="numericAndDot"/>
+          <div class="bg-main-blue w-full flex justify-center items-center text-white rounded-[3vw] h-[13.1vw] text-[#000000] font-normal">Криптой</div>
+   
         </div>
       </div>
     </div>

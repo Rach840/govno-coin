@@ -165,47 +165,43 @@
     font-size: var(--low-priorety-text);
   }
 
-  .bg-reder {
-    background-color: #ff3f3f;
+  .bg-main-blue{
+    background-color: #008FEA;
   }
 
-  .main-blue{
-    background-color: var(--reder);
-  }
-
-  .white{
+  .bg-white{
     background-color: #FFFFFF;
   }
 
-  .support-text{
+  .bg-support-text{
     background-color: #B8B8B8;
   }
 
-  .disable-text{
+  .bg-disable-text{
     background-color: #737373;
   }
 
-  .line-gray{
+  .bg-line-gray{
     background-color: #616161;
   }
 
-  .background-black{
+  .bg-background-black{
     background-color: #171918;
   }
 
-  .black{
+  .bg-black{
     background-color: #000000;
   }
 
-  .red{
+  .bg-red{
     background-color: #F23F3F;
   }
   
-  .green{
+  .bg-green{
     background-color: #64CF13;
   }
 
-  .disable-button{
+  .bg-disable-button{
     background-color: #2F363A;
   }
 

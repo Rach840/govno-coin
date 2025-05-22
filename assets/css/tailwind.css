@@ -8,7 +8,7 @@
     --edit-text1: 18px;
     --support-text: 3.9vw;
     --low-priorety-text: 14px;
-    --reder: #ff3f3f;
+    --colors: #ffffff;
 }
 
 body{
@@ -24,7 +24,6 @@ body{
 @media (min-width: 415px) {
 
 }
-
 
 @import "tailwindcss/preflight"; 
 @import "tailwindcss/utilities";
