@@ -5,7 +5,6 @@ export default defineNuxtConfig({
   compatibilityDate: '2025-05-15',
   css: [
     "~/assets/css/main.css",
-    '~/assets/css/tailwind.css',
   ],
 
   app: {

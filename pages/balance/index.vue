@@ -1,48 +1,54 @@
 <template>
-  <div id="content_app" class="flex flex-col gap-[5vw] relative z-[3] overflow-hidden box-border">
-    <p class="text-h1 font-medium">$GOVNO кошелёк</p>
-    <div class="bg-[linear-gradient(162deg,_#3C3C3C_0%,_#2F2F2F_100%)] rounded-[6vw] p-[3vw]">
-      <div class="flex flex-col gap-1">
-        <p class="text-support-text">Общий баланс</p>
-        <div class="flex flex-col gap-0.5">
-          <p class="text-h0 font-bold"> $ {{ valueUsdt >= 0 ? valueUsdt.toFixed(2) : '...' }} </p>
-          <span class="text-support-text"> ~ {{ valueGovno >= 0 ? valueGovno.toFixed(2) : '...' }} $GOVNO </span>
-        </div>
+  <UContainer>
+<UCard variant="solid">
+
+  <p class="text-h1 font-medium">$GOVNO кошелёк</p>
+  <div class=" ">
+
+    <BalanceCard v-for="balance in mockBalance">
+      <template #title>{{ balance.title }}</template>
+      <template #valueUSD>{{ balance.valueUSD }}</template>
+      <template #valueGovno>{{ balance.valueGOVNO }} </template>
+    </BalanceCard>
+    <div class="flex flex-col gap-4 w-full">
+      <div class="flex items-center gap-2">
+        <button id="select-replenishment" @click="actionSelect = 'replenishment'" :class="['px-4 py-2 rounded-lg transition-colors', actionSelect === 'replenishment' ? 'bg-primary text-white' : 'bg-muted text-muted-foreground']"> Пополнение</button>
+        <button id="select-withdrawal" @click="actionSelect = 'withdrawal'" :class="['px-4 py-2 rounded-lg transition-colors', actionSelect === 'withdrawal' ? 'bg-primary text-white' : 'bg-muted text-muted-foreground']">Вывод</button>
       </div>
-      <div class="flex flex-col gap-1">
-        <p class="text-support-text">Общий баланс</p>
-        <div class="flex flex-col gap-0.5">
-          <p class="text-h0 font-bold"> $ {{ valueUsdt >= 0 ? valueUsdt.toFixed(2) : '...' }} </p>
-          <span class="text-support-text"> ~ {{ valueGovno >= 0 ? valueGovno.toFixed(2) : '...' }} $GOVNO </span>
-        </div>
-      </div>
-      
-      <div class="flex flex-col gap-4 w-full">
-        <div class="flex items-center gap-2">
-          <button id="select-replenishment" @click="actionSelect = 'replenishment'" :class="['px-4 py-2 rounded-lg transition-colors', actionSelect === 'replenishment' ? 'bg-primary text-white' : 'bg-muted text-muted-foreground']"> Пополнение</button>
-          <button id="select-withdrawal" @click="actionSelect = 'withdrawal'" :class="['px-4 py-2 rounded-lg transition-colors', actionSelect === 'withdrawal' ? 'bg-primary text-white' : 'bg-muted text-muted-foreground']">Вывод</button>
-        </div>
-        <div class="flex flex-col items-center gap-2 w-full">
-          <input class="w-full flex justify-center items-center border-solid border-2 border-[#616161] rounded-[3vw] h-[13.1vw]" v-model="userValue" placeholderText="" filterMode="numericAndDot"/>
-          <div class="bg-main-blue w-full flex justify-center items-center text-white rounded-[3vw] h-[13.1vw] text-[#000000] font-normal">Криптой</div>
-   
-        </div>
+      <div class="flex flex-col items-center gap-2 w-full">
+        <input class="w-full flex justify-center items-center border-solid border-2 border-[#616161] rounded-[3vw] h-[13.1vw]" v-model="userValue" placeholderText="" filterMode="numericAndDot"/>
+        <div class="bg-main-blue w-full flex justify-center items-center text-white rounded-[3vw] h-[13.1vw] text-[#000000] font-normal">Криптой</div>
+
       </div>
     </div>
   </div>
+</UCard>
+  </UContainer>
+
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import axios from 'axios'
-import CustomInput from '~/components/CustomInput.vue'
 
 const valueUsdt = ref<number>(-1)
 const valueGovno = ref<number>(-1)
 const userValue = ref('')
 const sum = ref<number>(0)
 const actionSelect = ref<'replenishment' | 'withdrawal'>('replenishment')
+const mockBalance = ref<{ title:string; valueUSD:string; valueGOVNO:string;}[]>([
 
+  {
+    title:'Общий баланс',
+    valueUSD: '47 397.00',
+     valueGOVNO: '61.5'
+  },
+  {
+    title:'❄️ В заморозке',
+    valueUSD: '100.00',
+    valueGOVNO: '61.5'
+  },
+
+])
 onMounted(async () => {
   await getBalance()
 })

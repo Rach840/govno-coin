@@ -8,6 +8,10 @@
     --container-8xl: 90rem;
 }
 
+body{
+  background-color: #171918;
+}
+
 :root {
     --ui-container: var(--container-8xl);
     --card: oklch(1 0 0);
@@ -44,7 +48,23 @@
     --background: oklch(1 0 0);
     --foreground: oklch(0.129 0.042 264.695);
 }
+@theme {
+    --color-light-gray:rgba(60, 60, 60, 1);
+    --color-dark-gray:rgba(47, 47, 47, 1);
+    --h0: 10vw;
+    --h1: 6.7vw;
+    --h2: 24px;
+    --h3: 1.05vw;
+    --h4: 4.3vw;
+    --button-text1: 0.95vw;
+    --button-text3: 20px;
+    --edit-text1: 18px;
+    --support-text: 3.9vw;
+    --low-priorety-text: 14px;
+    --reder: #ff3f3f;
+    --support-text-color: #B8B8B8;
 
+}
 @theme inline {
     --color-background: var(--background);
     --color-foreground: var(--foreground);
@@ -157,51 +177,38 @@
     font-size: var(--edit-text1);
   }
 
-  .text-support-text {
-    font-size: var(--support-text);
-  }
+  /*.text-support-text {*/
+  /*  font-size: var(--support-text);*/
+  /*}*/
 
   .text-low-priority-text {
     font-size: var(--low-priorety-text);
   }
 
-  .bg-main-blue{
-    background-color: #008FEA;
-  }
 
-  .bg-white{
+  .white{
     background-color: #FFFFFF;
   }
 
-  .bg-support-text{
-    background-color: #B8B8B8;
-  }
 
-  .bg-disable-text{
+  .disable-text{
     background-color: #737373;
   }
 
-  .bg-line-gray{
+  .line-gray{
     background-color: #616161;
   }
 
-  .bg-background-black{
+  .background-black{
     background-color: #171918;
   }
 
-  .bg-black{
-    background-color: #000000;
-  }
 
-  .bg-red{
-    background-color: #F23F3F;
-  }
-  
-  .bg-green{
+  .green{
     background-color: #64CF13;
   }
 
-  .bg-disable-button{
+  .disable-button{
     background-color: #2F363A;
   }
 
