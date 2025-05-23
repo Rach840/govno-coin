@@ -29,12 +29,16 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
+import {definePageMeta} from "#imports";
 
 const valueUsdt = ref<number>(-1)
 const valueGovno = ref<number>(-1)
 const userValue = ref('')
 const sum = ref<number>(0)
 const actionSelect = ref<'replenishment' | 'withdrawal'>('replenishment')
+definePageMeta({
+  layout:'mobile'
+})
 const mockBalance = ref<{ title:string; valueUSD:string; valueGOVNO:string;}[]>([
 
   {
@@ -83,11 +87,11 @@ async function getBalance() {
 
 async function replenishmentPost() {
   try {
-    const response = await axios.post('/api/balance/create_invoice', {
-      title: 'Пополнение',
-      price: sum.value,
-      user_id: window.Telegram?.WebApp?.initDataUnsafe?.user?.id,
-    })
+    // const response = await axios.post('/api/balance/create_invoice', {
+    //   title: 'Пополнение',
+    //   price: sum.value,
+    //   user_id: window.Telegram?.WebApp?.initDataUnsafe?.user?.id,
+    // })
 
     if (response.status == 200 && response.data) {
       window.location.href = response.data
@@ -99,10 +103,10 @@ async function replenishmentPost() {
 
 async function withdrawPost() {
   try {
-    const response = await axios.post('/api/balance/withdraw_govno', {
-      user_id: window.Telegram?.WebApp?.initDataUnsafe?.user?.id,
-      amount: sum.value,
-    })
+    // const response = await axios.post('/api/balance/withdraw_govno', {
+    //   user_id: window.Telegram?.WebApp?.initDataUnsafe?.user?.id,
+    //   amount: sum.value,
+    // })
 
     if (response.status == 200) {
       window.Telegram?.WebApp?.showPopup({
