@@ -1,25 +1,114 @@
 <template>
   <div class="flex flex-col gap-4">
-    <div class="max-w-[90vw] box-border gap-2.5 flex flex-col" v-for="(term, termIndex) in terms" :key="termIndex">
-      <h1 class="text-(length:--h4)">{{ term.title }}</h1>
-      <p :class="{ hidden: !term.text }" class="font-normal text-(length:--support-text)">{{ term.text }}</p>
-      <div v-for="(content, contentIndex) in term.content" :key="contentIndex" class="font-normal text-(length:--support-text) text-(--support-text-color) gap-5 flex flex-col items-center justify-center">
-        <h2 v-if="content.subtitle1">{{ content.subtitle1 }}</h2>
-        <div v-if="content.ul" v-for="(ul, ulIndex) in content.ul" :key="ulIndex">
-          <p v-if="ul.ulTitle" class="">{{ ul.ulTitle }}</p>
-          <li v-if="ul.ulList" class="list-disc ml-2" v-for="(li, liIndex) in ul.ulList" :key="liIndex">{{ li }}</li>
+    <!-- Заголовок и описание -->
+    <div class="flex flex-col gap-2.5">
+      <h1 class="text-(length:--h2)">
+        📜 Пользовательское соглашение GOVNO COIN (18+)
+      </h1>
+      <p class="text-(length:--support-text)">
+        Вступает в силу с момента первого взаимодействия с Приложением, включая его загрузку, открытие или использование любых функций.
+      </p>
+    </div>
+
+    <!-- Условия -->
+    <div
+      v-for="(term, termIndex) in terms"
+      :key="termIndex"
+      class="max-w-[90vw] box-border flex flex-col gap-2.5"
+    >
+      <h1 class="text-(length:--h4)">
+        {{ term.title }}
+      </h1>
+      <p
+        v-if="term.text"
+        class="font-normal text-(length:--support-text)"
+      >
+        {{ term.text }}
+      </p>
+
+      <div
+        v-for="(content, contentIndex) in term.content"
+        :key="contentIndex"
+        class="font-normal text-(length:--support-text) text-(--support-text-color) flex flex-col items-center justify-center gap-5"
+      >
+        <h2 v-if="content.subtitle1">
+          {{ content.subtitle1 }}
+        </h2>
+
+        <div
+          v-if="content.ul"
+          v-for="(ul, ulIndex) in content.ul"
+          :key="ulIndex"
+        >
+          <p v-if="ul.ulTitle">
+            {{ ul.ulTitle }}
+          </p>
+          <ul>
+            <li
+              v-for="(li, liIndex) in ul.ulList"
+              :key="liIndex"
+              class="list-disc ml-2"
+            >
+              {{ li }}
+            </li>
+          </ul>
         </div>
-        <p v-if="content.subtitle2">{{ content.subtitle2 }}</p>
+
+        <p v-if="content.subtitle2">
+          {{ content.subtitle2 }}
+        </p>
       </div>
     </div>
-    <p class="text-(length:--h4)">DAO GOVNO COIN не обязано ничего никому. Добро пожаловать в Свободный Децентрализованный Беспредел.</p>
-    <UCheckbox color="secondary" default-value label="Я согласен с данными правилами" />
+
+    <!-- Заключительное сообщение -->
+    <p class="text-(length:--h4)">
+      DAO GOVNO COIN не обязано ничего никому. Добро пожаловать в Свободный Децентрализованный Беспредел.
+    </p>
+
+    <!-- Чекбокс согласия -->
+    <div class="flex gap-3">
+      <UCheckbox
+        size="lg"
+        v-model="agree"
+        default-value
+        @click="test()"
+      />
+      <p class="font-normal text-(length:--support-text) text-(--support-text-color)">
+        Я согласен с данными правилами
+      </p>
+    </div>
+
+    <!-- Кнопка продолжения -->
+    <UButton
+      @click="replace()"
+      :class="agree ? 'bg-(--main-blue)' : 'disabled:bg-(--disable-button-color) disabled:text-(--disable-text-color)'"
+      class="h-[13.1vw] px-4.5 rounded-[3vw] text-(length:--button-text2) flex justify-between"
+      trailing-icon="i-lucide-arrow-right"
+      size="md"
+      :disabled="!agree"
+    >
+      Продолжить
+    </UButton>
   </div>
 
   <div class="bg-[url(/terms/terms-background.svg)] bg-size-[100vw_100vh] w-[100vw] h-[100vh] fixed left-0 top-0 bg-center -z-1"></div>
+
 </template>
 
 <script setup lang="ts">
+import { useRouter } from 'vue-router'
+const router = useRouter()
+const agree = ref<boolean>(false)
+const link = ref<HTMLElement | null>(null)
+
+function test () {
+  console.log(agree.value)
+}
+
+function replace () {
+  router.push("/")
+  console.log("344334")
+}
 
 const terms = [
   {

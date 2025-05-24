@@ -53,17 +53,19 @@ body{
     --color-dark-gray:rgba(47, 47, 47, 1);
     --h0: 10vw;
     --h1: 6.7vw;
-    --h2: 24px;
+    --h2: 5.6vw;
     --h3: 1.05vw;
     --h4: 4.3vw;
     --button-text1: 0.95vw;
-    --button-text3: 20px;
+    --button-text2: 3.9vw;
     --edit-text1: 18px;
     --support-text: 3.9vw;
     --low-priorety-text: 14px;
     --reder: #ff3f3f;
     --support-text-color: #B8B8B8;
-
+    --main-blue: #008FEA;
+    --disable-button-color: #2F363A;
+    --disable-text-color: #737373;
 }
 @theme inline {
     --color-background: var(--background);
@@ -183,6 +185,10 @@ body{
 
   .text-low-priority-text {
     font-size: var(--low-priorety-text);
+  }
+
+  .main-blue{
+    background-color: #008FEA;
   }
 
 
