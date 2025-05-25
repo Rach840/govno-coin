@@ -165,8 +165,8 @@ async function checkQuestion() {
             user_id: userId
         }
     })
-    if (status.data == 'success') {
-        surveyState.
+    if (status.value == 'success') {
+        
     }
 }
 async function sendAnswers() {

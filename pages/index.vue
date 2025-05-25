@@ -1,5 +1,6 @@
 <template>
   <h1 class="text-2xl">dfasdfsdfdsf</h1>
+  <NuxtLink to="/terms">About page</NuxtLink>
 </template>
 <script setup lang="ts">
 const { isMobile } = useDevice();
