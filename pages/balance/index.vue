@@ -1,105 +1,194 @@
 <template>
-  <UContainer>
-<UCard variant="solid">
+  <h1 class="text-white text-[length:h1] lg:text-2xl mb-4">
+    Внутренний кошелек
+  </h1>
+  <UCard
+    variant="solid"
+    :ui="{
+      root: 'bg-balance',
+    }"
+    class="relative z-0"
+  >
+    <BalanceCard :moneyVal="moneyVal" />
 
-  <p class="text-h1 font-medium">$GOVNO кошелёк</p>
-  <div class=" ">
+    <UTabs
+    v-model='active'
+      :items="items"
+      variant="link"
+      color='info'
+      size='xl'
+      class="gap-4 w-full mt-4 mb-4"
+      :ui="{ trigger:'p-0 mr-7 ',label:'text-lg', list:' border-none',  }"
 
-    <BalanceCard v-for="balance in mockBalance">
-      <template #title>{{ balance.title }}</template>
-      <template #valueUSD>{{ balance.valueUSD }}</template>
-      <template #valueGovno>{{ balance.valueGOVNO }} </template>
-    </BalanceCard>
-    <div class="flex flex-col gap-4 w-full">
-      <div class="flex items-center gap-2">
-        <button id="select-replenishment" @click="actionSelect = 'replenishment'" :class="['px-4 py-2 rounded-lg transition-colors', actionSelect === 'replenishment' ? 'bg-primary text-white' : 'bg-muted text-muted-foreground']"> Пополнение</button>
-        <button id="select-withdrawal" @click="actionSelect = 'withdrawal'" :class="['px-4 py-2 rounded-lg transition-colors', actionSelect === 'withdrawal' ? 'bg-primary text-white' : 'bg-muted text-muted-foreground']">Вывод</button>
-      </div>
-      <div class="flex flex-col items-center gap-2 w-full">
-        <input class="w-full flex justify-center items-center border-solid border-2 border-[#616161] rounded-[3vw] h-[13.1vw]" v-model="userValue" placeholderText="" filterMode="numericAndDot"/>
-        <div class="bg-main-blue w-full flex justify-center items-center text-white rounded-[3vw] h-[13.1vw] text-[#000000] font-normal">Криптой</div>
+    >
+      <template #replenishment="{ item }">
+          <UFormField name="replenishmentSum">
+            <UInputNumber
+              orientation="vertical"
+              type="number"
+              :min="1"
+              size="xl"
+              variant="outline"
+              :ui="{
+                base: 'bg-transparent p-4',
+                increment: 'hidden',
+                decrement: 'hidden',
+              }"
+              color="secondary"
+              placeholder="Сумма пополнения ($GOVNO)"
+              v-model="state.replenishment"
+              class="w-full"
+            />
+          </UFormField>
+   
+      </template>
+      <template #conclusion="{ item }">
 
-      </div>
+          <UFormField name="conclusion">
+            <UInputNumber
+              orientation="vertical"
+              type="number"
+              :min="1"
+              size="xl"
+              variant="outline"
+              :ui="{
+                base: 'bg-transparent p-4',
+                increment: 'hidden',
+                decrement: 'hidden',
+              }"
+              color="secondary"
+              placeholder="Сумма вывода ($GOVNO)"
+              v-model="state.conclusion"
+              class="w-full"
+            />
+          </UFormField>
+   
+      </template>
+    </UTabs>
+    <div class="space-y-4">
+      <UButton
+        variant="solid"
+        class="w-full flex justify-center"
+        @click="replenishmentPost"
+        size="xxl"
+        color="info"
+        >Криптой</UButton
+      >
+      <UButton
+        variant="solid"
+        class="w-full flex justify-center"
+        @click="withdrawPost"
+        size="xxl"
+        color="neutral"
+        >Банковской картой</UButton
+      >
     </div>
-  </div>
-</UCard>
-  </UContainer>
-
+  </UCard>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
-import {definePageMeta} from "#imports";
+import { UButton } from "#components";
+import type { TabsItem } from "@nuxt/ui";
+import * as z from "zod";
+const config = useRuntimeConfig();
 
-const valueUsdt = ref<number>(-1)
-const valueGovno = ref<number>(-1)
-const userValue = ref('')
-const sum = ref<number>(0)
-const actionSelect = ref<'replenishment' | 'withdrawal'>('replenishment')
-definePageMeta({
-  layout:'mobile'
-})
-const mockBalance = ref<{ title:string; valueUSD:string; valueGOVNO:string;}[]>([
-
-  {
-    title:'Общий баланс',
-    valueUSD: '47 397.00',
-     valueGOVNO: '61.5'
-  },
-  {
-    title:'❄️ В заморозке',
-    valueUSD: '100.00',
-    valueGOVNO: '61.5'
-  },
-
-])
-onMounted(async () => {
-  await getBalance()
+const active = ref('0')
+const state = reactive({
+  replenishment:undefined,
+  conclusion:undefined
 })
 
-function submitBalance() {
-  if (userValue.value.trim() == '' || Number(userValue.value) <= 0) return
+const items = [
+  {
+    label: "Пополнение",
+    slot: "replenishment" as const,
+  },
+  {
+    label: "Вывод",
+    slot: "conclusion" as const,
+  },
+] satisfies TabsItem[];
 
-  sum.value = Number(userValue.value)
-  if (actionSelect.value === 'replenishment') {
-    replenishmentPost()
-    userValue.value = ''
-  } else if (actionSelect.value === 'withdrawal') {
-    withdrawPost()
-    userValue.value = ''
-  }
-}
 
-async function getBalance() {
-  try {
-    const response = await axios.post('/api/balance/get_balance', {
-      user_id: window.Telegram?.WebApp?.initDataUnsafe?.user?.id,
-    })
 
-    if (response.status === 200) {
-      valueUsdt.value = parseFloat(response.data.balance) || 0
-      valueGovno.value = parseFloat(response.data.balance) || 0
+const router = useRouter()
+const { user, loading } = useUserStore();
+const moneyVal = ref({
+  usdt: 'Загрузка',
+  govno: 'Загрузка'
+})
+watchEffect(async () => {
+  if (!loading) {
+    try {
+      const {data, status} = await useFetch(
+        `${config.public.apiUrl}/balance/get_balance`,
+        {
+          method:'post',
+          body: { user_id: user?.id},
+        },
+      );
+  
+console.log(status.value, data.value )
+      if (status.value === 'success') {
+        moneyVal.value.usdt = parseFloat(data.value?.usd) || 0;
+        moneyVal.value.govno = parseFloat(data.value?.govno) || 0;
+      }
+    } catch (error) {
+      console.error("Ошибка при получении баланса ❌", error);
     }
-  } catch (error) {
-    console.error('Ошибка при получении баланса ❌', error)
   }
-}
-
+});
 async function replenishmentPost() {
   try {
-    // const response = await axios.post('/api/balance/create_invoice', {
-    //   title: 'Пополнение',
-    //   price: sum.value,
-    //   user_id: window.Telegram?.WebApp?.initDataUnsafe?.user?.id,
-    // })
 
-    if (response.status == 200 && response.data) {
-      window.location.href = response.data
+    if (active.value == '0') {
+          const  {data,status} = await useFetch(`${config.public.apiUrl}/balance/create_invoice`, {
+            method:'post',
+            body:{
+  title: 'Пополнение',
+      price: state?.replenishment,
+      user_id: user?.id,
+            }
+    })
+     if (status.value == 'success') {
+      window.location.href = data.value
     }
+    }else{
+          const {data,status} = await useFetch(`${config.public.apiUrl}/balance/withdraw_govno`, {
+            method:'post',
+            body:{
+               user_id: user?.id,
+      amount: state?.conclusion,
+     
+            }
+  
+    })
+               if (status.value == 'success') {
+          const {data, status} = await useFetch(
+        `${config.public.apiUrl}/balance/get_balance`,
+        {
+          method:'post',
+          body: { user_id: user?.id},
+        },
+      )
+
+      moneyVal.value.govno = data.value.govno;
+      moneyVal.value.usdt =  data.value.usd
+       window.Telegram?.WebApp?.showPopup({
+        title: "💩 Внимание, ассенизатор!",
+        message:
+          "Во время ЗБТ вывод токенов осуществляется вручную — чтобы никакой криптокит с лопатой не утащил всё в канализацию разом. Потерпите, автоматизация уже на подходе (на телеге с бочкой)!",
+        buttons: [{ text: "OK", type: "ok" }],
+      });
+      }
+    }
+    console.log(state.replenishment);
+   
   } catch (error) {
-    console.log('ошибка при отправке суммы пополнение баланса ❌❌❌')
+    console.log("ошибка при отправке суммы пополнение баланса ❌❌❌");
   }
 }
+
 
 async function withdrawPost() {
   try {
@@ -108,15 +197,13 @@ async function withdrawPost() {
     //   amount: sum.value,
     // })
 
-    if (response.status == 200) {
-      window.Telegram?.WebApp?.showPopup({
-        title: '💩 Внимание, ассенизатор!',
-        message: 'Во время ЗБТ вывод токенов осуществляется вручную — чтобы никакой криптокит с лопатой не утащил всё в канализацию разом. Потерпите, автоматизация уже на подходе (на телеге с бочкой)!',
-        buttons: [{ text: 'OK', type: 'ok' }],
-      })
-    }
+    // if (response.status == 200) {
+    //  
+    // }
+
+    console.log(state.conclusion);
   } catch (error) {
-    console.log('ошибка при отправки суммы вывода баланса ❌❌❌')
+    console.log("ошибка при отправки суммы вывода баланса ❌❌❌");
   }
 }
 </script>

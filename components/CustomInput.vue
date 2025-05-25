@@ -1,8 +1,5 @@
 <template>
-  <div
-    ref="containerEl"
-    class="relative w-full"
-  >
+  <div ref="containerEl" class="relative w-full">
     <input
       ref="inputEl"
       v-model="localValue"
@@ -21,119 +18,120 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, onMounted, onBeforeUnmount } from 'vue'
+import { ref, watch, onMounted, onBeforeUnmount } from "vue";
 
 const props = defineProps<{
-  modelValue?: string,
-  placeholderText?: string,
-  filterMode?: 'numeric' | 'numericAndDot' | 'letters' | null,
-  maxValue?: number,
-  minValue?: number,
-}>()
+  modelValue?: string;
+  placeholderText?: string;
+  filterMode?: "numeric" | "numericAndDot" | "letters" | null;
+  maxValue?: number;
+  minValue?: number;
+}>();
 
-const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits(["update:modelValue"]);
 
-const isFocused = ref(false)
-const localValue = ref(props.modelValue || '')
+const isFocused = ref(false);
+const localValue = ref(props.modelValue || "");
 
-const inputEl = ref<HTMLInputElement | null>(null)
-const containerEl = ref<HTMLElement | null>(null)
+const inputEl = ref<HTMLInputElement | null>(null);
+const containerEl = ref<HTMLElement | null>(null);
 
-const backButton = window?.Telegram?.WebApp?.BackButton
+const backButton = window?.Telegram?.WebApp?.BackButton;
 
 function showBack() {
-  if (!backButton) return
-  backButton.show()
-  backButton.onClick(unfocusInput)
+  if (!backButton) return;
+  backButton.show();
+  backButton.onClick(unfocusInput);
 }
 
 function hideBack() {
-  if (!backButton) return
-  backButton.hide()
-  backButton.offClick(unfocusInput)
+  if (!backButton) return;
+  backButton.hide();
+  backButton.offClick(unfocusInput);
 }
 
 function unfocusInput() {
-  inputEl.value?.blur()
+  inputEl.value?.blur();
 }
 
 function onClickOutside(event: MouseEvent) {
-  if (!inputEl.value) return
+  if (!inputEl.value) return;
   if (
     event.target instanceof Node &&
     !inputEl.value.contains(event.target) &&
-    !(containerEl.value?.contains(event.target))
+    !containerEl.value?.contains(event.target)
   ) {
-    unfocusInput()
+    unfocusInput();
   }
 }
 
 function onFocus() {
-  isFocused.value = true
-  showBack()
-  document.addEventListener('click', onClickOutside)
+  isFocused.value = true;
+  showBack();
+  document.addEventListener("click", onClickOutside);
 }
 
 function onBlur() {
-  isFocused.value = false
-  hideBack()
-  document.removeEventListener('click', onClickOutside)
+  isFocused.value = false;
+  hideBack();
+  document.removeEventListener("click", onClickOutside);
 }
 
-watch(() => props.modelValue, (newVal) => {
-  if (newVal !== localValue.value) {
-    localValue.value = newVal || ''
-  }
-})
+watch(
+  () => props.modelValue,
+  (newVal) => {
+    if (newVal !== localValue.value) {
+      localValue.value = newVal || "";
+    }
+  },
+);
 
 watch(localValue, (val) => {
-  let value = val
+  let value = val;
 
   switch (props.filterMode) {
-    case 'numeric':
-      value = value.replace(/[^\d]/g, '')
-      break
-    case 'numericAndDot':
-      value = value.replace(/[^\d.]/g, '')
-      const parts = value.split('.')
+    case "numeric":
+      value = value.replace(/[^\d]/g, "");
+      break;
+    case "numericAndDot":
+      value = value.replace(/[^\d.]/g, "");
+      const parts = value.split(".");
       if (parts.length > 1) {
-        value = parts[0] + '.' + parts.slice(1).join('')
+        value = parts[0] + "." + parts.slice(1).join("");
       }
-      break
-    case 'letters':
-      value = value.replace(/[^a-zA-Zа-яА-ЯёЁ0-9 .]/g, '')
-      break
+      break;
+    case "letters":
+      value = value.replace(/[^a-zA-Zа-яА-ЯёЁ0-9 .]/g, "");
+      break;
   }
 
-
-
-  if (props.maxValue !== undefined && value !== '') {
-    const numericValue = parseFloat(value)
+  if (props.maxValue !== undefined && value !== "") {
+    const numericValue = parseFloat(value);
     if (!isNaN(numericValue) && numericValue > props.maxValue) {
-      value = props.maxValue.toString()
+      value = props.maxValue.toString();
     }
   }
 
-  if (props.minValue !== undefined && value !== '') {
-    const numericValue = parseFloat(value)
+  if (props.minValue !== undefined && value !== "") {
+    const numericValue = parseFloat(value);
     if (!isNaN(numericValue) && numericValue < props.minValue) {
-      value = props.minValue.toString()
+      value = props.minValue.toString();
     }
   }
 
   if (value !== localValue.value) {
-    localValue.value = value
+    localValue.value = value;
   }
 
-  emit('update:modelValue', value)
-})
+  emit("update:modelValue", value);
+});
 
 onMounted(() => {
-  window?.Telegram?.WebApp?.ready()
-})
+  window?.Telegram?.WebApp?.ready();
+});
 
 onBeforeUnmount(() => {
-  backButton?.offClick(unfocusInput)
-  document.removeEventListener('click', onClickOutside)
-})
+  backButton?.offClick(unfocusInput);
+  document.removeEventListener("click", onClickOutside);
+});
 </script>

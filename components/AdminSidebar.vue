@@ -6,7 +6,8 @@ import {
   SidebarGroupContent,
   SidebarGroupLabel,
   SidebarMenu,
-  SidebarMenuItem, SidebarTrigger,
+  SidebarMenuItem,
+  SidebarTrigger,
 } from "@/components/ui/sidebar";
 import { SidebarFooter } from "~/components/ui/sidebar";
 
@@ -40,33 +41,24 @@ const items = [
 </script>
 
 <template>
-  <Sidebar class="rounded-br-[40px]  overflow-hidden"  collapsible="icon">
-
+  <Sidebar class="rounded-br-[40px] overflow-hidden" collapsible="icon">
     <SidebarContent class="rounded-br-[40px]">
       <SidebarTrigger />
       <SidebarGroup>
         <SidebarGroupLabel class="py-8">
           <div class="mx-auto border-b">
-            <NuxtLink
-                href="/"
-                class="flex items-center gap-2"
-            >
-
-            </NuxtLink>
+            <NuxtLink href="/" class="flex items-center gap-2"> </NuxtLink>
           </div>
         </SidebarGroupLabel>
         <SidebarGroupContent>
           <SidebarMenu class="py-14 px-4">
-            <SidebarMenuItem
-                v-for="item in items"
-                :key="item.title"
-            >
+            <SidebarMenuItem v-for="item in items" :key="item.title">
               <UButton
-                  :icon="item.icon"
-                  :to="item.url"
-                  variant="link"
-                  size="xl"
-                  class="text-xl"
+                :icon="item.icon"
+                :to="item.url"
+                variant="link"
+                size="xl"
+                class="text-xl"
               >
                 {{ item.title }}</UButton
               >
@@ -79,39 +71,28 @@ const items = [
       <SidebarMenu>
         <SidebarMenuItem>
           <UPopover
-              :ui="{
+            :ui="{
               content: 'w-full',
             }"
-              class="w-full"
+            class="w-full"
           >
             <UButton
-                size="xl"
-                color="neutral"
-                variant="subtle"
-                class="cursor-pointer w-full text-xl"
+              size="xl"
+              color="neutral"
+              variant="subtle"
+              class="cursor-pointer w-full text-xl"
             >
-
-              {{ user?.firstName }}
             </UButton>
             <template #content>
               <div class="w-full px-6 py-2">
                 <UButton
-                    size="xl"
-                    variant="link"
-                    to="/"
-                    color="primary"
-                    class="cursor-pointer w-full text-xl"
+                  size="xl"
+                  variant="link"
+                  to="/"
+                  color="primary"
+                  class="cursor-pointer w-full text-xl"
                 >
                   Выйти на сайт
-                </UButton>
-                <UButton
-                    size="xl"
-                    variant="link"
-                    color="primary"
-                    @click="logout"
-                    class="cursor-pointer w-full text-xl"
-                >
-                  Выйти
                 </UButton>
               </div>
             </template>

@@ -1,2 +1,1 @@
-
-export * as default from './MobileMenu.vue'
+export * as default from "./MobileMenu.vue";
