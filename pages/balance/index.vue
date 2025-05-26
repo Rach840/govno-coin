@@ -4,8 +4,8 @@
       <div class="bg-[linear-gradient(162deg,_#3C3C3C_0%,_#2F2F2F_100%)] rounded-[4vw] p-3.5 flex flex-col gap-5">
          <div class="flex flex-col gap-0">
             <p class="text-(length:--support-text) text-(--support-text-color)">Общий баланс</p>
-            <p class="text-(length:--h0) font-semibold">$ {{ valueUsdt >= 0 ? valueUsdt.toFixed(2) : '0.00' }}</p>
-            <span class="text-(length:--support-text) text-(--support-text-color)">~ {{ valueGovno >= 0 ? valueGovno.toFixed(2) : '0.00' }} $GOVNO</span>
+            <p class="text-(length:--h0) font-semibold">$ {{ moneyVal.usd >= 0 ? moneyVal.usd.toFixed(2) : '0.00' }}</p>
+            <span class="text-(length:--support-text) text-(--support-text-color)">~ {{ moneyVal.govno >= 0 ? moneyVal.govno.toFixed(2) : '0.00' }} $GOVNO</span>
          </div>
 
          <div class="flex flex-col gap-0">
@@ -16,13 +16,29 @@
 
          <div class="w-full flex flex-col gap-2.5">
             <div class="text-(length:--h3) flex gap-3.5">
-               <button class="balance-interaction-select-point text-(--support-text-color)" @click="actionSelect = 'replenishment'" :class="{ 'underline underline-offset-1 decoration-(--main-blue) text-white': actionSelect === 'replenishment' }">Пополнение</button>
-               <button class="balance-interaction-select-point text-(--support-text-color)" @click="actionSelect = 'withdrawal'" :class="{ 'underline underline-offset-1 decoration-(--main-blue) text-white': actionSelect === 'withdrawal' }">Вывод</button>
+               <button class="balance-interaction-select-point text-(--support-text-color)"
+                  @click="actionSelect = 'replenishment'"
+                  :class="{ 'underline underline-offset-1 decoration-(--main-blue) text-white': actionSelect === 'replenishment' }">
+                  Пополнение
+               </button>
+               <button class="balance-interaction-select-point text-(--support-text-color)"
+                  @click="actionSelect = 'withdrawal'"
+                  :class="{ 'underline underline-offset-1 decoration-(--main-blue) text-white': actionSelect === 'withdrawal' }">
+                  Вывод
+               </button>
             </div>
             <div class="flex flex-col gap-3.5">
-               <UInput variant="none" class="border-1 border-(--line-gray) h-[13.1vw] rounded-[3.5vw] text-(length:--support-text)"></UInput>
-               <Ubutton class="h-[13.1vw] bg-(--main-blue) flex justify-center items-center text-black rounded-[3.5vw] text-(length:--support-text)">Криптой</Ubutton>
-               <NuxtLink to="/about" class="h-[13.1vw] bg-white flex justify-center items-center text-black rounded-[3.5vw] text-(length:--support-text)">Банковской картой</NuxtLink>
+               <UInput v-model="stateValue" variant="none"
+                  class="border-1 border-(--line-gray) h-[13.1vw] rounded-[3.5vw] text-(length:--support-text)" />
+               <UButton @click="handleSubmit"
+                  class="h-[13.1vw] bg-(--main-blue) flex justify-center items-center text-black rounded-[3.5vw] text-(length:--support-text)" :class="{ 'bg-red-500' : actionSelect !== 'replenishment' }">
+                  {{ actionSelect == 'replenishment' ? 'Криптой' : 'Вывести' }}
+                  
+               </UButton>
+               <NuxtLink v-if="actionSelect == 'replenishment'" to="https://g-crypto.ru/login"
+                  class="h-[13.1vw] bg-white flex justify-center items-center text-black rounded-[3.5vw] text-(length:--support-text)">
+                  Банковской картой
+               </NuxtLink>
             </div>
          </div>
       </div>
@@ -30,79 +46,91 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
-import axios from 'axios'
+import { ref, reactive, watchEffect } from 'vue';
+import { useRuntimeConfig, useFetch } from '#app';
+import { UButton } from '#components';
 
-const valueUsdt = ref<number>(-1)
-const valueGovno = ref<number>(-1)
-const userValue = ref('')
-const sum = ref<number>(0)
-const actionSelect = ref<'replenishment' | 'withdrawal'>('replenishment')
-
-onMounted(async () => {
-  await getBalance()
-})
-
-function submitBalance() {
-  if (userValue.value.trim() == '' || Number(userValue.value) <= 0) return
-
-  sum.value = Number(userValue.value)
-  if (actionSelect.value === 'replenishment') {
-    replenishmentPost()
-    userValue.value = ''
-  } else if (actionSelect.value === 'withdrawal') {
-    withdrawPost()
-    userValue.value = ''
-  }
+interface MoneyValues {
+   usd: number;
+   govno: number;
 }
 
-async function getBalance() {
-  try {
-    const response = await axios.post('/api/balance/get_balance', {
-      user_id: window.Telegram?.WebApp?.initDataUnsafe?.user?.id,
-    })
+type ActionType = 'replenishment' | 'withdrawal';
 
-    if (response.status === 200) {
-      valueUsdt.value = parseFloat(response.data.balance) || 0
-      valueGovno.value = parseFloat(response.data.balance) || 0
-    }
-  } catch (error) {
-    console.error('Ошибка при получении баланса ❌', error)
-  }
-}
+const config = useRuntimeConfig();
+const { user, loading } = useUserStore();
 
-async function replenishmentPost() {
-  try {
-    const response = await axios.post('/api/balance/create_invoice', {
-      title: 'Пополнение',
-      price: sum.value,
-      user_id: window.Telegram?.WebApp?.initDataUnsafe?.user?.id,
-    })
+const actionSelect = ref<ActionType>('replenishment');
+const moneyVal = reactive<MoneyValues>({ usd: 0, govno: 0 });
+const stateValue = ref<number>(0);
 
-    if (response.status == 200 && response.data) {
-      window.location.href = response.data
-    }
-  } catch (error) {
-    console.log('ошибка при отправке суммы пополнение баланса ❌❌❌')
-  }
-}
+watchEffect(async () => {
+   if (!loading && user?.id) {
+      try {
+         const { data, status } = await useFetch(`${config.public.apiUrl}/balance/get_balance`, {
+            method: 'post',
+            body: { user_id: user.id },
+         });
 
-async function withdrawPost() {
-  try {
-    const response = await axios.post('/api/balance/withdraw_govno', {
-      user_id: window.Telegram?.WebApp?.initDataUnsafe?.user?.id,
-      amount: sum.value,
-    })
+         if (status.value === 'success' && data.value) {
+            moneyVal.usd = parseFloat(data.value.usd) || 0;
+            moneyVal.govno = parseFloat(data.value.govno) || 0;
+         }
+      } catch (error) {
+         console.error('Ошибка при получении баланса ❌', error);
+      }
+   }
+});
 
-    if (response.status == 200) {
-      window.Telegram?.WebApp?.showPopup({
-        title: '💩 Внимание, ассенизатор!',
-        message: 'Во время ЗБТ вывод токенов осуществляется вручную — чтобы никакой криптокит с лопатой не утащил всё в канализацию разом. Потерпите, автоматизация уже на подходе (на телеге с бочкой)!',
-        buttons: [{ text: 'OK', type: 'ok' }],
-      })
-    }
-  } catch (error) {
-    console.log('ошибка при отправки суммы вывода баланса ❌❌❌')
-  }
+async function handleSubmit() {
+   if (!user?.id) return;
+
+   try {
+      if (actionSelect.value === 'replenishment') {
+         const { data, status } = await useFetch(`${config.public.apiUrl}/balance/create_invoice`, {
+            method: 'post',
+            body: {
+               amount: stateValue.value,
+               user_id: user.id,
+            },
+         });
+
+         if (status.value === 'success' && data.value) {
+            window.location.href = data.value;
+         }
+      } else {
+         const { data, status } = await useFetch(`${config.public.apiUrl}/balance/withdraw_govno`, {
+            method: 'post',
+            body: {
+               user_id: user.id,
+               amount: stateValue.value,
+            },
+         });
+
+         if (status.value === 'success') {
+            const { data: balanceData, status: balanceStatus } = await useFetch(
+               `${config.public.apiUrl}/balance/get_balance`,
+               {
+                  method: 'post',
+                  body: { user_id: user.id },
+               },
+            );
+
+            if (balanceStatus.value === 'success' && balanceData.value) {
+               moneyVal.govno = balanceData.value.govno;
+               moneyVal.usd = balanceData.value.usd;
+            }
+
+            window.Telegram?.WebApp?.showPopup({
+               title: '💩 Внимание, ассенизатор!',
+               message:
+                  'Во время ЗБТ вывод токенов осуществляется вручную — чтобы никакой криптокит с лопатой не утащил всё в канализацию разом. Потерпите, автоматизация уже на подходе (на телеге с бочкой)!',
+               buttons: [{ text: 'OK', type: 'ok' }],
+            });
+         }
+      }
+   } catch (error) {
+      console.error('Ошибка при отправке суммы ❌❌❌', error);
+   }
 }
 </script>

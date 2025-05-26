@@ -50,8 +50,8 @@
       overlay-class="bg-black/40"
       :ui="{
          content: '!bg-[#262827] px-auto pt-4',
-         handle: [' m-0 py-1  px-[30px]  !bg-[#737373] ', '  transition-opacity'],
-         header: 'bg-[#262827] py-4',
+         handle: [' m-0 py-[0.1vw]  px-[9vw] !bg-[#737373] ', '  transition-opacity'],
+         header: 'bg-[#262827]',
       }"
       :transition="{
          enterActiveClass: 'duration-300',
@@ -60,7 +60,7 @@
    >
 
    <template #content>
-      <div class="px-5.5 bg-[#262827] flex flex-col items-center text-center gap-5 overflow-auto">
+      <div class="px-5.5 bg-[#262827] flex flex-col items-center text-center gap-5 overflow-auto mt-4">
          <MobileMiniProfile />
          <MobileCard class="bg-[linear-gradient(162deg,_#3C3C3C_0%,_#2F2F2F_100%)] rounded-[5.3vw]">
             <template #valueUSD>47 397</template>
