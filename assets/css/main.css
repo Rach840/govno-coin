@@ -54,18 +54,20 @@ body{
     --h0: 10vw;
     --h1: 6.7vw;
     --h2: 5.6vw;
-    --h3: 1.05vw;
+    --h3: 5vw;
     --h4: 4.3vw;
+    --h5: 3.9vw;
     --button-text1: 0.95vw;
     --button-text2: 3.9vw;
     --edit-text1: 18px;
     --support-text: 3.9vw;
-    --low-priorety-text: 14px;
+    --low-priorety-text: 3.5vw;
     --reder: #ff3f3f;
     --support-text-color: #B8B8B8;
     --main-blue: #008FEA;
     --disable-button-color: #2F363A;
     --disable-text-color: #737373;
+    --line-gray: #616161;
 }
 @theme inline {
     --color-background: var(--background);
@@ -195,14 +197,6 @@ body{
   .white{
     background-color: #FFFFFF;
   }
-.padding-container{ 
-    padding-top: var(--tg-safe-area-inset-top, env(safe-area-inset-top, 0px));
-    padding-right: var(--tg-safe-area-inset-right, env(safe-area-inset-right, 0px));
-    padding-bottom: var(--tg-safe-area-inset-bottom, env(safe-area-inset-bottom, 0px));
-    padding-left: var(--tg-safe-area-inset-left, env(safe-area-inset-left, 0px));
-
-    overflow: auto;
-}
 
 
   .disable-text{

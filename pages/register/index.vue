@@ -110,52 +110,53 @@ async function submitForm() {
 </script>
 
 <template>
-  <div class="flex flex-col gap-3.5">
-    <h1 class="text-(length:--h1)">Заполнение профиля</h1>
+  <div class="flex flex-col gap-5 text-white text-center">
+    <h1 class="text-(length:--h1) font-semibold">Паспорт ассенизатора</h1>
 
     <div class="flex gap-2.5">
-      <UButton variant="link" class="w-full h-1" :class="step == 1 ? 'bg-(--main-blue)' : 'bg-(--disable-button-color)'" @click="goToStep(1)"></UButton>
-      <UButton variant="link" class="w-full h-1" :class="step == 2 ? 'bg-(--main-blue)' : 'bg-(--disable-button-color)'" @click="goToStep(2)"></UButton>
-      <UButton variant="link" class="w-full h-1" :class="step == 3 ? 'bg-(--main-blue)' : 'bg-(--disable-button-color)'" @click="goToStep(3)"></UButton>
+      <UButton variant="link" class="w-full h-1 p-0" :class="step == 1 ? 'bg-(--main-blue)' : 'bg-(--disable-button-color)'" @click="goToStep(1)"></UButton>
+      <UButton variant="link" class="w-full h-1 p-0" :class="step == 2 ? 'bg-(--main-blue)' : 'bg-(--disable-button-color)'" @click="goToStep(2)"></UButton>
+      <UButton variant="link" class="w-full h-1 p-0" :class="step == 3 ? 'bg-(--main-blue)' : 'bg-(--disable-button-color)'" @click="goToStep(3)"></UButton>
     </div>
 
     <transition :name="direction === 'forward' ? 'fade-slide-forward' : 'fade-slide-backward'" mode="out-in">
       <div :key="step">
         <!-- Шаг 1 -->
-        <div v-if="step === 1" class="flex flex-col gap-3.5">
-          <h2 class="text-(length:--h3)">Параметры вашего тела</h2>
-          <div class="flex gap-3">
-            <UInput class="w-full h-11.5 border-1 border-(--line-gray) rounded-[3vw]" variant="none" placeholder="Вес (кг)" v-model="form.weight" size="xl" />
-            <UInput class="w-full h-11.5 border-1 border-(--line-gray) rounded-[3vw]" variant="none" placeholder="Рост (см)" v-model="form.height" size="xl" />
+        <div v-if="step === 1" class="flex flex-col gap-5">
+          <h2 class="text-(length:--h2)">Параметры вашего тела</h2>
+          <div class="flex gap-4">
+            <UInput class="w-full h-12.5 border-1 border-(--line-gray) rounded-[3vw]" variant="none" placeholder="Вес (кг)" v-model="form.weight" size="xl" />
+            <UInput class="w-full h-12.5 border-1 border-(--line-gray) rounded-[3vw]" variant="none" placeholder="Рост (см)" v-model="form.height" size="xl" />
           </div>
         </div>
 
         <!-- Шаг 2 -->
-        <div v-else-if="step === 2" class="flex flex-col gap-3.5">
-          <h2 class="text-(length:--h3)">Параметры вашего тела</h2>
-          <UInput class="w-full h-11.5 border-1 border-(--line-gray) rounded-[3vw]" variant="none" placeholder="Возраст (лет)" v-model="form.age" size="xl" />
+        <div v-else-if="step === 2" class="flex flex-col gap-5">
+          <h2 class="text-(length:--h2)">Параметры вашего тела</h2>
+          <UInput class="w-full h-12 border-1 border-(--line-gray) rounded-[3vw] text-white" variant="none" placeholder="Возраст (лет)" v-model="form.age" size="xl" />
           <div class="flex gap-2">
-            <UButton class="w-full h-11.5 flex justify-center" @click="form.gender = true" :class="form.gender === true ? 'bg-(--main-blue)' : 'bg-(--disable-button-color)'">Мужчина</UButton>
-            <UButton class="w-full h-11.5 flex justify-center" @click="form.gender = false" :class="form.gender === false ? 'bg-(--main-blue)' : 'bg-(--disable-button-color)'">Женщина</UButton>
+            <UButton class="w-full h-12.5 flex justify-center" @click="form.gender = true" :class="form.gender === true ? 'bg-(--main-blue) text-white' : 'bg-(--disable-button-color) text-(--support-text-color)'">Мужчина</UButton>
+            <UButton class="w-full h-12.5 flex justify-center" @click="form.gender = false" :class="form.gender === false ? 'bg-(--main-blue) text-white' : 'bg-(--disable-button-color) text-(--support-text-color)'">Женщина</UButton>
           </div>
         </div>
 
         <!-- Шаг 3 -->
-        <div v-else-if="step === 3" class="flex flex-col gap-3.5">
-          <h2 class="text-(length:--h3)">Ваш вклад в развитие</h2>
-          <UInput class="w-full h-11.5 border-1 border-(--line-gray) rounded-[3vw]" variant="none" placeholder="Сколько раз в день майнишь в туалете?" v-model="form.amt" size="xl" />
+        <div v-else-if="step === 3" class="flex flex-col gap-5">
+          <h2 class="text-(length:--h2)">Ваш вклад в развитие</h2>
+          <UInput class="w-full h-12.5 border-1 border-(--line-gray) rounded-[3vw]" variant="none" placeholder="Сколько раз в день майнишь в туалете?" v-model="form.amt" size="xl" />
         </div>
       </div>
     </transition>
 
-    <div class="flex gap-3 justify-between mt-12">
-      <UButton class="w-[30%] h-11.5 rounded-[3vw] flex justify-center border-1 border-(--support-text-color)" @click="goBack" variant="link" :disabled="step === 1">Назад</UButton>
-      <UButton class="w-[100%] h-11.5 rounded-[3vw] px-5 text-black flex justify-between bg-(--main-blue)" @click="goNext" variant="link" :trailing-icon="step === 3 ? 'i-lucide-check' : 'i-lucide-arrow-right'"
+    <div class="flex gap-3 justify-between">
+      <UButton v-if="step > 1" class="w-[35%] h-12.5 rounded-[3vw] flex justify-center border-1 border-(--line-gray)" @click="goBack" variant="link" :disabled="step === 1">Назад</UButton>
+      <UButton class="w-full h-12.5 rounded-[3vw] px-5 text-black flex bg-(--main-blue)" :class="step === 3 ? 'justify-center' : 'justify-between'" @click="goNext" variant="link" :trailing-icon="step === 3 ? '' : 'i-lucide-move-right'"
 >
         {{ step < 3 ? 'Продолжить' : 'Завершить' }}
       </UButton>
     </div>
   </div>
+  <div class="fixed top-0 left-0 -z-10 pointer-events-none w-screen h-screen bg-[url('/register/register-background-mobile.svg')] bg-[length:180%_180%] bg-center bg-no-repeat"></div>
 </template>
 
 <style>
