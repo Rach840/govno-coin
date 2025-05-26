@@ -14,27 +14,27 @@ import { SidebarFooter } from "~/components/ui/sidebar";
 const items = [
   {
     title: "Главная",
-    url: "/admin/",
+    url: "/balance",
     icon: "i-lucide-house",
   },
   {
     title: "Категории",
-    url: "/admin/categories",
+    url: "/balance",
     icon: "i-lucide-book-heart",
   },
   {
     title: "Доктора",
-    url: "/admin/doctors",
+    url: "/balance",
     icon: "i-lucide-users",
   },
   {
     title: "Записи",
-    url: "/admin/orders",
+    url: "/balance",
     icon: "i-lucide-file-text",
   },
   {
     title: "Пользователи",
-    url: "/admin/users",
+    url: "/balance",
     icon: "i-lucide-users",
   },
 ];

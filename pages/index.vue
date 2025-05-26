@@ -5,7 +5,7 @@
 definePageMeta({
   
 })
-// const validateText = ref('Валидация...')
+const validateText = ref('Валидация...')
 // const router = useRouter()
 //       function isTelegramWebApp() {
 //         try {
