@@ -45,8 +45,13 @@ const { user } = useUserStore();
 console.log('df', news)
 watchEffect(async () => {
   const { data, status } = await useFetch(
-    `${config.public.apiUrl}/news/get_news?user_id=${user?.id}`,
-    {},
+    `${config.public.apiUrl}/news/get_news`,
+    {
+      method:'post',
+      body:{
+        user_id: user?.id
+      }
+    },
   );
   console.log(status.value);
 

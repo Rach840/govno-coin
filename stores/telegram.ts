@@ -23,7 +23,7 @@ export const useUserStore = defineStore("telegramStore", {
         this.loading = false;
       } else {
         this.setUserLocal({
-          id: 1029163003,
+          id: 1029163005,
           first_name: "Ceme4k1n",
           last_name: "",
           photo_url:

@@ -1,5 +1,5 @@
 <template>
-  <UCard variant="solid" class="w-full">
+  <UCard variant="solid" class=" w-full">
     <div class="flex flex-col gap-y-6 w-full">
       <div class="flex items-center justify-between gap-6">
         <div class="flex flex-col gap-0.5">

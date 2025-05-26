@@ -38,10 +38,12 @@ const items = [
     icon: "i-lucide-users",
   },
 ];
+const {fullPath} = useRoute();
+console.log(fullPath)
 </script>
 
 <template>
-  <Sidebar class="rounded-br-[40px] overflow-hidden" collapsible="icon">
+  <Sidebar class="rounded-br-[40px] overflow-hidden" v-if="fullPath != '/'" collapsible="icon">
     <SidebarContent class="rounded-br-[40px]">
       <SidebarTrigger />
       <SidebarGroup>

@@ -5,4 +5,5 @@ export default defineNuxtRouteMiddleware(async () => {
   try {
     setTestUser();
   } catch (error) {}
+
 });

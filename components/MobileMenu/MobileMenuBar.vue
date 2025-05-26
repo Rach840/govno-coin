@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ref } from "vue";
 const { updateOpen } = inject("open");
 const otherButtons = [
   {
@@ -19,7 +18,7 @@ const otherButtons = [
 
 <template>
   <div
-    class="fixed bottom-0 left-0 w-full gap-x-4 bg-[#262827] border-t rounded-t-2xl py-4 flex justify-center items-center z-50"
+    class="fixed bottom-0 left-0 w-full gap-x-4 mt-14 bg-[#262827] rounded-t-2xl py-4 flex justify-center items-center z-50"
   >
     <UButton color="primary" variant="outline" to="/balance" size="xxl">
       <img src="/menu/menu-balance.svg" class="w-7 h-6" />

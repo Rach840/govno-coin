@@ -21,7 +21,7 @@ const navigation = [
   },
   {
     name: "Опрос",
-    link: "/quis",
+    link: "/quiz",
   },
   {
     name: "Новости",
@@ -32,9 +32,11 @@ const navigation = [
     link: "/partners",
   },
 ];
+const {fullPath} = useRoute();
+console.log(fullPath)
 </script>
 <template>
-  <MobileMenuBar />
+  <MobileMenuBar v-if="fullPath != '/'" />
 
   <UDrawer
     v-model:open="open"
@@ -42,10 +44,11 @@ const navigation = [
     :modal="true"
     side="bottom"
     class="!rounded-t-2xl"
+    
     overlay-class="bg-black/40"
     :ui="{
       content: '!bg-[#262827] px-auto pt-4',
-      handle: ['bg-[#262827] m-0 py-1', 'transition-opacity'],
+      handle: [' m-0 py-1  px-[30px]  !bg-[#737373] ', '  transition-opacity'],
       header: 'bg-[#262827] py-4',
     }"
     :transition="{

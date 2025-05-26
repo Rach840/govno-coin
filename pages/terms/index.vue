@@ -66,7 +66,7 @@
 
     <!-- Чекбокс согласия -->
     <div class="flex gap-3">
-      <UCheckbox size="lg" v-model="agree" default-value @click="test()" />
+      <UCheckbox size="lg" v-model="agree" default-value  />
       <p
         class="font-normal text-(length:--support-text) text-(--support-text-color)"
       >
@@ -83,7 +83,7 @@
           : 'disabled:bg-(--disable-button-color) disabled:text-(--disable-text-color)'
       "
       variant="solid"
-      class="h- px-4.5 rounded-[3vw] text-(length:--button-text2) flex justify-between"
+      class="mb-11 px-4.5 rounded-[3vw] text-(length:--button-text2) flex justify-between"
       trailing-icon="i-lucide-arrow-right"
       size="xl"
       :disabled="!agree"

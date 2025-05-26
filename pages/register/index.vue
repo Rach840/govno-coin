@@ -3,7 +3,10 @@ import type { StepperItem } from "@nuxt/ui";
 
 import * as z from "zod";
 import type { FormSubmitEvent } from "@nuxt/ui";
-
+definePageMeta({
+pageTransition: { name: "trans", mode: "default" },
+    
+})
 const stepper = useTemplateRef("stepper");
 
 const items = [

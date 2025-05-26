@@ -1,7 +1,7 @@
 <template>
-  <UApp>
+  <UApp class="padding-container" >
     <TelegramPreloader v-if="loading" />
-      <UContainer v-if="isMobile" class="py-6  pb-20">
+      <UContainer class="mb-[100px]" v-if="isMobile"  >
       <slot />
        <MobileMenu />
     </UContainer>

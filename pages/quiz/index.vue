@@ -38,33 +38,57 @@
       </section>
 
       <section v-else-if="surveyState == 2" class="results-section">
-        <h1 class="survey-container-title">Опрос</h1>
+         <h1 class="text-h1 lg:text-3xl font-semibold  mb-5">Опрос</h1>
         <div class="results-content">
-          <h3 class="results-subtitle">✅ Опрос завершён!</h3>
-          <p class="results-profit">+{{ correctAnswersCount * 0.001 }} $GOVNO <span>~ ... $USDT</span></p>
-          <p class="results-info">
+          <h3 class="text-h2 lg:text-2xl  font-semibold">✅ Опрос завершён!</h3>
+          <p class="green-color my-5  text-h2 lg:text-2xl">+{{ correctAnswersGovno }} $GOVNO <span class="text-(--support-text-color) text-base lg:text-xl">~ {{ correctAnswersUsdt}} $USDT</span></p>
+          <div class="space-y-4">
+          <p class="text-base">
             Сегодня вы ответили правильно на {{ correctAnswersCount }} из {{ questionsLength }} вопросов, приходите завтра!
           </p>
-          <p class="results-subinfo">
+          <p class="text-(--support-text-color) text-sm">
             Опросы обновляются ежедневно, за их прохождение вы сможете заработать $GOVNO
           </p>
+          </div>
+
         </div>
-          <div class="results-subwrap">
-          <img class="surveys-ad" src="/surveys/ad.svg" alt="">
-          <NuxtLink to="/balance" class="survey-container-button results-next">Продолжить
-            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="12" viewBox="0 0 25 12" fill="none">
-              <path fill-rule="evenodd" clip-rule="evenodd" d="M18.8726 0L25 6L18.8725 12L17.402 10.56L21.019 7.01823H0L0 4.98176H21.019L17.402 1.44L18.8726 0Z" fill="currentColor" />
-            </svg>
-          </NuxtLink>
+          <div class="absolute bottom-[120px] left-0 mx-[20px]">
+          <img class="rounded-[10px]" src="/surveys/ad.svg" alt="">
+         <UButton
+        to="/balance"
+          class="w-full flex justify-between mt-4"
+          size="xxl"
+          :ui="{
+            
+          }"
+        trailing-icon="i-lucide-arrow-right"
+        >
+          Перейти к заданиям
+
+        </UButton>
+
           </div>
       </section>
 
-      <section v-else-if="surveyState == 3" class="finished-section">
-        <h2 class="finished-title">✅ Опросы на сегодня завершены!</h2>
-        <div class="finished-section-subwrap">
-          <img class="surveys-ad" src="/public/surveys/ad.svg" alt="">
-          <nuxt-link class="survey-container-button finished-link" to="/balance">Перейти к заданиям <imgArrow></imgArrow></nuxt-link>
-        </div>
+      <section v-else-if="surveyState == 3" class="bg-[url(/surveys/background-mobile.svg)] md:bg-[url(/surveys/background-desktop.svg)]  bg-size-[105vw_100vh] md:flex flex-col items-center justify-center absolute left-0 w-screen top-0 h-screen padding-container ">
+        <h2 class="text-h2 lg:!text-2xl mx-4 lg:mb-4">✅ Опросы на сегодня завершены!</h2>
+              <div class="absolute lg:static bottom-[120px] left-0 mx-[20px]">
+          <img class="rounded-[10px]" src="/surveys/ad.svg" alt="">
+         <UButton
+          
+          class="w-full flex justify-between mt-4"
+          size="xxl"
+          to="/balance"
+          :ui="{
+            
+          }"
+        trailing-icon="i-lucide-arrow-right"
+        >
+          Перейти к заданиям
+
+        </UButton>
+
+          </div>
       </section>
     </div>
     <Menu class="menu"></Menu>
@@ -73,15 +97,20 @@
 
 <script setup lang="ts">
 import axios from 'axios'
-
+definePageMeta({
+pageTransition: { name: "trans", mode: "default" },
+    
+})
 const userValue = ref<string>('')
-const surveyState = ref<number>(1)
+const surveyState = ref<number>(3)
 const showFinishedMessage = ref<boolean>(false)
 const currentQuestionIndex = ref<number>(0)
 const questions = ref<string[]>([])
 const questionsLength = ref<number>(0)
 const userAnswers = ref<string[]>([])
 const correctAnswersCount = ref<number>(0)
+const correctAnswersUsdt = ref<number>(0)
+const correctAnswersGovno = ref<number>(0)
 const  {user} = useUserStore();
  const config = useRuntimeConfig();
 
@@ -95,7 +124,9 @@ console.log('fsdf',saved);
   if (saved) {
     try {
       const parsed = JSON.parse(saved)
-      questions.value = parsed.questions || []
+      questions.value = parsed.questions || [];
+
+      
       currentQuestionIndex.value = parsed.currentIndex || 0
       userAnswers.value = parsed.answers || []
       questionsLength.value = questions.value.length
@@ -115,9 +146,14 @@ console.log('fsdf',saved);
 async function generateAndSaveQuestions() {
   try {
     const response = await axios.post(`${config.public.apiUrl}/quiz/get_questions`, { userId })
+    console.log(response.data);
+    
+if(!(await checkQuestion())) return
 
-    if (response.status === 200 && response.data.questions) {
-      questions.value = response.data.questions
+
+    if (response.status === 200 && response.data) {
+      questions.value = response.data
+      console.log('sdafd',questions.value)
       questionsLength.value = questions.value.length
       currentQuestionIndex.value = 0
       userAnswers.value = []
@@ -165,8 +201,12 @@ async function checkQuestion() {
             user_id: userId
         }
     })
-    if (status.data == 'success') {
-        surveyState.
+    if (status.value == 'success') {
+      surveyState.value = 1
+      return true
+    } else{
+         surveyState.value = 3
+         return false
     }
 }
 async function sendAnswers() {
@@ -178,7 +218,9 @@ async function sendAnswers() {
     })
 
     if (response.status === 200) {
-      correctAnswersCount.value = response.data.correctAnswersCount
+      correctAnswersCount.value = response.data.correctAnswersCount;
+      correctAnswersUsdt.value = response.data.usdt
+      correctAnswersGovno.value = response.data.govno
       localStorage.removeItem(storageKey)
     }
   } catch (error) {

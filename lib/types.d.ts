@@ -35,3 +35,11 @@ interface User {
   avatarUrl: string;
   userName: string;
 }
+
+interface Product {
+        id:number ;
+        skin_name: string;
+        skin_price: string;
+        skin_emission: number ;
+        skin_url:string;
+}
