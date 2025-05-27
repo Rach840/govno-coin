@@ -1,29 +1,19 @@
 <script setup lang="ts">
-const { user } = useUserStore();
-console.log(user);
+   const { user } = useUserStore();
+   console.log(user);
 </script>
 
 <template>
-  <div class="flex gap-x-5 items-center justify-between w-full ">
-    <div class="space-x-4 flex items-center">
-  <img :src="user.avatarUrl" class="rounded-full size-16" alt="" />
+   <div class="w-full flex items-center justify-start gap-3.5">
+      <img :src="user.avatarUrl" class="rounded-full size-[14vw]" alt="" />
 
-    <div class="flex flex-col gap-1">
-      <h4 class="text-2xl font-normal text-white">
-        {{ user.firstName }} {{ user.lastName }} 🚀
-      </h4>
-      <span
-        class="text-(length--support-text) text-(--support-text-color) text-left"
-      >
-        {{ user.lastName }}
-      </span>
-    </div>
-    </div>
-  <UButton size="xxl"  trailing-icon="i-lucide-settings" :ui="{
-    trailingIcon:'size-[30px]'
-  }" variant="ghost" />
-
-    
-
-  </div>
+      <div class="flex flex-col gap-[0.5vw]">
+         <h4 class="text-(length:--h3) font-[100] text-white">
+            {{ user.firstName }} {{ user.lastName }} 🚀
+         </h4>
+         <span class="text-(length:--h5) text-(--support-text-color) text-left">
+            78978
+         </span>
+      </div>
+   </div>
 </template>

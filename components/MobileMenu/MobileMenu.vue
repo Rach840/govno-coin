@@ -1,87 +1,87 @@
 <script setup lang="ts">
-import { ref } from "vue";
-import MobileMenuBar from "./MobileMenuBar.vue";
-import MobileMiniProfile from "~/components/MobileMenu/MobileMiniProfile.vue";
-import MobileCard from "~/components/MobileMenu/MobileCard.vue";
+   import { ref } from "vue";
+   import MobileMenuBar from "./MobileMenuBar.vue";
+   import MobileMiniProfile from "~/components/MobileMenu/MobileMiniProfile.vue";
+   import MobileCard from "~/components/MobileMenu/MobileCard.vue";
 
-const open = ref(false);
-const updateOpen = () => (open.value = !open.value);
-provide("open", {
-  open,
-  updateOpen,
-});
-const navigation = [
-  {
-    name: "Задания",
-    link: "/tasks",
-  },
-  {
-    name: "Магазин",
-    link: "/shop",
-  },
-  {
-    name: "Опрос",
-    link: "/quiz",
-  },
-  {
-    name: "Новости",
-    link: "/news",
-  },
-  {
-    name: "Партнеры",
-    link: "/partners",
-  },
-];
-const {fullPath} = useRoute();
-console.log(fullPath)
+   const open = ref(false);
+   const updateOpen = () => (open.value = !open.value);
+   provide("open", {
+      open,
+      updateOpen,
+   });
+
+   const navigation = [
+      {
+         name: "Задания",
+         link: "/tasks",
+      },
+      {
+         name: "Магазин",
+         link: "/shop",
+      },
+      {
+         name: "Опрос",
+         link: "/quiz",
+      },
+      {
+         name: "Новости",
+         link: "/news",
+      },
+      {
+         name: "Партнеры",
+         link: "/partners",
+      },
+   ];
+
+   const {fullPath} = useRoute();
+   console.log(fullPath)
 </script>
-<template>
-  <MobileMenuBar v-if="fullPath != '/'" />
 
-  <UDrawer
-    v-model:open="open"
-    :portal="true"
-    :modal="true"
-    side="bottom"
-    class="!rounded-t-2xl"
-    
-    overlay-class="bg-black/40"
-    :ui="{
-      content: '!bg-[#262827] px-auto pt-4',
-      handle: [' m-0 py-1  px-[30px]  !bg-[#737373] ', '  transition-opacity'],
-      header: 'bg-[#262827] py-4',
-    }"
-    :transition="{
-      enterActiveClass: 'duration-300',
-      leaveActiveClass: 'duration-200',
-    }"
-  >
-    <template #content>
-      <div
-        class="px-6 bg-[#262827] py-2 space-y-4 flex flex-col items-center text-center"
-      >
-        <MobileMiniProfile />
-        <MobileCard>
-          <template #valueUSD>47 397</template>
-          <template #valueGovno>61</template>
-        </MobileCard>
-        <div class="space-y-3 w-full">
-          <UButton
-            class="w-full flex justify-between"
-            size="xxl"
-            :ui="{
-              trailingIcon: 'size-6',
-            }"
-            trailing-icon="i-lucide-move-right"
-            :to="navItem.link"
-            v-for="navItem in navigation"
-            color="primary"
-            variant="outline"
-            >{{ navItem.name }}</UButton
-          >
-        </div>
-        <MobileMenuBar />
+<template>
+<MobileMenuBar v-if="fullPath != '/'" />
+
+   <UDrawer
+      v-model:open="open"
+      :portal="true"
+      :modal="true"
+      side="bottom"
+      class="!rounded-t-2xl"
+      overlay-class="bg-black/40"
+      :ui="{
+         content: '!bg-[#262827] px-auto pt-4',
+         handle: [' m-0 py-[0.1vw]  px-[9vw] !bg-[#737373] ', '  transition-opacity'],
+         header: 'bg-[#262827]',
+      }"
+      :transition="{
+         enterActiveClass: 'duration-300',
+         leaveActiveClass: 'duration-200',
+      }"
+   >
+
+   <template #content>
+      <div class="px-5.5 bg-[#262827] flex flex-col items-center text-center gap-5 overflow-auto mt-4">
+         <MobileMiniProfile />
+         <MobileCard class="bg-[linear-gradient(162deg,_#3C3C3C_0%,_#2F2F2F_100%)] rounded-[5.3vw]">
+            <template #valueUSD>47 397</template>
+            <template #valueGovno>61</template>
+         </MobileCard>
+         <div class="flex flex-col gap-2.5 w-full mb-9">
+            <UButton
+               class="w-full flex justify-between h-[12.6vw] px-4 bg-none border-1 border-(--line-gray)"
+               :ui="{
+               trailingIcon: 'size-6',
+               }"
+               trailing-icon="i-lucide-move-right"
+               :to="navItem.link"
+               v-for="navItem in navigation"
+               variant="link"
+               >{{ navItem.name }}</UButton
+            >
+         </div>
+         <MobileMenuBar />
       </div>
-    </template>
-  </UDrawer>
+   </template>
+   
+</UDrawer>
 </template>

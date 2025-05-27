@@ -1,21 +1,19 @@
 <template>
-  <UApp class="padding-container" >
-    <TelegramPreloader v-if="loading" />
-      <UContainer class="mb-[100px]" v-if="isMobile"  >
-      <slot />
-       <MobileMenu />
-    </UContainer>
-    <SidebarProvider v-else>
-      <AdminSidebar />
-      <main class="w-full">
-        <UContainer class="py-6">
-          <slot />
-        </UContainer>
-      </main>
-    </SidebarProvider>
-      
-   
-  </UApp>
+   <UApp class=" ">
+      <TelegramPreloader v-if="loading" />
+      <UContainer class="padding-container mx-auto w-[80vw] mb-[100px]" v-if="isMobile">
+         <slot />
+         <MobileMenu />
+      </UContainer>
+      <SidebarProvider v-else>
+         <AdminSidebar />
+         <main class="w-full">
+            <UContainer class="padding-container mx-auto w-[80vw] py-6">
+               <slot />
+            </UContainer>
+         </main>
+      </SidebarProvider>
+   </UApp>
 </template>
 
 <script setup lang="ts">
@@ -25,20 +23,20 @@ import AdminSidebar from "~/components/AdminSidebar.vue";
 // Показываем прелоадер до готовности Telegram WebApp
 const { loading } = useUserStore();
 const isLoading = ref(true);
-const {isMobile} = useDevice();
+const { isMobile } = useDevice();
 watch(loading, () => {
-  console.log(loading);
-  isLoading.value = loading;
+   console.log(loading);
+   isLoading.value = loading;
 });
 </script>
-<style >
+<style>
 .trans-enter-active,
 .trans-leave-active {
-  transition: all 0.4s;
+   transition: all 0.4s;
 }
 .trans-enter-from,
 .trans-leave-to {
-  opacity: 0;
-  filter: blur(1rem);
+   opacity: 0;
+   filter: blur(1rem);
 }
 </style>

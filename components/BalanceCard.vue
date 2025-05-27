@@ -1,7 +1,7 @@
 <template>
 
 <img src="/balance/coin-balance.svg" class="w-[140px] h-[160px] absolute top-2.5 right-2.5 z-10" alt="">
- <div class="flex flex-col gap-4 relative z-20" >
+ <div class="flex flex-col gap-4 relative  z-20" >
   <div class="" v-for="balance in mockBalance">
     <p class="text-(length:--support-text) text-(--support-text-color)">
      {{balance.title}}
