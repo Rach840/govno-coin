@@ -4,6 +4,11 @@
 
 @custom-variant dark (&:is(.dark *));
 
+::placeholder {
+   color: var(--support-text-color); 
+   font-size: var(--support-text);
+}
+
 @theme {
    --container-8xl: 90rem;
 }
@@ -66,8 +71,9 @@ body {
    --reder: #ff3f3f;
    --support-text-color: #b8b8b8;
    --main-blue: #008fea;
-   --disable-button-color: #2f363a;
+   --disable-button-color: rgba(47, 54, 58, 1);
    --disable-text-color: #737373;
+   --line-gray: rgba(97, 97, 97, 1);
 }
 @theme inline {
    --color-background: var(--background);

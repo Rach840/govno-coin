@@ -32,8 +32,9 @@
 
          <div class="w-full flex flex-col gap-2.5">
             <div class="text-(length:--h3) flex gap-3.5">
-               <button
-                  class="balance-interaction-select-point text-(--support-text-color)"
+               <UButton
+                  variant="link"
+                  class="balance-interaction-select-point text-(--support-text-color) p-0 text-(length:--h4)"
                   @click="actionSelect = 'replenishment'"
                   :class="{
                      'underline underline-offset-1 decoration-(--main-blue) text-white':
@@ -41,9 +42,10 @@
                   }"
                >
                   Пополнение
-               </button>
-               <button
-                  class="balance-interaction-select-point text-(--support-text-color)"
+               </UButton>
+               <UButton
+                  variant="link"
+                  class="balance-interaction-select-point text-(--support-text-color) p-0 text-(length:--h4)"
                   @click="actionSelect = 'withdrawal'"
                   :class="{
                      'underline underline-offset-1 decoration-(--main-blue) text-white':
@@ -51,7 +53,7 @@
                   }"
                >
                   Вывод
-               </button>
+               </UButton>
             </div>
             <div class="flex flex-col gap-3.5">
                <UInput

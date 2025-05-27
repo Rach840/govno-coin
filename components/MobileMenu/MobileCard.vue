@@ -43,27 +43,25 @@
             >
         
            <template #content>
-  <div class="flex flex-col bg-balance pt-6 px-6 gap-3.5">
-     <UButton  size="xl"  variant="ghost" icon="i-lucide-x" class="text-[#737373] absolute top-4 right-6" @click="openReplenishment = false" />
-<h2 class="text-h2">Пополнить баланс</h2>
- 
-                              <UInputNumber
-              orientation="vertical"
-              type="number"
-              :min="1"
-                 @focus="focusScroll"
-              size="xl"
-              variant="outline"
-              :ui="{
-                base: 'bg-transparent p-4',
-                increment: 'hidden',
-                decrement: 'hidden',
-              }"
-              color="secondary"
-               placeholder="Сумма пополнения ($GOVNO)"
-               v-model="stateValue"
-              class="w-full"
-            />
+               <div class="flex flex-col bg-balance pt-6 px-6 gap-3.5">
+                  <UButton  size="xl"  variant="ghost" icon="i-lucide-x" class="text-[#737373] absolute top-4 right-6" @click="openReplenishment = false" />
+                  <h2 class="text-h2">Пополнить баланс</h2>
+                  <UInputNumber
+                     orientation="vertical"
+                     type="number"
+                     :min="1"
+                        @focus="focusScroll"
+                     size="xl"
+                     variant="link"
+                     :ui="{
+                        base: 'bg-transparent p-4',
+                        increment: 'hidden',
+                        decrement: 'hidden',
+                     }"
+                        placeholder="Сумма пополнения ($GOVNO)"
+                        v-model="stateValue"
+                     class="w-full border-1 border-(--line-gray) rounded-[3.5vw] h-[13.1vw] placeholder-green-500"
+                  />
                   <UButton
                      @click="handleSubmit"
                      class="h-[13.1vw] bg-(--main-blue) flex justify-center items-center text-black rounded-[3.5vw] text-(length:--support-text)"
@@ -78,8 +76,7 @@
                   </NuxtLink>
                   <div class="bg-[url(/balance/coin-balance.svg)] w-[234px] h-[189px] bg-cover mx-auto"></div>
                </div>
-  
-           </template>
+         </template>
              
          </UDrawer>
       </div>
