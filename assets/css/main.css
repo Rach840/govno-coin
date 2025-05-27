@@ -7,7 +7,9 @@
 @theme {
    --container-8xl: 90rem;
 }
-
+html {
+   scroll-behavior: smooth;
+}
 body {
    background-color: #171918;
 }
@@ -54,7 +56,7 @@ body {
    --h0: 10vw;
    --h1: 6.7vw;
    --h2: 5.6vw;
-   --h3: 1.05vw;
+   --h3: 5.05vw;
    --h4: 4.3vw;
    --button-text1: 0.95vw;
    --button-text2: 3.9vw;
@@ -163,16 +165,17 @@ body {
    }
    .text-h1 {
       font-size: var(--h1);
-     
    }
-.text-h1,
-.text-h2,
-.text-h3{
-   @apply text-white
-}
-
-
-
+   .text-h1,
+   .text-h2,
+   .text-h3 {
+      @apply text-white;
+   }
+  .bg-balance {
+    background:
+      linear-gradient(238deg, #3c3c3c 10.68%, #2f2f2f 70.89%),
+      linear-gradient(0deg, #282828, #282828);
+  }
    .text-h2 {
       font-size: var(--h2);
    }
@@ -222,8 +225,7 @@ body {
          --tg-safe-area-inset-left,
          env(safe-area-inset-left, 0px)
       );
-      margin-top:40px;
-
+      margin-top: 40px;
    }
 
    .disable-text {

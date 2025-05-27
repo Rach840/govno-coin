@@ -1,12 +1,13 @@
-import { useUserStore } from "~/stores/telegram";
+import { useUserStore } from "~/stores/user";
 
 export default defineNuxtRouteMiddleware(async () => {
    console.log("asdfasdfidhf;dhsakfjsdhafjhdsjlkfdjfh");
 
-   const { setUser } = useUserStore();
+   const { setTestUser, refreshBalance } = useUserStore();
    try {
       console.log("asdfasdfidhf;dhsakfjsdhafjhdsjlkfdjfh");
 
-      setUser();
+      setTestUser();
+      await refreshBalance();
    } catch (error) {}
 });

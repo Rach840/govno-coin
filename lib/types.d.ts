@@ -43,3 +43,8 @@ interface Product {
    skin_emission: number;
    skin_url: string;
 }
+
+interface MoneyValues {
+   usd: number;
+   govno: number;
+}

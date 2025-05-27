@@ -24,6 +24,7 @@ if (isTelegramWebApp()) {
    tg.expand();
    tg.requestFullscreen();
    tg.disableVerticalSwipes();
+   tg.lockOrientation();
    const initData = tg.initData;
    const initDataUnsafe = tg.initDataUnsafe;
    axios

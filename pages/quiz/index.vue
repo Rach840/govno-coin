@@ -19,6 +19,7 @@
             :ui="{
                base: 'p-4 bg-transparent',
             }"
+            @focus="focusScroll"
             variant="outline"
             color="secondary"
             v-model="userValue"
@@ -115,7 +116,7 @@ const correctAnswersUsdt = ref<number>(0);
 const correctAnswersGovno = ref<number>(0);
 const { user } = useUserStore();
 const config = useRuntimeConfig();
-
+const { focusScroll } = useAdaptiveStore();
 const userId = user?.id;
 const storageKey = `quiz_questions_${encodeURIComponent(userId)}`;
 

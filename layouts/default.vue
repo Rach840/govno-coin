@@ -1,31 +1,46 @@
 <template>
    <UApp class=" ">
       <TelegramPreloader v-if="loading" />
-      <UContainer class="padding-container mx-auto w-[80vw] mb-[100px]" v-if="isMobile">
+      <UContainer
+         class="padding-container mx-auto w-[80vw] mb-[100px]"
+         v-if="isMobile"
+      >
          <slot />
          <MobileMenu />
       </UContainer>
-      <SidebarProvider v-else>
+      <!-- <SidebarProvider v-else>
          <AdminSidebar />
          <main class="w-full">
-            <UContainer class="padding-container mx-auto w-[80vw] py-6">
+            <UContainer
+               ref="container"
+               class="padding-container mx-auto w-[80vw] py-6"
+            >
                <slot />
             </UContainer>
          </main>
-      </SidebarProvider>
+      </SidebarProvider> -->
+      <main class="w-full" v-else>
+         <UContainer
+            ref="container"
+            class="padding-container mx-auto w-[80vw] py-6"
+         >
+            <h1 class="text-6xl text-center text-white">
+               Данное приложение пока работает только в мобильном режиме
+            </h1>
+         </UContainer>
+      </main>
    </UApp>
 </template>
 
 <script setup lang="ts">
 import { SidebarProvider } from "~/components/ui/sidebar";
 import AdminSidebar from "~/components/AdminSidebar.vue";
-
+import { useMediaQuery } from "@vueuse/core";
 // Показываем прелоадер до готовности Telegram WebApp
 const { loading } = useUserStore();
 const isLoading = ref(true);
-const { isMobile } = useDevice();
+const isMobile = useMediaQuery("(max-width: 900px)");
 watch(loading, () => {
-   console.log(loading);
    isLoading.value = loading;
 });
 </script>

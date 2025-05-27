@@ -13,18 +13,24 @@ export default defineNuxtConfig({
                href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap",
             },
          ],
-          meta: [{ charset: 'utf-8' }, { name: 'viewport', content: 'width=device-width, initial-scale=1.0, user-scalable=no' }],
-      script: [
-        {
-          src: 'https://telegram.org/js/telegram-web-app.js',
-          async: true,
-        },
-      ],
-    },
-    
+         meta: [
+            { charset: "utf-8" },
+            {
+               name: "viewport",
+               content:
+                  "width=device-width, initial-scale=1.0, user-scalable=no",
+            },
+         ],
+         script: [
+            {
+               src: "https://telegram.org/js/telegram-web-app.js",
+               async: true,
+            },
+         ],
+      },
    },
    devtools: { enabled: true },
-   modules: ["@nuxt/ui", "@nuxtjs/device", "@pinia/nuxt"],
+   modules: ["@nuxt/ui", "@pinia/nuxt"],
    vite: {
       plugins: [tailwindcss()],
    },

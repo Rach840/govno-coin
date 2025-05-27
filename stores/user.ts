@@ -1,21 +1,47 @@
-import { log } from "console";
 import { defineStore } from "pinia";
 
 interface UserState {
    user: User | null;
    loading: boolean;
+   govno: number;
+   usd: number;
 }
 
 export const useUserStore = defineStore("telegramStore", {
    state: (): UserState => ({
       user: null,
       loading: true,
+      govno: 0,
+      usd: 0,
    }),
 
    actions: {
       isReady() {
          this.loading = true;
          return window?.Telegram?.WebApp?.ready();
+      },
+      async refreshBalance() {
+         if (!this.loading && this.user?.id) {
+            try {
+               const config = useRuntimeConfig();
+               const { data, status } = await useFetch(
+                  `${config.public.apiUrl}/balance/get_balance`,
+                  {
+                     method: "post",
+                     body: { user_id: this.user?.id },
+                  },
+               );
+
+               if (status.value === "success" && data.value) {
+                  this.usd = parseFloat(data.value.usd) || 0;
+                  this.govno = parseFloat(data.value.govno) || 0;
+                  localStorage.setItem("govno", data.value.govno);
+                  localStorage.setItem("usd", data.value.usd);
+               }
+            } catch (error) {
+               console.error("Ошибка при получении баланса ❌", error);
+            }
+         }
       },
       setTestUser() {
          if (localStorage.getItem("user")) {
