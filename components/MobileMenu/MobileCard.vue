@@ -9,9 +9,7 @@
                class="text-left text-(length:--support-text) text-(--support-text-color) font-[100]"
             >
                ~
-               {{
-                  moneyVal.govno >= 0 ? moneyVal.govno.toFixed(2) : "0.00"
-               }}
+               {{ moneyVal.govno >= 0 ? moneyVal.govno.toFixed(2) : "0.00" }}
                $GOVNO
             </span>
          </div>
@@ -22,7 +20,7 @@
             side="bottom"
             overlay-class="bg-black/40"
             :ui="{
-               body:'bg-balance ',
+               body: 'bg-balance ',
                container: '',
                content: 'bg-balance  !rounded-t-4xl  pt-4',
                handle: [
@@ -41,29 +39,35 @@
                trailing-icon="i-lucide-circle-plus"
                >Пополнить баланс</UButton
             >
-        
-           <template #content>
-  <div class="flex flex-col bg-balance pt-6 px-6 gap-3.5">
-     <UButton  size="xl"  variant="ghost" icon="i-lucide-x" class="text-[#737373] absolute top-4 right-6" @click="openReplenishment = false" />
-<h2 class="text-h2">Пополнить баланс</h2>
- 
-                              <UInputNumber
-              orientation="vertical"
-              type="number"
-              :min="1"
-                 @focus="focusScroll"
-              size="xl"
-              variant="outline"
-              :ui="{
-                base: 'bg-transparent p-4',
-                increment: 'hidden',
-                decrement: 'hidden',
-              }"
-              color="secondary"
-               placeholder="Сумма пополнения ($GOVNO)"
-               v-model="stateValue"
-              class="w-full"
-            />
+
+            <template #content>
+               <div class="flex flex-col bg-balance pt-6 px-6 gap-3.5">
+                  <UButton
+                     size="xl"
+                     variant="ghost"
+                     icon="i-lucide-x"
+                     class="text-[#737373] absolute top-4 right-6"
+                     @click="openReplenishment = false"
+                  />
+                  <h2 class="text-h2">Пополнить баланс</h2>
+
+                  <UInputNumber
+                     orientation="vertical"
+                     type="number"
+                     :min="1"
+                     @focus="focusScroll"
+                     size="xl"
+                     variant="outline"
+                     :ui="{
+                        base: 'bg-transparent p-4',
+                        increment: 'hidden',
+                        decrement: 'hidden',
+                     }"
+                     color="secondary"
+                     placeholder="Сумма пополнения ($GOVNO)"
+                     v-model="stateValue"
+                     class="w-full"
+                  />
                   <UButton
                      @click="handleSubmit"
                      class="h-[13.1vw] bg-(--main-blue) flex justify-center items-center text-black rounded-[3.5vw] text-(length:--support-text)"
@@ -76,11 +80,11 @@
                   >
                      Банковской картой
                   </NuxtLink>
-                  <div class="bg-[url(/balance/coin-balance.svg)] w-[234px] h-[189px] bg-cover mx-auto"></div>
+                  <div
+                     class="bg-[url(/balance/coin-balance.svg)] w-[234px] h-[189px] bg-cover mx-auto"
+                  ></div>
                </div>
-  
-           </template>
-             
+            </template>
          </UDrawer>
       </div>
    </UCard>
@@ -90,7 +94,7 @@
 const moneyVal = ref<MoneyValues>({ usd: 0, govno: 0 });
 const stateValue = ref<number>();
 const { focusScroll } = useAdaptiveStore();
-const openReplenishment = ref(false)
+const openReplenishment = ref(false);
 const config = useRuntimeConfig();
 const { user, loading, refreshBalance, govno, usd } = useUserStore();
 watchEffect(async () => {
