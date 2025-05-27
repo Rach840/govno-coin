@@ -18,6 +18,7 @@
          <UDrawer
             :portal="true"
             :modal="true"
+            v-model:open="openReplenishment"
             side="bottom"
             overlay-class="bg-black/40"
             :ui="{
@@ -40,18 +41,29 @@
                trailing-icon="i-lucide-circle-plus"
                >Пополнить баланс</UButton
             >
-          
+        
            <template #content>
   <div class="flex flex-col bg-balance pt-6 px-6 gap-3.5">
-   
+     <UButton  size="xl"  variant="ghost" icon="i-lucide-x" class="text-[#737373] absolute top-4 right-6" @click="openReplenishment = false" />
 <h2 class="text-h2">Пополнить баланс</h2>
-                  <UInput
-                     @focus="focusScroll"
-                     v-model="stateValue"
-                     variant="none"
-                     placeholder="Сумма пополнения ($GOVNO)"
-                     class="border-1 border-(--line-gray) h-[13.1vw] rounded-[3.5vw] text-(length:--support-text)"
-                  />
+ 
+                              <UInputNumber
+              orientation="vertical"
+              type="number"
+              :min="1"
+                 @focus="focusScroll"
+              size="xl"
+              variant="outline"
+              :ui="{
+                base: 'bg-transparent p-4',
+                increment: 'hidden',
+                decrement: 'hidden',
+              }"
+              color="secondary"
+               placeholder="Сумма пополнения ($GOVNO)"
+               v-model="stateValue"
+              class="w-full"
+            />
                   <UButton
                      @click="handleSubmit"
                      class="h-[13.1vw] bg-(--main-blue) flex justify-center items-center text-black rounded-[3.5vw] text-(length:--support-text)"
@@ -78,6 +90,7 @@
 const moneyVal = ref<MoneyValues>({ usd: 0, govno: 0 });
 const stateValue = ref<number>();
 const { focusScroll } = useAdaptiveStore();
+const openReplenishment = ref(false)
 const config = useRuntimeConfig();
 const { user, loading, refreshBalance, govno, usd } = useUserStore();
 watchEffect(async () => {
@@ -101,7 +114,7 @@ async function handleSubmit() {
          {
             method: "post",
             body: {
-               amount: stateValue.value,
+               amount: +stateValue.value,
                user_id: user.id,
             },
          },
