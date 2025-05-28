@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import type { TabsItem } from "@nuxt/ui";
-
+definePageMeta({
+   pageTransition: { name: "trans", mode: "default" },
+});
 const products = ref<Product[] | null>(null);
 const subs = ref<Product[]>([
    {
@@ -18,19 +20,17 @@ const subs = ref<Product[]>([
       skin_emission: 0,
    },
 ]);
-const { user } = useUserStore();
+const { user, fetchWithValidate } = useUserStore();
 const config = useRuntimeConfig();
 const active = ref(1);
 watchEffect(async () => {
-   const { data } = await useFetch<Product[]>(
-      `${config.public.apiUrl}/shop/get_skins`,
-      {
-         method: "post",
+   const {data} = await fetchWithValidate('/shop/get_skins', {
+ method: "post",
          body: {
             user_id: user?.id,
          },
-      },
-   );
+   })
+
    products.value = data.value;
 });
 const items = [

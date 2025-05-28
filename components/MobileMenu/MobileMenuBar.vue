@@ -2,23 +2,24 @@
 const { updateOpen } = inject("open");
 const otherButtons = [
    {
-      link: "map",
+      link: "",
       icon: "/menu/map.svg",
    },
    {
-      link: "battle",
+      link: "",
       icon: "/menu/battle.svg",
    },
    {
-      link: "wallet",
+      link: "",
       icon: "/menu/wallet.svg",
    },
 ];
+const {fullPath} = useRoute()
 </script>
 
 <template>
    <div
-      class="fixed bottom-0 left-0 w-full gap-3 mt-14 bg-[#262827] rounded-t-2xl py-4 flex justify-center items-center z-50"
+      :class="`fixed bottom-0 left-0 w-full  gap-3 mt-14 bg-[#262827] rounded-t-2xl py-4 flex justify-center items-center z-50 ${ fullPath == '/register/' ? 'hidden' : ''}`"
    >
       <UButton
          class="border-1 border-(--line-gray) size-[15vw] flex justify-center items-center"
@@ -30,7 +31,7 @@ const otherButtons = [
       <UButton
          class="bg-[linear-gradient(162deg,_#3C3C3C_0%,_#2F2F2F_100%)] size-[15vw] flex justify-center items-center"
          variant="link"
-         :to="`/${button.link}`"
+       
          v-for="button in otherButtons"
       >
          <img :src="button.icon" class="w-10 h-10" />

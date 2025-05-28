@@ -41,18 +41,15 @@ const dateFormat = computed(() => {
       ?.join(" ");
 });
 
-const { user } = useUserStore();
+const { user, fetchWithValidate } = useUserStore();
 console.log("df", news);
 watchEffect(async () => {
-   const { data, status } = await useFetch(
-      `${config.public.apiUrl}/news/get_news`,
-      {
+   const {data, status } = await fetchWithValidate('/news/get_news',{
          method: "post",
          body: {
             user_id: user?.id,
          },
-      },
-   );
+      },)
    console.log(status.value);
 
    if (status.value == "success") {

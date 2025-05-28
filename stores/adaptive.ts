@@ -12,7 +12,17 @@ export const useAdaptiveStore = defineStore("adaptiveStore", {
                top: scrollTarget,
                behavior: "smooth",
             });
+            document.addEventListener("dblclick", (e) => {
+               window.scrollTo({
+                  top: scrollTarget,
+                  behavior: "instant",
+               });
+               e.preventDefault();
+            });
          }, 500);
+      },
+      focusScrollUnlock() {
+         document.removeEventListener("dblclick", (e) => {});
       },
    },
 });

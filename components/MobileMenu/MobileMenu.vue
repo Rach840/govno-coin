@@ -39,7 +39,7 @@ console.log(fullPath);
 </script>
 
 <template>
-   <MobileMenuBar v-if="fullPath != '/' || fullPath != '/register'" />
+   <MobileMenuBar v-if="fullPath != '/' || fullPath != '/register/'" />
 
    <UDrawer
       v-model:open="open"
@@ -48,12 +48,13 @@ console.log(fullPath);
       side="bottom"
       overlay-class="bg-black/40"
       :ui="{
-         content: '!bg-[#262827] !rounded-t-4xl px-auto pt-4',
+         content: '!bg-[#262827]  !ring-transparent !rounded-t-4xl px-auto pt-4',
          handle: [
-            ' m-0 py-[0.1vw]  px-[9vw] !bg-[#737373] ',
-            '  transition-opacity',
+            ' m-0 py-[0.1vw]   px-[9vw] !bg-[#737373] ',
+            '  transition-opacity  ',
          ],
-         header: 'bg-[#262827]',
+         header: 'bg-[#262827] ',
+         overlay: 'bg-black/40 '
       }"
       :transition="{
          enterActiveClass: 'duration-300',
@@ -75,6 +76,7 @@ console.log(fullPath);
                   :ui="{
                      trailingIcon: 'size-6',
                   }"
+                  @click="updateOpen"
                   trailing-icon="i-lucide-move-right"
                   :to="navItem.link"
                   v-for="navItem in navigation"

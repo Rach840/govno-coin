@@ -2,11 +2,11 @@
    <UApp class=" ">
       <TelegramPreloader v-if="loading" />
       <UContainer
-         class="padding-container mx-auto w-[80vw] mb-[100px]"
+         class="padding-container mx-auto  bg-[url(/register/register-background-mobile.svg)] bg-cover bg-center   z-10 md:flex flex-col items-center justify-center fixed -top-9  w-[100vw] h-[105vh]  pb-[100px]"
          v-if="isMobile"
       >
          <slot />
-         <MobileMenu v-if=" fullPath != '/'  || fullPath != '/register/' " />
+         
       </UContainer>
       <!-- <SidebarProvider v-else>
          <AdminSidebar />
