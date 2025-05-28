@@ -49,7 +49,7 @@ export const useUserStore = defineStore("telegramStore", {
             }
          }
       },
-      validateUser(){
+      async validateUser(){
           const config = useRuntimeConfig()
          const { data: userToken, status } = await useFetch(`${config.public.apiUrl}/auth/validate_user`,{
             method:'post',
