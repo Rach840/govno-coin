@@ -114,28 +114,31 @@ const userAnswers = ref<string[]>([]);
 const correctAnswersCount = ref<number>(0);
 const correctAnswersUsdt = ref<number>(0);
 const correctAnswersGovno = ref<number>(0);
-const { user } = useUserStore();
+const { user, fetchWithValidate } = useUserStore();
 const config = useRuntimeConfig();
 const { focusScroll } = useAdaptiveStore();
 const userId = user?.id;
-const storageKey = `quiz_questions_${encodeURIComponent(userId)}`;
+const date = new Date()
+const storageKey = `quiz_questions_${encodeURIComponent(userId)}_${date.getDate()}_${date.getFullYear()}_${date.getMonth()}`;
 
-onMounted(async () => {
+
+watchEffect(async ()=>{
    const saved = localStorage.getItem(storageKey);
    console.log("fsdf", saved);
-
+   
    if (saved) {
       try {
          const parsed = JSON.parse(saved);
-         questions.value = parsed.questions || [];
+         if(parsed.answers.length == 10) {
+               surveyState.value = 2;
+         }else{
+  questions.value = parsed.questions || [];
 
          currentQuestionIndex.value = parsed.currentIndex || 0;
          userAnswers.value = parsed.answers || [];
          questionsLength.value = questions.value.length;
-
-         if (currentQuestionIndex.value >= questions.value.length) {
-            surveyState.value = 2;
          }
+       
       } catch (e) {
          console.error("Ошибка при чтении данных из localStorage", e);
          await generateAndSaveQuestions();
@@ -143,20 +146,23 @@ onMounted(async () => {
    } else {
       generateAndSaveQuestions();
    }
-});
+})
 
 async function generateAndSaveQuestions() {
    try {
-      const response = await axios.post(
-         `${config.public.apiUrl}/quiz/get_questions`,
-         { userId },
-      );
-      console.log(response.data);
 
       if (!(await checkQuestion())) return;
+      const response = await fetchWithValidate('/quiz/get_questions', {
+         method: 'post',
+         body:{
+            user_id: user?.id
+         }
+      })
+      console.log(response.data.value);
 
-      if (response.status === 200 && response.data) {
-         questions.value = response.data;
+
+      if (response.data.value && response.status.value == 'success') {
+         questions.value = response.data.value;
          console.log("sdafd", questions.value);
          questionsLength.value = questions.value.length;
          currentQuestionIndex.value = 0;
@@ -199,16 +205,13 @@ async function nextQuestion() {
    }
 }
 async function checkQuestion() {
-   const { status } = await useFetch(
-      `${config.public.apiUrl}/quiz/check_question`,
-      {
+  const responce = await fetchWithValidate('/quiz/check_question', {
          method: "post",
          body: {
             user_id: userId,
          },
-      },
-   );
-   if (status.value == "success") {
+      })
+   if (responce.status.value == "success") {
       surveyState.value = 1;
       return true;
    } else {
@@ -218,19 +221,18 @@ async function checkQuestion() {
 }
 async function sendAnswers() {
    try {
-      const response = await axios.post(
-         `${config.public.apiUrl}/quiz/validate-answers`,
-         {
-            userId,
+      const response = await fetchWithValidate('/quiz/validate-answers', {
+         method:'post',
+         body:{ userId,
             questions: questions.value,
-            answers: userAnswers.value,
-         },
-      );
+            answers: userAnswers.value
+         }
+      })
 
-      if (response.status === 200) {
-         correctAnswersCount.value = response.data.correctAnswersCount;
-         correctAnswersUsdt.value = response.data.usdt;
-         correctAnswersGovno.value = response.data.govno;
+      if (response.status.value === 'success') {
+         correctAnswersCount.value = response.data.value?.correctAnswersCount;
+         correctAnswersUsdt.value = response.data.value?.usdt;
+         correctAnswersGovno.value = response.data.value?.govno;
          localStorage.removeItem(storageKey);
       }
    } catch (error) {

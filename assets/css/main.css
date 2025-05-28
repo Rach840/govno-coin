@@ -221,4 +221,5 @@ body {
 /* Если нужно задать Inter везде, независимо от reset, можешь добавить: */
 * {
    font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
+   touch-action: manipulation;
 }

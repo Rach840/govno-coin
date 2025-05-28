@@ -3,11 +3,10 @@ import { useUserStore } from "~/stores/user";
 export default defineNuxtRouteMiddleware(async () => {
    console.log("asdfasdfidhf;dhsakfjsdhafjhdsjlkfdjfh");
 
-   const { setTestUser, refreshBalance } = useUserStore();
+   const { setTestUser, refreshBalance, validateUser } = useUserStore();
    try {
-      console.log("asdfasdfidhf;dhsakfjsdhafjhdsjlkfdjfh");
-
       setTestUser();
+      await validateUser()
       await refreshBalance();
    } catch (error) {}
 });

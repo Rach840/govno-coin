@@ -1,10 +1,12 @@
 import { defineStore } from "pinia";
+import type { ComputedOptions } from "vue";
 
 interface UserState {
    user: User | null;
    loading: boolean;
    govno: number;
    usd: number;
+   token: string;
 }
 
 export const useUserStore = defineStore("telegramStore", {
@@ -13,6 +15,7 @@ export const useUserStore = defineStore("telegramStore", {
       loading: true,
       govno: 0,
       usd: 0,
+      token: null,
    }),
 
    actions: {
@@ -29,6 +32,9 @@ export const useUserStore = defineStore("telegramStore", {
                   {
                      method: "post",
                      body: { user_id: this.user?.id },
+                        headers: new Headers({
+        "Authorization": `Bearer ${this?.token}`,
+      }),
                   },
                );
 
@@ -42,6 +48,36 @@ export const useUserStore = defineStore("telegramStore", {
                console.error("Ошибка при получении баланса ❌", error);
             }
          }
+      },
+      validateUser(){
+          const config = useRuntimeConfig()
+         const { data: userToken, status } = await useFetch(`${config.public.apiUrl}/auth/validate_user`,{
+            method:'post',
+             body:{
+               initData: window.Telegram?.WebApp?.initData,
+               initDataUnsafe: window.Telegram?.WebApp?.initDataUnsafe,
+             }
+         })
+         if (status.value == "success") {
+            this.token = userToken.value;
+            localStorage.setItem('token', userToken.value);
+         }
+         
+      },
+     async fetchWithValidate(url: string,opt: {method, body?: Record<string, any>}){
+      const config = useRuntimeConfig()
+  const response = await useFetch(`${config.public.apiUrl}${url}`, {
+      ...opt, 
+      headers: new Headers({
+        "Authorization": `Bearer ${this?.token}`,
+      }),
+  });
+  if (response.error.value?.statusCode == 401) {
+   await this.validateUser();
+   response.refresh();
+  }
+   return response 
+
       },
       setTestUser() {
          if (localStorage.getItem("user")) {

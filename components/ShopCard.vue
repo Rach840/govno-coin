@@ -1,6 +1,17 @@
 <script setup lang="ts">
+import { GitCommitVerticalIcon } from "lucide-vue-next";
 import { number, string } from "zod";
-
+const {user,  refreshBalance, govno, usd} = useUserStore()
+const openErrorDrawer = ref(false);
+const openConfirmDrawer = ref(false);
+async function checkBalance() {
+   await refreshBalance();
+   if (govno > +product.skin_price){
+openConfirmDrawer.value = true
+   } else{
+      openErrorDrawer.value = true
+   }
+}
 const { product, type }: { product: Product; type?: string } = defineProps([
    "product",
    "type",
@@ -44,6 +55,7 @@ const { product, type }: { product: Product; type?: string } = defineProps([
                variant="ghost"
                class="col-span-2 flex justify-center !border-[#008FEA] border"
                size="xxs"
+               @click="checkBalance"
                >Купить
             </UButton>
             <UButton
@@ -56,4 +68,67 @@ const { product, type }: { product: Product; type?: string } = defineProps([
          </div>
       </div>
    </div>
+    <UDrawer
+            :portal="true"
+            :modal="true"
+            v-model:open="openErrorDrawer"
+            side="bottom"
+            overlay-class="bg-black/40"
+            :ui="{
+               body: 'bg-balance ',
+               container: '',
+               content: 'bg-balance  !rounded-t-4xl  pt-4',
+               handle: [
+                  ' mt-2 py-[0.1vw]  px-[9vw] !bg-[#737373] ',
+                  '  transition-opacity  ',
+               ],
+            }"
+            :transition="{
+               enterActiveClass: 'duration-300',
+               leaveActiveClass: 'duration-200',
+            }"
+         >
+         
+
+            <template #content>
+               <div class="flex flex-col bg-balance pt-6 px-6 gap-3.5">
+                  <UButton
+                     size="xl"
+                     variant="ghost"
+                     icon="i-lucide-x"
+                     class="text-[#737373] absolute top-4 right-6"
+                     @click="openReplenishment = false"
+                  />
+                  <h2 class="text-h2 mb-3">❌ Ошибка!</h2>
+<p class="text-lg mb-3">Недостаточно средств на балансе внутреннего кошелька!</p>
+<p class="text-lg text-(--support-text-color) mb-1">Недостаточно средств на балансе внутреннего кошелька!</p>
+<div class="flex  items-center space-">
+            <p class="text-h2 font-bold text-white"> {{ govno }} $GOVNO</p>
+            <span
+               class="text-(length--support-text) text-(--support-text-color)"
+            >
+               ~  $ {{ usd }}
+            </span>
+         </div>
+               <UButton
+               class="w-full flex justify-between bg-(--main-blue) h-[12.6vw] font-medium px-3.5"
+               to="/balance"
+               trailing-icon="i-lucide-circle-plus"
+               >Пополнить баланс</UButton
+            >
+             <UButton
+                  class="w-full flex justify-between h-[12.6vw] px-4 bg-none border-1 border-(--line-gray)"
+                  :ui="{
+                     trailingIcon: 'size-6',
+                  }"
+                  trailing-icon="i-lucide-move-right"
+            @click="() => {openErrorDrawer = false}"
+               
+                  variant="link"
+                  >Закрыть</UButton
+               >
+              
+               </div>
+            </template>
+         </UDrawer>
 </template>
