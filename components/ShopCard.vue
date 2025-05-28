@@ -97,7 +97,7 @@ const { product, type }: { product: Product; type?: string } = defineProps([
                      variant="ghost"
                      icon="i-lucide-x"
                      class="text-[#737373] absolute top-4 right-6"
-                     @click="openReplenishment = false"
+                     @click="openErrorDrawer = false"
                   />
                   <h2 class="text-h2 mb-3">❌ Ошибка!</h2>
 <p class="text-lg mb-3">Недостаточно средств на балансе внутреннего кошелька!</p>
@@ -122,7 +122,7 @@ const { product, type }: { product: Product; type?: string } = defineProps([
                      trailingIcon: 'size-6',
                   }"
                   trailing-icon="i-lucide-move-right"
-            @click="() => {openErrorDrawer = false}"
+            @click="openErrorDrawer = false"
                
                   variant="link"
                   >Закрыть</UButton
