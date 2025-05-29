@@ -15,32 +15,34 @@ async function checkBalance() {
       openErrorDrawer.value = true;
    }
 }
-async function buy(params:type) {
-   if (type == 'sub') {
-         const {data, status}  = await fetchWithValidate('/shop/purchase_premium',{
-      method:'post',
-      body:{
-         user_id: user?.id,
-         username: user.userName
+async function buy(params: type) {
+   if (type == "sub") {
+      const { data, status } = await fetchWithValidate(
+         "/shop/purchase_premium",
+         {
+            method: "post",
+            body: {
+               user_id: user?.id,
+               username: user.userName,
+            },
+         },
+      );
+      if (status.value == "success") {
+         openConfirmDrawer.value = false;
       }
-   })
-   if (status.value == 'success') {
-      openConfirmDrawer.value = false
    }
-   }
-   const {data, status}  = await fetchWithValidate('/shop/purchase_skin',{
-      method:'post',
-      body:{
+   const { data, status } = await fetchWithValidate("/shop/purchase_skin", {
+      method: "post",
+      body: {
          user_id: user?.id,
          skin_id: product.skin_id,
-         username: user.userName
-      }
-   })
-      if (status.value == 'success') {
-      openConfirmDrawer.value = false
+         username: user.userName,
+      },
+   });
+   if (status.value == "success") {
+      openConfirmDrawer.value = false;
    }
-} 
-
+}
 </script>
 <template>
    <div class="rounded-[20px]">
@@ -107,7 +109,7 @@ async function buy(params:type) {
             ' mt-2 py-[0.1vw]  px-[9vw] !bg-[#737373] ',
             '  transition-opacity  ',
          ],
-          overlay: 'bg-black/40'
+         overlay: 'bg-black/40',
       }"
       :transition="{
          enterActiveClass: 'duration-300',
@@ -115,7 +117,7 @@ async function buy(params:type) {
       }"
    >
       <template #content>
-         <div class="flex flex-col  bg-balance pt-6 px-6 gap-3.5">
+         <div class="flex flex-col bg-balance pt-6 px-6 gap-3.5">
             <UButton
                size="xl"
                variant="ghost"
@@ -123,24 +125,24 @@ async function buy(params:type) {
                class="text-[#737373] absolute top-4 right-6"
                @click="openReplenishment = false"
             />
-            <div class=" mb-56">
-        <h2 class="text-h2 mb-3">❌ Ошибка!</h2>
-            <p class="text-lg mb-3">
-               Недостаточно средств на балансе внутреннего кошелька!
-            </p>
-            <p class="text-lg text-(--support-text-color) mb-1">
-               Недостаточно средств на балансе внутреннего кошелька!
-            </p>
-            <div class="flex items-center space-">
-               <p class="text-h2 font-bold text-white">{{ govno }} $GOVNO</p>
-               <span
-                  class="text-(length--support-text) text-(--support-text-color)"
-               >
-                  ~ $ {{ usd }}
-               </span>
+            <div class="mb-56">
+               <h2 class="text-h2 mb-3">❌ Ошибка!</h2>
+               <p class="text-lg mb-3">
+                  Недостаточно средств на балансе внутреннего кошелька!
+               </p>
+               <p class="text-lg text-(--support-text-color) mb-1">
+                  Недостаточно средств на балансе внутреннего кошелька!
+               </p>
+               <div class="flex items-center space-">
+                  <p class="text-h2 font-bold text-white">{{ govno }} $GOVNO</p>
+                  <span
+                     class="text-(length--support-text) text-(--support-text-color)"
+                  >
+                     ~ $ {{ usd }}
+                  </span>
+               </div>
             </div>
-            </div>
-    
+
             <UButton
                class="w-full flex justify-between bg-(--main-blue) h-[12.6vw] font-medium px-3.5"
                to="/balance"
@@ -149,7 +151,6 @@ async function buy(params:type) {
             >
             <UButton
                class="w-full flex justify-between h-[12.6vw] px-4 bg-none border-1 border-(--line-gray)"
-  
                @click="
                   () => {
                      openErrorDrawer = false;
@@ -161,7 +162,7 @@ async function buy(params:type) {
          </div>
       </template>
    </UDrawer>
-     <UDrawer
+   <UDrawer
       :portal="true"
       :modal="true"
       v-model:open="openConfirmDrawer"
@@ -175,7 +176,7 @@ async function buy(params:type) {
             ' mt-2 py-[0.1vw]  px-[9vw] !bg-[#737373] ',
             '  transition-opacity  ',
          ],
-          overlay: 'bg-black/40'
+         overlay: 'bg-black/40',
       }"
       :transition="{
          enterActiveClass: 'duration-300',
@@ -183,7 +184,7 @@ async function buy(params:type) {
       }"
    >
       <template #content>
-         <div class="flex flex-col  bg-balance pt-6 px-6 gap-3.5">
+         <div class="flex flex-col bg-balance pt-6 px-6 gap-3.5">
             <UButton
                size="xl"
                variant="ghost"
@@ -191,33 +192,30 @@ async function buy(params:type) {
                class="text-[#737373] absolute top-4 right-6"
                @click="openReplenishment = false"
             />
-            <div class=" mb-56">
-        <h2 class="text-h2 mb-3">✅ Подтвердите покупку</h2>
-            <p class="text-lg mb-3">
-               Вы точно хотите купить?
-            </p>
-            <p class="text-lg text-(--support-text-color) mb-1">
-               {{ product.skin_name }}
-            </p>
-            <div class="flex items-center space-">
-               <p class="text-h2 font-bold text-white">{{ govno }} $GOVNO</p>
-               <span
-                  class="text-(length--support-text) text-(--support-text-color)"
-               >
-                  ~ $ {{ usd }}
-               </span>
+            <div class="mb-56">
+               <h2 class="text-h2 mb-3">✅ Подтвердите покупку</h2>
+               <p class="text-lg mb-3">Вы точно хотите купить?</p>
+               <p class="text-lg text-(--support-text-color) mb-1">
+                  {{ product.skin_name }}
+               </p>
+               <div class="flex items-center space-">
+                  <p class="text-h2 font-bold text-white">{{ govno }} $GOVNO</p>
+                  <span
+                     class="text-(length--support-text) text-(--support-text-color)"
+                  >
+                     ~ $ {{ usd }}
+                  </span>
+               </div>
             </div>
-            </div>
-    
+
             <UButton
                class="w-full flex justify-between bg-(--main-blue) h-[12.6vw] font-medium px-3.5"
-             @click=""
+               @click=""
                trailing-icon="i-lucide-circle-plus"
                >Подтвердить покупку</UButton
             >
             <UButton
                class="w-full flex justify-between h-[12.6vw] px-4 bg-none border-1 border-(--line-gray)"
-  
                @click="
                   () => {
                      openConfirmDrawer = false;
@@ -226,9 +224,9 @@ async function buy(params:type) {
                variant="link"
                >Закрыть</UButton
             >
-             <div
-                     class="bg-[url(/shop/check.png)] absolute bottom-0 right-0 w-[318px] h-[193px] bg-cover mr-auto"
-                  ></div>
+            <div
+               class="bg-[url(/shop/check.png)] absolute bottom-0 right-0 w-[318px] h-[193px] bg-cover mr-auto"
+            ></div>
          </div>
       </template>
    </UDrawer>

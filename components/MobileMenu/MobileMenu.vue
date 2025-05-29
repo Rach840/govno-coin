@@ -33,13 +33,14 @@ const navigation = [
       link: "/partners",
    },
 ];
-
+const { menuVisible } = useAdaptiveStore();
+console.log('asfddasdas',menuVisible.value);
 const { fullPath } = useRoute();
 console.log(fullPath);
 </script>
 
 <template>
-   <MobileMenuBar v-if="fullPath != '/' || fullPath != '/register/'" />
+   <MobileMenuBar v-if="menuVisible" />
 
    <UDrawer
       v-model:open="open"
@@ -48,13 +49,14 @@ console.log(fullPath);
       side="bottom"
       overlay-class="bg-black/40"
       :ui="{
-         content: '!bg-[#262827]  !ring-transparent !rounded-t-4xl px-auto pt-4',
+         content:
+            '!bg-[#262827]  !ring-transparent !rounded-t-4xl px-auto pt-4',
          handle: [
             ' m-0 py-[0.1vw]   px-[9vw] !bg-[#737373] ',
             '  transition-opacity  ',
          ],
          header: 'bg-[#262827] ',
-         overlay: 'bg-black/40 '
+         overlay: 'bg-black/40 ',
       }"
       :transition="{
          enterActiveClass: 'duration-300',

@@ -1,9 +1,6 @@
 <script setup lang="ts">
-const { news, date }: { news: News; date: string } = defineProps([
-   "news",
-   "date",
-]);
-console.log(date);
+const { news }: { news: News; date: string } = defineProps(["news"]);
+console.log(news.date);
 </script>
 
 <template>
@@ -37,7 +34,7 @@ console.log(date);
             <h4
                class="text-[14px] font-normal text-[var(--support-text-color)]"
             >
-               {{ date }}
+               {{ news.date }}
             </h4>
          </div>
       </div>

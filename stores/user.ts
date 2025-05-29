@@ -36,7 +36,7 @@ export const useUserStore = defineStore("telegramStore", {
                      method: "post",
                      body: { user_id: this.user?.id },
                      headers: new Headers({
-                        Authorization: `Bearer ${this?.token}`,
+                        Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDg1NjgzMzIsImlhdCI6MTc0ODUyNTEzMiwidXNlcl9pZCI6NTUzNzgzMzI1fQ.CAxDX5wWAlboa1JcBYcpV1vEMw6xJ7hol4U43BVs6K0`,
                      }),
                   },
                );

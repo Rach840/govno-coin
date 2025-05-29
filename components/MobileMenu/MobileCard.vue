@@ -27,7 +27,7 @@
                   ' mt-2 py-[0.1vw]  px-[9vw] !bg-[#737373] ',
                   '  transition-opacity   ',
                ],
-                overlay: 'bg-black/40'
+               overlay: 'bg-black/40',
             }"
             :transition="{
                enterActiveClass: 'duration-300',
@@ -98,7 +98,8 @@ const stateValue = ref<number>();
 const { focusScroll, focusScrollUnlock } = useAdaptiveStore();
 const openReplenishment = ref(false);
 const config = useRuntimeConfig();
-const { user, loading, refreshBalance, govno, usd, fetchWithValidate } = useUserStore();
+const { user, loading, refreshBalance, govno, usd, fetchWithValidate } =
+   useUserStore();
 watchEffect(async () => {
    if (!loading && user?.id) {
       try {
@@ -115,11 +116,16 @@ async function handleSubmit() {
    if (!user?.id) return;
 
    try {
-const {data,status} = await fetchWithValidate('/balance/create_invoice', {    method: "post",
+      const { data, status } = await fetchWithValidate(
+         "/balance/create_invoice",
+         {
+            method: "post",
             body: {
                amount: +stateValue.value,
                user_id: user.id,
-            },})
+            },
+         },
+      );
 
       if (status.value === "success" && data.value) {
          window.location.href = data.value;

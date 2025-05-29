@@ -23,7 +23,6 @@ import { mockNews } from "~/lib/mockData";
 definePageMeta({
    pageTransition: { name: "trans", mode: "default" },
 });
-const config = useRuntimeConfig();
 const news = ref<News[]>(mockNews);
 const _date = ref<Date>(new Date());
 const dateFormat = computed(() => {
@@ -43,24 +42,52 @@ const dateFormat = computed(() => {
 
 const { user, fetchWithValidate } = useUserStore();
 console.log("df", news);
+function generateRandomNumbers() {
+   const firstNumber = Math.floor(Math.random() * 23) + 1;
+   const secondNumber = Math.floor(Math.random() * 59) + 1;
+   return [firstNumber, secondNumber];
+}
 watchEffect(async () => {
-   const {data, status } = await fetchWithValidate('/news/get_news',{
-         method: "post",
-         body: {
-            user_id: user?.id,
-         },
-      },)
+   const { data, status } = await fetchWithValidate("/news/get_news", {
+      method: "post",
+      body: {
+         user_id: user?.id,
+      },
+   });
    console.log(status.value);
 
    if (status.value == "success") {
-      news.value = data.value?.news;
       const dateResp = data.value?.date;
-      const dateToDate = new Date(
-         dateResp?.split("-")[0],
-         dateResp?.split("-")[1] - 1,
-         dateResp?.split("-")[2],
-      );
-      _date.value = dateToDate;
+
+      news.value = data.value?.news
+         .map((item) => {
+            const [hours, min] = generateRandomNumbers();
+            console.log(hours, min);
+            const dateToDate = new Date(
+               dateResp?.split("-")[0],
+               dateResp?.split("-")[1] - 1,
+               dateResp?.split("-")[2],
+               hours,
+               min,
+            )
+               .toLocaleString("ru-RU", {
+                  day: "numeric",
+                  month: "numeric",
+                  year: "numeric",
+                  hour: "numeric",
+                  minute: "numeric",
+                  hour12: false,
+               })
+               ?.split(",")
+               ?.reverse()
+               ?.join(" ");
+
+            return {
+               ...item,
+               date: dateToDate,
+            };
+         })
+         .reverse();
    }
 });
 </script>

@@ -4,7 +4,7 @@
       <div
          class="relative bg-[linear-gradient(162deg,_#3C3C3C_0%,_#2F2F2F_100%)] rounded-[4vw] p-3.5 flex flex-col gap-5"
       >
- <BalanceCard :moneyVal="moneyVal" />
+         <BalanceCard :moneyVal="moneyVal" />
          <div class="w-full flex flex-col gap-2.5">
             <div class="text-(length:--h3) flex gap-3.5">
                <UButton
@@ -31,26 +31,24 @@
                </UButton>
             </div>
             <div class="flex flex-col gap-3.5">
-                <UInputNumber
-              orientation="vertical"
-              type="number"
-              :min="1"
-
-                @focus="(e) => focusScroll(e)"
+               <UInputNumber
+                  orientation="vertical"
+                  type="number"
+                  :min="1"
+                  @focus="(e) => focusScroll(e)"
                   @focusout="(e) => focusScrollUnlock(e)"
-                 
-              size="xl"
-              variant="outline"
-               class="border-1 border-(--line-gray) h-[13.1vw] rounded-[3.5vw] text-(--support-text-color) text-(length:--support-text)"
-              :ui="{
-                base: 'bg-transparent p-4',
-                increment: 'hidden',
-                decrement: 'hidden',
-              }"
-              color="secondary"
-              placeholder="Сумма пополнения ($GOVNO)"
-               v-model="stateValue"
-            />
+                  size="xl"
+                  variant="outline"
+                  class="h-[13.1vw] rounded-[3.5vw] text-(--support-text-color) text-(length:--support-text)"
+                  :ui="{
+                     base: 'bg-transparent p-4',
+                     increment: 'hidden',
+                     decrement: 'hidden',
+                  }"
+                  color="secondary"
+                  placeholder="Сумма пополнения ($GOVNO)"
+                  v-model="stateValue"
+               />
                <UButton
                   @click="handleSubmit"
                   class="h-[13.1vw] bg-(--main-blue) flex justify-center items-center text-black rounded-[3.5vw] text-(length:--support-text)"
@@ -77,17 +75,18 @@ import { UButton } from "#components";
 type ActionType = "replenishment" | "withdrawal";
 
 const config = useRuntimeConfig();
-const { user, loading, refreshBalance, govno, usd, fetchWithValidate } = useUserStore();
+const { user, loading, refreshBalance, govno, usd, fetchWithValidate } =
+   useUserStore();
 const { focusScroll, focusScrollUnlock } = useAdaptiveStore();
 const actionSelect = ref<ActionType>("replenishment");
 const moneyVal = ref<MoneyValues>({ usd: 0, govno: 0 });
-const stateValue = ref<number>(0);
+const stateValue = ref<number | undefined>();
 
 watchEffect(async () => {
    if (!loading && user?.id) {
       try {
          await refreshBalance();
-console.log('balanceVal', govno, usd);
+         console.log("balanceVal", govno, usd);
 
          moneyVal.value = {
             govno: govno,
@@ -104,26 +103,31 @@ async function handleSubmit() {
 
    try {
       if (actionSelect.value === "replenishment") {
-const {data, status} = await fetchWithValidate('/balance/create_invoice', {
- method: "post",
+         const { data, status } = await fetchWithValidate(
+            "/balance/create_invoice",
+            {
+               method: "post",
                body: {
                   amount: stateValue.value,
                   user_id: user.id,
                },
-})
+            },
+         );
 
          if (status.value === "success" && data.value) {
-           
             window.location.href = data.value;
          }
       } else {
-         const {data, status} = await fetchWithValidate('/balance/withdraw_govno', {
+         const { data, status } = await fetchWithValidate(
+            "/balance/withdraw_govno",
+            {
                method: "post",
                body: {
                   user_id: user.id,
                   amount: stateValue.value,
                },
-            },)
+            },
+         );
 
          if (status.value === "success") {
             await refreshBalance();

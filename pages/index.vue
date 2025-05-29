@@ -20,7 +20,6 @@ function isTelegramWebApp() {
 }
 const config = useRuntimeConfig();
 if (isTelegramWebApp()) {
-   
    const tg = window.Telegram.WebApp;
    tg.expand();
    tg.requestFullscreen();
@@ -53,18 +52,16 @@ if (isTelegramWebApp()) {
             throw new Error(`Server responded with status ${response.status}`);
          }
 
-        window.Telegram?.WebApp?.showPopup({
-        title: "💩 Govno Coin на первой месте!!!",
-        message:
-          "Мы доказали и доказываем что мы лучшие!",
-        buttons: [{ text: "Ура ассенизаторам!", type: "ok" }],
-      });
+         // window.Telegram?.WebApp?.showPopup({
+         //    title: "💩 Govno Coin на первой месте!!!",
+         //    message: "Мы доказали и доказываем что мы лучшие!",
+         //    buttons: [{ text: "Ура ассенизаторам!", type: "ok" }],
+         // });
       })
       .catch((err) => {
          console.error("Error:", err);
          validateText.value = `Ошибка валидация ❌ (${err.message})`;
       });
-
 } else {
    validateText.value = "Это приложение может открыто только в Telegram";
 }

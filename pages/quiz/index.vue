@@ -31,7 +31,6 @@
             :disabled="userValue.trim() === ''"
             class="w-full bg-white text-black flex justify-between mt-4"
             size="xxl"
-
             :ui="{}"
             trailing-icon="i-lucide-move-right"
          >
@@ -88,9 +87,7 @@
             <UButton
                class="w-full bg-white text-black flex justify-between mt-4"
                size="xxl"
-            
                to="/balance"
-            
                trailing-icon="i-lucide-move-right"
             >
                Перейти к балансу
@@ -131,7 +128,6 @@ watchEffect(async () => {
       try {
          const parsed = JSON.parse(saved);
 
-
          if (parsed.answers.length == 10) {
             surveyState.value = 2;
          } else {
@@ -140,7 +136,6 @@ watchEffect(async () => {
             currentQuestionIndex.value = parsed.currentIndex || 0;
             userAnswers.value = parsed.answers || [];
             questionsLength.value = questions.value.length;
-  
          }
       } catch (e) {
          console.error("Ошибка при чтении данных из localStorage", e);
@@ -206,8 +201,6 @@ async function nextQuestion() {
    }
 }
 async function checkQuestion() {
-  
-   
    const responce = await fetchWithValidate("/quiz/check_question", {
       method: "post",
       body: {
@@ -215,7 +208,7 @@ async function checkQuestion() {
       },
    });
    console.log(responce);
-   
+
    if (responce.status.value == "success") {
       surveyState.value = 1;
       return true;
@@ -226,23 +219,22 @@ async function checkQuestion() {
 }
 async function sendAnswers() {
    try {
-       console.log(userId, questions.value, userAnswers.value);
+      console.log(userId, questions.value, userAnswers.value);
       const response = await fetchWithValidate("/quiz/validate-answers", {
          method: "post",
          body: {
-           user_id: user.id,
+            user_id: user.id,
             questions: questions.value,
             answers: userAnswers.value,
          },
       });
-console.log(response.data.value );
+      console.log(response.data.value);
 
       if (response.status.value === "success") {
          correctAnswersCount.value = response.data.value?.correctAnswersCount;
          correctAnswersUsdt.value = response.data.value?.usdt;
          correctAnswersGovno.value = response.data.value?.govno;
          localStorage.removeItem(storageKey);
-
       }
    } catch (error) {
       console.error("Ошибка при отправке ответов", error);

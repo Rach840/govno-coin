@@ -24,12 +24,12 @@ const { user, fetchWithValidate } = useUserStore();
 const config = useRuntimeConfig();
 const active = ref(1);
 watchEffect(async () => {
-   const {data} = await fetchWithValidate('/shop/get_skins', {
- method: "post",
-         body: {
-            user_id: user?.id,
-         },
-   })
+   const { data } = await fetchWithValidate("/shop/get_skins", {
+      method: "post",
+      body: {
+         user_id: user?.id,
+      },
+   });
 
    products.value = data.value;
 });
