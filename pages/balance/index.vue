@@ -95,9 +95,7 @@ watchEffect(async () => {
       } catch (e) {}
    }
 });
-definePageMeta({
-   pageTransition: { name: "trans", mode: "default" },
-});
+
 async function handleSubmit() {
    if (!user?.id) return;
 

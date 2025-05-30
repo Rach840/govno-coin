@@ -20,9 +20,7 @@
 
 <script setup lang="ts">
 import { mockNews } from "~/lib/mockData";
-definePageMeta({
-   pageTransition: { name: "trans", mode: "default" },
-});
+
 const news = ref<News[]>(mockNews);
 const _date = ref<Date>(new Date());
 const dateFormat = computed(() => {

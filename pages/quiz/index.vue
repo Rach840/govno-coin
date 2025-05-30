@@ -110,10 +110,7 @@
 </template>
 
 <script setup lang="ts">
-import axios from "axios";
-definePageMeta({
-   pageTransition: { name: "trans", mode: "default" },
-});
+
 const userValue = ref<string>("");
 const surveyState = ref<number>(1);
 const showFinishedMessage = ref<boolean>(false);

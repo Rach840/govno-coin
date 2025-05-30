@@ -2,10 +2,7 @@
 import { ref, reactive, computed, onMounted, onBeforeUnmount } from "vue";
 import axios from "axios";
 import { useRouter } from "vue-router";
-definePageMeta({
-   layout: "register",
-   pageTransition: { name: "trans", mode: "default" },
-});
+
 const router = useRouter();
 const step = ref(1);
 const direction = ref<"forward" | "backward">("forward");

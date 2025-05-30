@@ -6,7 +6,7 @@ export default defineNuxtConfig({
    css: ["~/assets/css/main.css"],
 
    app: {
-      pageTransition: { name: "trans", mode: "default" },
+      pageTransition: { name: "trans", mode: "in-out" },
       head: {
          link: [
             {
@@ -41,6 +41,8 @@ export default defineNuxtConfig({
    nitro: {
       prerender: {
          ignore: ["/admin/**"],
+
       },
+      
    },
 });

@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import type { TabsItem } from "@nuxt/ui";
-definePageMeta({
-   pageTransition: { name: "trans", mode: "default" },
-});
+
 const products = ref<Product[] | null>(null);
 const subs = ref<Product[]>([
    {
