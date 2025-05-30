@@ -33,11 +33,11 @@ const navigation = [
       link: "/partners",
    },
 ];
-const menuVisible = computed(() => {
-   return useAdaptiveStore().menuVisible;
+const menuVisible  = computed(()=> {
+   return useAdaptiveStore().menuVisible
 });
 
-console.log("asfddasdas", menuVisible);
+console.log('asfddasdas',menuVisible);
 const { fullPath } = useRoute();
 console.log(fullPath);
 </script>
@@ -89,7 +89,7 @@ console.log(fullPath);
                   >{{ navItem.name }}</UButton
                >
             </div>
-            <MobileMenuBar type="drawerMenu" />
+    <MobileMenuBar type="drawerMenu" />
          </div>
       </template>
    </UDrawer>
