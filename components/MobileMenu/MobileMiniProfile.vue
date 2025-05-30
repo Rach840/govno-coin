@@ -5,8 +5,12 @@ console.log(user);
 
 <template>
    <div class="w-full flex items-center justify-start gap-3.5">
-      <img :src="user.avatarUrl" class="rounded-full size-[14vw]" alt="" />
-
+      <NuxtImg
+         :src="user.avatarUrl"
+         class="rounded-full size-[14vw]"
+         alt=""
+         preload
+      />
       <div class="flex flex-col gap-[0.5vw]">
          <h4 class="text-(length:--h3) font-[100] text-white">
             {{ user.firstName }} 🚀

@@ -41,6 +41,9 @@ const items = [
    {
       label: "Скины",
       slot: "skins" as const,
+      ui: {
+         trigger: " min-w-[76px]",
+      },
    },
    {
       label: "Интерфейсы",
@@ -49,6 +52,9 @@ const items = [
    {
       label: "Другие",
       slot: "other" as const,
+      ui: {
+         trigger: " min-w-[82px]",
+      },
    },
 ] satisfies TabsItem[];
 </script>
@@ -60,12 +66,12 @@ const items = [
       :items="items"
       variant="pill"
       color="info"
-      size="xl"
+      size="md"
       class="overflow-hidden gap-4 w-full mt-4 mb-4"
       :ui="{
          trigger:
-            'px-2 py-3 mr-4 min-w-[130px] bg-[#2F363A]  data-[state=active]:bg-transparent data-[state=active]:!text-white !text-[#B8B8B8] ',
-         label: 'text-lg z-50',
+            'px-2 py-3 mr-4 min-w-[111px] bg-[#2F363A]  data-[state=active]:bg-transparent data-[state=active]:!text-white !text-[#B8B8B8] ',
+         label: 'text-sm z-50',
          list: 'w-full   overflow-scroll bg-transparent border-none',
       }"
    >

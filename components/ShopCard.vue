@@ -6,6 +6,7 @@ const { product, type }: { product: Product; type?: string } = defineProps([
 ]);
 const { user, refreshBalance, govno, usd, fetchWithValidate } = useUserStore();
 const openErrorDrawer = ref(false);
+const openDetailsDrawer = ref(false);
 const openConfirmDrawer = ref(false);
 async function checkBalance() {
    await refreshBalance();
@@ -15,7 +16,7 @@ async function checkBalance() {
       openErrorDrawer.value = true;
    }
 }
-async function buy(params: type) {
+async function buy() {
    if (type == "sub") {
       const { data, status } = await fetchWithValidate(
          "/shop/purchase_premium",
@@ -64,7 +65,13 @@ async function buy(params: type) {
             class="absolute bg-[#2F363A] text-white right-3 top-3"
             >{{ product.skin_emission }} шт</UBadge
          >
-         <img :src="product.skin_url" alt="" class="mx-auto h-[180px]" />
+
+         <NuxtImg
+            :src="product.skin_url"
+            alt=""
+            class="mx-auto h-[180px]"
+            preload
+         />
       </div>
       <div class="bg-card-gradient rounded-b-[20px] p-3">
          <p class="text-xl lg:text-xl">{{ product.skin_name }}</p>
@@ -85,16 +92,118 @@ async function buy(params: type) {
                @click="checkBalance"
                >Купить
             </UButton>
-            <UButton
-               v-if="type != 'skin'"
-               variant="ghost"
-               class="col-span-1 flex justify-center"
-               size="xxs"
-               >Подробнее
-            </UButton>
+            <UDrawer
+               :portal="true"
+               :modal="true"
+               v-model:open="openDetailsDrawer"
+               side="bottom"
+               overlay-class="bg-black/40"
+               :ui="{
+                  body: 'bg-balance ',
+                  container: '',
+                  content: 'bg-balance !ring-transparent  !rounded-t-4xl  pt-4',
+                  handle: [
+                     ' mt-2 py-[0.1vw]  px-[9vw] !bg-[#737373] ',
+                     '  transition-opacity  ',
+                  ],
+                  overlay: 'bg-black/40',
+               }"
+               :transition="{
+                  enterActiveClass: 'duration-300',
+                  leaveActiveClass: 'duration-200',
+               }"
+            >
+               <UButton
+                  v-if="type != 'skin'"
+                  variant="ghost"
+                  class="col-span-1 flex justify-center"
+                  size="xxs"
+                  >Подробнее
+               </UButton>
+               <template #content>
+                  <div class="flex flex-col bg-balance py-11 gap-3.5">
+                     <UButton
+                        size="xl"
+                        variant="ghost"
+                        icon="i-lucide-x"
+                        class="text-[#737373] absolute top-3 right-6"
+                        :ui="{
+                           leadingIcon: 'size-8   ',
+                        }"
+                        @click="openDetailsDrawer = false"
+                     />
+                     <div class="">
+                        <div class="relative py-10 mb-4 bg-black">
+                           <div
+                              class="absolute flex items-center top-3 left-3 space-x-3"
+                           >
+                              <UBadge
+                                 v-if="type != 'skin'"
+                                 size="xl"
+                                 color="primary"
+                                 variant="solid"
+                                 class="bg-[#2F363A] text-white"
+                                 >скины</UBadge
+                              >
+                              <UBadge
+                                 icon="i-lucide-boxes"
+                                 v-if="type != 'skin'"
+                                 size="xl"
+                                 color="primary"
+                                 variant="solid"
+                                 class="bg-[#2F363A] text-white"
+                                 >{{ product.skin_emission }} шт</UBadge
+                              >
+                           </div>
+
+                           <NuxtImg
+                              :src="product.skin_url"
+                              alt=""
+                              class="mx-auto h-[180px]"
+                              preload
+                           />
+                        </div>
+                        <div class="px-6">
+                           <h2 class="text-h2 mb-3">{{ product.skin_name }}</h2>
+                           <p class="text-lg text-(--support-text-color) mb-1">
+                              Недостаточно средств на балансе внутреннего
+                              кошелька!
+                           </p>
+                           <div class="flex items-center space-x-1 mb-4">
+                              <p class="text-h2 lg:text-2xl">
+                                 {{ product.skin_price }} $GOVNO
+                              </p>
+                              <p
+                                 class="text-(length--support-text) text-(--support-text-color) lg:text-xl"
+                              >
+                                 ~ {{ +product.skin_price * 0.1 }} $USDT
+                              </p>
+                           </div>
+                           <UButton
+                              class="w-full flex justify-center bg-(--main-blue) mb-3 h-[12.6vw] font-medium px-3.5"
+                              @click="buy"
+                              size="xxl"
+                              >Купить</UButton
+                           >
+                           <UButton
+                              class="w-full flex justify-center h-[12.6vw] px-4 bg-none border-1 border-(--line-gray)"
+                              @click="
+                                 () => {
+                                    openDetailsDrawer = false;
+                                 }
+                              "
+                              variant="link"
+                              >Закрыть</UButton
+                           >
+                        </div>
+                     </div>
+                  </div>
+               </template>
+            </UDrawer>
          </div>
       </div>
    </div>
+
    <UDrawer
       :portal="true"
       :modal="true"
@@ -117,15 +226,15 @@ async function buy(params: type) {
       }"
    >
       <template #content>
-         <div class="flex flex-col bg-balance pt-6 px-6 gap-3.5">
+         <div class="flex flex-col bg-balance py-6 px-6 gap-3.5">
             <UButton
                size="xl"
                variant="ghost"
                icon="i-lucide-x"
                class="text-[#737373] absolute top-4 right-6"
-               @click="openReplenishment = false"
+               @click="openErrorDrawer = false"
             />
-            <div class="mb-56">
+            <div class="mb-32">
                <h2 class="text-h2 mb-3">❌ Ошибка!</h2>
                <p class="text-lg mb-3">
                   Недостаточно средств на балансе внутреннего кошелька!
@@ -150,7 +259,7 @@ async function buy(params: type) {
                >Пополнить баланс</UButton
             >
             <UButton
-               class="w-full flex justify-between h-[12.6vw] px-4 bg-none border-1 border-(--line-gray)"
+               class="w-full flex justify-center h-[12.6vw] px-4 bg-none border-1 border-(--line-gray)"
                @click="
                   () => {
                      openErrorDrawer = false;
@@ -190,7 +299,7 @@ async function buy(params: type) {
                variant="ghost"
                icon="i-lucide-x"
                class="text-[#737373] absolute top-4 right-6"
-               @click="openReplenishment = false"
+               @click="openConfirmDrawer = false"
             />
             <div class="mb-56">
                <h2 class="text-h2 mb-3">✅ Подтвердите покупку</h2>
@@ -210,17 +319,13 @@ async function buy(params: type) {
 
             <UButton
                class="w-full flex justify-between bg-(--main-blue) h-[12.6vw] font-medium px-3.5"
-               @click=""
+               @click="buy"
                trailing-icon="i-lucide-circle-plus"
                >Подтвердить покупку</UButton
             >
             <UButton
-               class="w-full flex justify-between h-[12.6vw] px-4 bg-none border-1 border-(--line-gray)"
-               @click="
-                  () => {
-                     openConfirmDrawer = false;
-                  }
-               "
+               class="w-full flex justify-center h-[12.6vw] px-4 bg-none border-1 border-(--line-gray)"
+               @click="openConfirmDrawer = false"
                variant="link"
                >Закрыть</UButton
             >

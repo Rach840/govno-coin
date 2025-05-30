@@ -1,5 +1,7 @@
 <script setup lang="ts">
 const { updateOpen } = inject("open");
+
+const { type }: { type?: string } = defineProps(["type"]);
 const otherButtons = [
    {
       link: "",
@@ -25,15 +27,18 @@ const { fullPath } = useRoute();
          class="border-1 border-(--line-gray) size-[15vw] flex justify-center items-center"
          color="primary"
          variant="link"
+         @click="() => (type == 'drawerMenu' ? updateOpen() : '')"
          to="/balance"
-         ><img src="/menu/menu-balance.svg" class="w-7 h-6"
-      /></UButton>
+      >
+         <NuxtImg src="/menu/menu-balance.svg" class="w-7 h-6" preload />
+      </UButton>
       <UButton
          class="bg-[linear-gradient(162deg,_#3C3C3C_0%,_#2F2F2F_100%)] size-[15vw] flex justify-center items-center"
          variant="link"
          v-for="button in otherButtons"
+         @click="() => (type == 'drawerMenu' ? updateOpen() : '')"
       >
-         <img :src="button.icon" class="w-10 h-10" />
+         <NuxtImg :src="button.icon" class="w-10 h-10" preload />
       </UButton>
 
       <UButton

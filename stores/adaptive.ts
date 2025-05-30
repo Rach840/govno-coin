@@ -1,26 +1,24 @@
 import { defineStore } from "pinia";
 
 export const useAdaptiveStore = defineStore("adaptiveStore", {
-      state: () => ({
-menuVisible: ref(true),
+   state: () => ({
+      menuVisible: ref(true),
    }),
    actions: {
-changeVisible(){
-
-},
+      changeVisible() {},
       focusScroll() {
-         this.menuVisible = false
-          console.log('asda',this.menuVisible);
-          
+         this.menuVisible = false;
+         console.log("asda", this.menuVisible);
+
          setTimeout(() => {
             const scrollTarget = Math.max(
                document.documentElement.scrollHeight,
                document.body.scrollHeight,
             );
-            window.scrollTo({
-               top: scrollTarget,
-               behavior: "smooth",
-            });
+            // window.scrollTo({
+            //    top: scrollTarget,
+            //    behavior: "smooth",
+            // });
             document.addEventListener("dblclick", (e) => {
                window.scrollTo({
                   top: scrollTarget,
@@ -31,9 +29,9 @@ changeVisible(){
          }, 500);
       },
       focusScrollUnlock() {
-       this.menuVisible = true
-         console.log('asdf',this.menuVisible);
-         
+         this.menuVisible = true;
+         console.log("asdf", this.menuVisible);
+
          document.removeEventListener("dblclick", (e) => {});
       },
    },

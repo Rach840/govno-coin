@@ -4,7 +4,7 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineNuxtConfig({
    compatibilityDate: "2025-05-15",
    css: ["~/assets/css/main.css"],
-   
+
    app: {
       pageTransition: { name: "trans", mode: "default" },
       head: {
@@ -31,7 +31,7 @@ export default defineNuxtConfig({
       },
    },
    devtools: { enabled: true },
-   modules: ["@nuxt/ui", "@pinia/nuxt"],
+   modules: ["@nuxt/ui", "@pinia/nuxt", "@nuxt/image"],
    vite: {
       plugins: [tailwindcss()],
    },

@@ -62,7 +62,12 @@
             </div>
          </div>
          <div class="absolute bottom-[120px] left-0 mx-[20px]">
-            <img class="rounded-[10px]" src="/surveys/ad.svg" alt="" />
+            <NuxtImg
+               class="rounded-[10px]"
+               src="/surveys/ad.svg"
+               alt=""
+               preload
+            />
             <UButton
                to="/balance"
                class="w-full bg-white text-black flex justify-between mt-4"
@@ -83,7 +88,12 @@
             ✅ Опросы на сегодня завершены!
          </h2>
          <div class="absolute lg:static bottom-[120px] left-0 mx-[20px]">
-            <img class="rounded-[10px]" src="/surveys/ad.svg" alt="" />
+            <NuxtImg
+               class="rounded-[10px]"
+               src="/surveys/ad.svg"
+               alt=""
+               preload
+            />
             <UButton
                class="w-full bg-white text-black flex justify-between mt-4"
                size="xxl"

@@ -1,8 +1,8 @@
 <template>
-   <UApp class="overflow-y-hidden ">
+   <UApp class="overflow-y-hidden">
       <TelegramPreloader v-if="loading" />
       <UContainer
-         class="padding-container overflow-y-hidden mx-auto w-[80vw] mb-[100px]"
+         class="padding-container overflow-y-hidden mx-auto w-[90vw] mb-[100px]"
          v-if="isMobile"
       >
          <slot />
@@ -36,8 +36,6 @@
 import { useMediaQuery } from "@vueuse/core";
 // Показываем прелоадер до готовности Telegram WebApp
 const { loading } = useUserStore();
-
-
 
 const isLoading = ref(true);
 const menuV = ref(true);
