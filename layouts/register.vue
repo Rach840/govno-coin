@@ -1,12 +1,11 @@
 <template>
-   <UApp class="overflow-y-hidden ">
+   <UApp class=" ">
       <TelegramPreloader v-if="loading" />
       <UContainer
-         class="padding-container overflow-y-hidden mx-auto w-[80vw] mb-[100px]"
+         class="padding-container mx-auto bg-[url(/register/register-background-mobile.svg)] bg-cover bg-center z-10 md:flex flex-col items-center justify-center fixed -top-9 w-[100vw] h-[105vh] pb-[100px]"
          v-if="isMobile"
       >
          <slot />
-         <MobileMenu />
       </UContainer>
       <!-- <SidebarProvider v-else>
          <AdminSidebar />
@@ -33,15 +32,17 @@
 </template>
 
 <script setup lang="ts">
+import { SidebarProvider } from "~/components/ui/sidebar";
+import AdminSidebar from "~/components/AdminSidebar.vue";
 import { useMediaQuery } from "@vueuse/core";
 // Показываем прелоадер до готовности Telegram WebApp
 const { loading } = useUserStore();
-
-
-
+const { fullPath } = useRoute();
 const isLoading = ref(true);
-const menuV = ref(true);
 const isMobile = useMediaQuery("(max-width: 900px)");
+watch(loading, () => {
+   isLoading.value = loading;
+});
 </script>
 <style>
 .trans-enter-active,

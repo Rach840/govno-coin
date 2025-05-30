@@ -51,6 +51,12 @@ if (isTelegramWebApp()) {
          } else {
             throw new Error(`Server responded with status ${response.status}`);
          }
+
+         // window.Telegram?.WebApp?.showPopup({
+         //    title: "💩 Govno Coin на первой месте!!!",
+         //    message: "Мы доказали и доказываем что мы лучшие!",
+         //    buttons: [{ text: "Ура ассенизаторам!", type: "ok" }],
+         // });
       })
       .catch((err) => {
          console.error("Error:", err);

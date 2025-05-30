@@ -17,28 +17,29 @@
          <UInput
             size="xl"
             :ui="{
-               base: 'p-4 bg-transparent',
+               base: 'p-4',
             }"
-            @focus="focusScroll"
+            @focus="(e) => focusScroll(e)"
+            @focusout="(e) => focusScrollUnlock(e)"
             variant="outline"
             color="secondary"
             v-model="userValue"
-            class="w-full"
+            class="w-full text-(--support-text-color)"
          />
          <UButton
             @click="nextQuestion"
             :disabled="userValue.trim() === ''"
-            class="w-full flex justify-between mt-4"
+            class="w-full bg-white text-black flex justify-between mt-4"
             size="xxl"
             :ui="{}"
-            trailing-icon="i-lucide-arrow-right"
+            trailing-icon="i-lucide-move-right"
          >
             Продолжить
          </UButton>
       </section>
 
       <section v-else-if="surveyState == 2" class="results-section">
-         <h1 class="text-h1 lg:text-3xl font-semibold mb-5">Опрос</h1>
+         <h1 class="text-h1 lg:text-3xl font-semibold mt-8 mb-5">Опрос</h1>
          <div class="results-content">
             <h3 class="text-h2 lg:text-2xl font-semibold">
                ✅ Опрос завершён!
@@ -64,12 +65,12 @@
             <img class="rounded-[10px]" src="/surveys/ad.svg" alt="" />
             <UButton
                to="/balance"
-               class="w-full flex justify-between mt-4"
+               class="w-full bg-white text-black flex justify-between mt-4"
                size="xxl"
                :ui="{}"
-               trailing-icon="i-lucide-arrow-right"
+               trailing-icon="i-lucide-move-right"
             >
-               Перейти к заданиям
+               Перейти к балансу
             </UButton>
          </div>
       </section>
@@ -78,24 +79,23 @@
          v-else-if="surveyState == 3"
          class="bg-[url(/surveys/background-mobile.svg)] md:bg-[url(/surveys/background-desktop.svg)] bg-size-[105vw_100vh] md:flex flex-col items-center justify-center absolute left-0 w-screen -top-8 h-screen padding-container"
       >
-         <h2 class="text-h2 lg:!text-2xl mx-4 mt-5 lg:mb-4">
+         <h2 class="text-h2 lg:!text-2xl mx-4 mt-10 lg:mb-4">
             ✅ Опросы на сегодня завершены!
          </h2>
          <div class="absolute lg:static bottom-[120px] left-0 mx-[20px]">
             <img class="rounded-[10px]" src="/surveys/ad.svg" alt="" />
             <UButton
-               class="w-full flex justify-between mt-4"
+               class="w-full bg-white text-black flex justify-between mt-4"
                size="xxl"
                to="/balance"
-               :ui="{}"
-               trailing-icon="i-lucide-arrow-right"
+               trailing-icon="i-lucide-move-right"
             >
-               Перейти к заданиям
+               Перейти к балансу
             </UButton>
          </div>
       </section>
    </div>
-   <Menu class="menu"></Menu>
+
    <div v-if="surveyState == 3" class="finished-section-background"></div>
 </template>
 
@@ -105,7 +105,7 @@ definePageMeta({
    pageTransition: { name: "trans", mode: "default" },
 });
 const userValue = ref<string>("");
-const surveyState = ref<number>(3);
+const surveyState = ref<number>(1);
 const showFinishedMessage = ref<boolean>(false);
 const currentQuestionIndex = ref<number>(0);
 const questions = ref<string[]>([]);
@@ -116,29 +116,27 @@ const correctAnswersUsdt = ref<number>(0);
 const correctAnswersGovno = ref<number>(0);
 const { user, fetchWithValidate } = useUserStore();
 const config = useRuntimeConfig();
-const { focusScroll } = useAdaptiveStore();
+const { focusScroll, focusScrollUnlock } = useAdaptiveStore();
 const userId = user?.id;
-const date = new Date()
+const date = new Date();
 const storageKey = `quiz_questions_${encodeURIComponent(userId)}_${date.getDate()}_${date.getFullYear()}_${date.getMonth()}`;
 
-
-watchEffect(async ()=>{
+watchEffect(async () => {
    const saved = localStorage.getItem(storageKey);
-   console.log("fsdf", saved);
-   
+
    if (saved) {
       try {
          const parsed = JSON.parse(saved);
-         if(parsed.answers.length == 10) {
-               surveyState.value = 2;
-         }else{
-  questions.value = parsed.questions || [];
 
-         currentQuestionIndex.value = parsed.currentIndex || 0;
-         userAnswers.value = parsed.answers || [];
-         questionsLength.value = questions.value.length;
+         if (parsed.answers.length == 10) {
+            surveyState.value = 2;
+         } else {
+            questions.value = parsed.questions || [];
+
+            currentQuestionIndex.value = parsed.currentIndex || 0;
+            userAnswers.value = parsed.answers || [];
+            questionsLength.value = questions.value.length;
          }
-       
       } catch (e) {
          console.error("Ошибка при чтении данных из localStorage", e);
          await generateAndSaveQuestions();
@@ -146,22 +144,20 @@ watchEffect(async ()=>{
    } else {
       generateAndSaveQuestions();
    }
-})
+});
 
 async function generateAndSaveQuestions() {
    try {
-
       if (!(await checkQuestion())) return;
-      const response = await fetchWithValidate('/quiz/get_questions', {
-         method: 'post',
-         body:{
-            user_id: user?.id
-         }
-      })
+      const response = await fetchWithValidate("/quiz/get_questions", {
+         method: "post",
+         body: {
+            user_id: user?.id,
+         },
+      });
       console.log(response.data.value);
 
-
-      if (response.data.value && response.status.value == 'success') {
+      if (response.data.value && response.status.value == "success") {
          questions.value = response.data.value;
          console.log("sdafd", questions.value);
          questionsLength.value = questions.value.length;
@@ -205,12 +201,14 @@ async function nextQuestion() {
    }
 }
 async function checkQuestion() {
-  const responce = await fetchWithValidate('/quiz/check_question', {
-         method: "post",
-         body: {
-            user_id: userId,
-         },
-      })
+   const responce = await fetchWithValidate("/quiz/check_question", {
+      method: "post",
+      body: {
+         user_id: userId,
+      },
+   });
+   console.log(responce);
+
    if (responce.status.value == "success") {
       surveyState.value = 1;
       return true;
@@ -221,15 +219,18 @@ async function checkQuestion() {
 }
 async function sendAnswers() {
    try {
-      const response = await fetchWithValidate('/quiz/validate-answers', {
-         method:'post',
-         body:{ userId,
+      console.log(userId, questions.value, userAnswers.value);
+      const response = await fetchWithValidate("/quiz/validate-answers", {
+         method: "post",
+         body: {
+            user_id: user.id,
             questions: questions.value,
-            answers: userAnswers.value
-         }
-      })
+            answers: userAnswers.value,
+         },
+      });
+      console.log(response.data.value);
 
-      if (response.status.value === 'success') {
+      if (response.status.value === "success") {
          correctAnswersCount.value = response.data.value?.correctAnswersCount;
          correctAnswersUsdt.value = response.data.value?.usdt;
          correctAnswersGovno.value = response.data.value?.govno;

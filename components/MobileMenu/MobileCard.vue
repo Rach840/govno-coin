@@ -1,5 +1,5 @@
 <template>
-   <UCard variant="solid" class="w-full">
+   <UCard variant="solid" class="bg-balance w-full">
       <div class="w-full flex flex-col gap-4 items-start justify-start">
          <div class="flex flex-col gap-0">
             <p class="text-(length:--h0) font-semibold text-white">
@@ -22,11 +22,12 @@
             :ui="{
                body: 'bg-balance ',
                container: '',
-               content: 'bg-balance  !rounded-t-4xl  pt-4',
+               content: 'bg-balance  !ring-transparent  !rounded-t-4xl  pt-4',
                handle: [
                   ' mt-2 py-[0.1vw]  px-[9vw] !bg-[#737373] ',
-                  '  transition-opacity  ',
+                  '  transition-opacity   ',
                ],
+               overlay: 'bg-black/40',
             }"
             :transition="{
                enterActiveClass: 'duration-300',
@@ -55,7 +56,8 @@
                      orientation="vertical"
                      type="number"
                      :min="1"
-                     @focus="focusScroll"
+                     @focus="(e) => focusScroll(e)"
+                     @focusout="(e) => focusScrollUnlock(e)"
                      size="xl"
                      variant="outline"
                      :ui="{
@@ -66,7 +68,7 @@
                      color="secondary"
                      placeholder="Сумма пополнения ($GOVNO)"
                      v-model="stateValue"
-                     class="w-full"
+                     class="w-full text-(--support-text-color)"
                   />
                   <UButton
                      @click="handleSubmit"
@@ -93,10 +95,11 @@
 <script setup lang="ts">
 const moneyVal = ref<MoneyValues>({ usd: 0, govno: 0 });
 const stateValue = ref<number>();
-const { focusScroll } = useAdaptiveStore();
+const { focusScroll, focusScrollUnlock } = useAdaptiveStore();
 const openReplenishment = ref(false);
 const config = useRuntimeConfig();
-const { user, loading, refreshBalance, govno, usd } = useUserStore();
+const { user, loading, refreshBalance, govno, usd, fetchWithValidate } =
+   useUserStore();
 watchEffect(async () => {
    if (!loading && user?.id) {
       try {
@@ -113,8 +116,8 @@ async function handleSubmit() {
    if (!user?.id) return;
 
    try {
-      const { data, status } = await useFetch(
-         `${config.public.apiUrl}/balance/create_invoice`,
+      const { data, status } = await fetchWithValidate(
+         "/balance/create_invoice",
          {
             method: "post",
             body: {
@@ -131,12 +134,12 @@ async function handleSubmit() {
       if (status.value === "success") {
          await refreshBalance();
 
-         window.Telegram?.WebApp?.showPopup({
-            title: "💩 Внимание, ассенизатор!",
-            message:
-               "Во время ЗБТ вывод токенов осуществляется вручную — чтобы никакой криптокит с лопатой не утащил всё в канализацию разом. Потерпите, автоматизация уже на подходе (на телеге с бочкой)!",
-            buttons: [{ text: "OK", type: "ok" }],
-         });
+         // window.Telegram?.WebApp?.showPopup({
+         //    title: "💩 Внимание, ассенизатор!",
+         //    message:
+         //       "Во время ЗБТ вывод токенов осуществляется вручную — чтобы никакой криптокит с лопатой не утащил всё в канализацию разом. Потерпите, автоматизация уже на подходе (на телеге с бочкой)!",
+         //    buttons: [{ text: "OK", type: "ok" }],
+         // });
       }
    } catch (error) {
       console.error("Ошибка при отправке суммы ❌❌❌", error);

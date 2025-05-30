@@ -6,7 +6,7 @@ interface UserState {
    loading: boolean;
    govno: number;
    usd: number;
-   token: string;
+   token: string | null;
 }
 
 export const useUserStore = defineStore("telegramStore", {
@@ -27,16 +27,20 @@ export const useUserStore = defineStore("telegramStore", {
          if (!this.loading && this.user?.id) {
             try {
                const config = useRuntimeConfig();
+               console.log("balance",this.token);
+               console.log('balance', this.user.id);
+               
                const { data, status } = await useFetch(
                   `${config.public.apiUrl}/balance/get_balance`,
                   {
                      method: "post",
                      body: { user_id: this.user?.id },
-                        headers: new Headers({
-        "Authorization": `Bearer ${this?.token}`,
-      }),
+                     headers: new Headers({
+                        Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDg1NjgzMzIsImlhdCI6MTc0ODUyNTEzMiwidXNlcl9pZCI6NTUzNzgzMzI1fQ.CAxDX5wWAlboa1JcBYcpV1vEMw6xJ7hol4U43BVs6K0`,
+                     }),
                   },
                );
+console.log(data.value);   
 
                if (status.value === "success" && data.value) {
                   this.usd = parseFloat(data.value.usd) || 0;
@@ -49,35 +53,43 @@ export const useUserStore = defineStore("telegramStore", {
             }
          }
       },
-      async validateUser(){
-          const config = useRuntimeConfig()
-         const { data: userToken, status } = await useFetch(`${config.public.apiUrl}/auth/validate_user`,{
-            method:'post',
-             body:{
-               initData: window.Telegram?.WebApp?.initData,
-               initDataUnsafe: window.Telegram?.WebApp?.initDataUnsafe,
-             }
-         })
+      async validateUser() {
+         const config = useRuntimeConfig();
+         const { data: userToken, status } = await useFetch(
+            `${config.public.apiUrl}/auth/validate_user`,
+            {
+               method: "post",
+               body: {
+                  initData: window.Telegram?.WebApp?.initData,
+                  initDataUnsafe: window.Telegram?.WebApp?.initDataUnsafe,
+               },
+            },
+         );
          if (status.value == "success") {
-            this.token = userToken.value;
-            localStorage.setItem('token', userToken.value);
+            console.log(userToken)
+            
+            this.token = userToken.value?.token;
+            localStorage.setItem("token", userToken.value?.token);
          }
-         
       },
-     async fetchWithValidate(url: string,opt: {method, body?: Record<string, any>}){
-      const config = useRuntimeConfig()
-  const response = await useFetch(`${config.public.apiUrl}${url}`, {
-      ...opt, 
-      headers: new Headers({
-        "Authorization": `Bearer ${this?.token}`,
-      }),
-  });
-  if (response.error.value?.statusCode == 401) {
-   await this.validateUser();
-   response.refresh();
-  }
-   return response 
-
+      async fetchWithValidate(
+         url: string,
+         opt: { method; body?: Record<string, any> },
+      ) {
+         const config = useRuntimeConfig();
+         console.log(this.token);
+         
+         const response = await useFetch(`${config.public.apiUrl}${url}`, {
+            ...opt,
+            headers: new Headers({
+               Authorization: `Bearer ${this?.token}`,
+            }),
+         });
+         if (response.error.value?.statusCode == 401) {
+            await this.validateUser();
+            response.refresh();
+         }
+         return response;
       },
       setTestUser() {
          if (localStorage.getItem("user")) {

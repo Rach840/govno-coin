@@ -10,7 +10,7 @@
             {{ balance.title }}
          </p>
          <div class="flex flex-col">
-            <p class="text-h0 font-bold text-white">$ {{ moneyVal.usdt }}</p>
+            <p class="text-h0 font-bold text-white">$ {{ moneyVal.usd }}</p>
             <span
                class="text-(length--support-text) text-(--support-text-color)"
             >
