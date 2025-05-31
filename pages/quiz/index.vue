@@ -1,6 +1,6 @@
 <template>
    <div class="survey-container" id="content_app">
-      <section v-if="surveyState == 1">
+      <section v-if="surveyState == 1" class="">
          <div class="mb-5 flex justify-between items-center">
             <h1 class="text-h1 lg:text-3xl font-semibold">Опрос</h1>
             <p class="text-xl text-(--support-text-color)">
@@ -35,7 +35,15 @@
             trailing-icon="i-lucide-move-right"
          >
             Продолжить
-         </UButton>
+         </UButton> 
+          <div class="absolute w-[90vw] bottom-[120px] left-0 mx-[20px]">
+            <NuxtImg
+               class="rounded-[10px] w-full"
+               src="/surveys/ad.svg"
+               alt=""
+               preload
+            />
+         </div>
       </section>
 
       <section v-else-if="surveyState == 2" class="results-section">
@@ -60,10 +68,11 @@
                   заработать $GOVNO
                </p>
             </div>
+            
          </div>
-         <div class="absolute bottom-[120px] left-0 mx-[20px]">
+         <div class="absolute w-[90vw] bottom-[120px] left-0 mx-[20px]">
             <NuxtImg
-               class="rounded-[10px]"
+               class=" w-full rounded-[10px]"
                src="/surveys/ad.svg"
                alt=""
                preload
@@ -82,14 +91,14 @@
 
       <section
          v-else-if="surveyState == 3"
-         class="bg-[url(/surveys/background-mobile.svg)] md:bg-[url(/surveys/background-desktop.svg)] bg-size-[105vw_100vh] md:flex flex-col items-center justify-center absolute left-0 w-screen -top-8 h-screen padding-container"
+         class="bg-[url(/surveys/background-mobile.svg)] mt-[30px] pt-[20px] md:bg-[url(/surveys/background-desktop.svg)] bg-size-[105vw_100vh] md:flex flex-col items-center justify-center absolute left-0 w-screen -top-8 h-screen "
       >
          <h2 class="text-h2 lg:!text-2xl mx-4 mt-10 lg:mb-4">
             ✅ Опросы на сегодня завершены!
          </h2>
-         <div class="absolute lg:static bottom-[120px] left-0 mx-[20px]">
+         <div class="absolute w-[90vw]  lg:static bottom-[120px] left-0 mx-[20px]">
             <NuxtImg
-               class="rounded-[10px]"
+               class="w-full rounded-[10px]"
                src="/surveys/ad.svg"
                alt=""
                preload

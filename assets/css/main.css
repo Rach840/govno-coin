@@ -218,5 +218,6 @@ body {
 * {
    font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
    touch-action: manipulation;
+   overscroll-behavior: none;
    user-select: none;
 }

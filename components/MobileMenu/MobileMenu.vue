@@ -34,7 +34,9 @@ const navigation = [
       link: "/partners",
    },
 ];
-const { menuVisible } = useAdaptiveStore();
+const menuVisible  = computed(()=> {
+   return useAdaptiveStore().menuVisible
+}) ;
 console.log("asfddasdas", menuVisible.value);
 const { fullPath } = useRoute();
 console.log(fullPath);
@@ -42,12 +44,12 @@ const menu = templateRef<HTMLDivElement>("menu");
 </script>
 
 <template>
-   <div :class="` ${open ? 'h-[120px]' : 'h-screen'} duration-500 bottom-0 w-full fixed left-0 overflow-hidden`">
+   <div v-if="menuVisible" :class="` ${open ? 'h-[120px]' : 'h-screen'} duration-500 bottom-0 w-full fixed left-0 overflow-hidden`">
 <MobileMenuBar v-if="menuVisible" />
 
    <div
       ref="menu"
-      :class="`absolute overflow-hidden   ${open ? '-bottom-[650px]' : 'bottom-0'} duration-500 bg-[#262827]  w-full left-0 rounded-t-3xl z-20`"
+      :class="`absolute overflow-hidden   ${open ? '-bottom-[650px]' : 'bottom-[80px]'} duration-500 bg-[#262827]  w-full left-0 rounded-t-3xl z-30`"
    >
       <div class="pt-4 mb-7">
          <div

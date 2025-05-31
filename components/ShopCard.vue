@@ -32,11 +32,17 @@ async function buy() {
          openConfirmDrawer.value = false;
       }
    }
+   console.log(product ,{ 
+       user_id: user?.id,
+         skin_id: product.id,
+         username: user.userName,
+         
+   })
    const { data, status } = await fetchWithValidate("/shop/purchase_skin", {
       method: "post",
       body: {
          user_id: user?.id,
-         skin_id: product.skin_id,
+         skin_id: product.id,
          username: user.userName,
       },
    });

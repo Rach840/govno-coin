@@ -82,7 +82,7 @@ console.log(data.value);
          const response = await useFetch(`${config.public.apiUrl}${url}`, {
             ...opt,
             headers: new Headers({
-               Authorization: `Bearer ${this?.token}`,
+               Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDg3NDM4NjksImlhdCI6MTc0ODcwMDY2OSwidXNlcl9pZCI6NTUzNzgzMzI1fQ.jw46l5QXhYAd9ug8A3achTYhdg3p8PZ8woi-3Szdp0Y`,
             }),
          });
          if (response.error.value?.statusCode == 401) {
