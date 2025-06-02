@@ -2,7 +2,9 @@
 import { ref, reactive, computed, onMounted, onBeforeUnmount } from "vue";
 import axios from "axios";
 import { useRouter } from "vue-router";
-
+definePageMeta({
+   layout: "register",
+});
 const router = useRouter();
 const step = ref(1);
 const direction = ref<"forward" | "backward">("forward");
@@ -38,12 +40,6 @@ const errors = reactive({
 });
 
 const tg = window?.Telegram?.WebApp;
-
-onMounted(() => {
-   const initialHeight = window.innerHeight;
-   const bg = document.getElementById("fixed-bg");
-   if (bg) bg.style.height = `${initialHeight}px`;
-});
 
 function validateStep(stepNum: number): boolean {
    let valid = true;
@@ -131,15 +127,21 @@ async function submitForm() {
       console.error("не отправилось");
    }
 }
+const isInputFocused = ref(false);
 </script>
 
 <template>
-   <div class=""></div>
-
-   <div :ref="block" class="padding-container relative overflow-x-hidden">
-      <div
-         class="z-20 relative px-3.5 my-[100px] flex flex-col gap-3.5 text-center"
-      >
+   <div
+      class="absolute inset-0 duration-[999999999s] h-screen z-0 pointer-events-none"
+   >
+      <img
+         src="/register/register-background-mobile.svg"
+         alt="background"
+         class="w-full h-full object-cover"
+      />
+   </div>
+   <div :ref="block" class="overflow-x-hidden">
+      <div class="z-20 relative px-3.5 flex flex-col gap-3.5 text-center">
          <h1 class="text-(length:--h1)">Заполнение профиля</h1>
 
          <div class="flex gap-2.5">
@@ -189,8 +191,18 @@ async function submitForm() {
                         type="number"
                         min="1"
                         max="300"
-                        @focus="(e) => focusScroll(e)"
-                        @focusout="(e) => focusScrollUnlock(e)"
+                        @focus="
+                           (e) => {
+                              isInputFocused = true;
+                              focusScroll(e);
+                           }
+                        "
+                        @focusout="
+                           (e) => {
+                              isInputFocused = false;
+                              focusScrollUnlock(e);
+                           }
+                        "
                         :class="[
                            'w-full h-11.5 border-1 rounded-[3vw]   ',
                            errors.weight
@@ -206,8 +218,18 @@ async function submitForm() {
                         type="number"
                         min="1"
                         max="250"
-                        @focus="(e) => focusScroll(e)"
-                        @focusout="(e) => focusScrollUnlock(e)"
+                        @focus="
+                           (e) => {
+                              isInputFocused = true;
+                              focusScroll(e);
+                           }
+                        "
+                        @focusout="
+                           (e) => {
+                              isInputFocused = false;
+                              focusScrollUnlock(e);
+                           }
+                        "
                         :class="[
                            'w-full h-11.5 border-1 rounded-[3vw] !text-(--support-text-color)',
                            errors.height
@@ -229,8 +251,18 @@ async function submitForm() {
                      type="number"
                      min="1"
                      max="110"
-                     @focus="(e) => focusScroll(e)"
-                     @focusout="(e) => focusScrollUnlock(e)"
+                     @focus="
+                        (e) => {
+                           isInputFocused = true;
+                           focusScroll(e);
+                        }
+                     "
+                     @focusout="
+                        (e) => {
+                           isInputFocused = false;
+                           focusScrollUnlock(e);
+                        }
+                     "
                      :class="[
                         'w-full h-11.5 border-1 rounded-[3vw] !text-(--support-text-color)',
                         errors.age ? 'border-red-500' : 'border-(--line-gray)',
@@ -273,8 +305,18 @@ async function submitForm() {
                      type="number"
                      min="1"
                      max="10"
-                     @focus="(e) => focusScroll(e)"
-                     @focusout="(e) => focusScrollUnlock(e)"
+                     @focus="
+                        (e) => {
+                           isInputFocused = true;
+                           focusScroll(e);
+                        }
+                     "
+                     @focusout="
+                        (e) => {
+                           isInputFocused = false;
+                           focusScrollUnlock(e);
+                        }
+                     "
                      :class="[
                         'w-full h-11.5 border-1 rounded-[3vw] !text-(--support-text-color)',
                         errors.amt ? 'border-red-500' : 'border-(--line-gray)',

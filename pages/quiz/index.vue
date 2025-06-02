@@ -17,33 +17,45 @@
          <UInput
             size="xl"
             :ui="{
-               base: 'p-4',
+               base: 'p-4 !border-(--line-gray)',
             }"
-            @focus="(e) => focusScroll(e)"
-            @focusout="(e) => focusScrollUnlock(e)"
-            variant="outline"
-            color="secondary"
+          @focus="(e)=> {
+            isInputFocused = true
+            focusScroll()
+          }"
+            @focusout="(e) =>  {
+               isInputFocused = false
+               focusScrollUnlock(e)}"
+             variant="outline"
+            
             v-model="userValue"
-            class="w-full text-(--support-text-color)"
+            class="!border-(--line-gray) w-full !text-(--support-text-color)"
          />
          <UButton
             @click="nextQuestion"
             :disabled="userValue.trim() === ''"
-            class="w-full bg-white text-black flex justify-between mt-4"
+            class="w-full pointer-events-auto bg-white text-black flex justify-between mt-4"
             size="xxl"
             :ui="{}"
             trailing-icon="i-lucide-move-right"
          >
             Продолжить
          </UButton> 
-          <div class="absolute w-[90vw] bottom-[120px] left-0 mx-[20px]">
-            <NuxtImg
-               class="rounded-[10px] w-full"
-               src="/surveys/ad.svg"
-               alt=""
-               preload
-            />
-         </div>
+ <transition
+  name="fade-slide"
+  mode="out-in"
+>
+  <div
+    v-if="!isInputFocused"
+    class="absolute w-[90vw]  pointer-events-none bottom-[120px] left-0 mx-[20px]"
+  >
+    <img
+      class="rounded-[10px] w-full"
+      src="/surveys/ad.svg"
+      alt=""
+    />
+  </div>
+</transition>
       </section>
 
       <section v-else-if="surveyState == 2" class="results-section">
@@ -71,7 +83,7 @@
             
          </div>
          <div class="absolute w-[90vw] bottom-[120px] left-0 mx-[20px]">
-            <NuxtImg
+            <img
                class=" w-full rounded-[10px]"
                src="/surveys/ad.svg"
                alt=""
@@ -91,13 +103,13 @@
 
       <section
          v-else-if="surveyState == 3"
-         class="bg-[url(/surveys/background-mobile.svg)] mt-[30px] pt-[20px] md:bg-[url(/surveys/background-desktop.svg)] bg-size-[105vw_100vh] md:flex flex-col items-center justify-center absolute left-0 w-screen -top-8 h-screen "
+         class="bg-[url(/surveys/background-mobile.svg)] mt-[30px] pt-[50px] md:bg-[url(/surveys/background-desktop.svg)] bg-size-[105vw_100vh] md:flex flex-col items-center justify-center absolute left-0 w-screen -top-8 h-screen "
       >
          <h2 class="text-h2 lg:!text-2xl mx-4 mt-10 lg:mb-4">
             ✅ Опросы на сегодня завершены!
          </h2>
          <div class="absolute w-[90vw]  lg:static bottom-[120px] left-0 mx-[20px]">
-            <NuxtImg
+            <img
                class="w-full rounded-[10px]"
                src="/surveys/ad.svg"
                alt=""
@@ -132,11 +144,11 @@ const correctAnswersUsdt = ref<number>(0);
 const correctAnswersGovno = ref<number>(0);
 const { user, fetchWithValidate } = useUserStore();
 const config = useRuntimeConfig();
-const { focusScroll, focusScrollUnlock } = useAdaptiveStore();
+const {  focusScrollUnlock, focusScroll} = useAdaptiveStore();
 const userId = user?.id;
 const date = new Date();
 const storageKey = `quiz_questions_${encodeURIComponent(userId)}_${date.getDate()}_${date.getFullYear()}_${date.getMonth()}`;
-
+const isInputFocused = ref(false)
 watchEffect(async () => {
    const saved = localStorage.getItem(storageKey);
 

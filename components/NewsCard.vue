@@ -4,8 +4,8 @@ console.log(news.date);
 </script>
 
 <template>
-   <UCard variant="solid" class="w-full">
-      <div class="space-y-4 w-full">
+   <UCard variant="solid" class="!bg-balance w-full">
+      <div class="space-y-4 !bg-balance w-full">
          <!-- Заголовок новости -->
          <p class="text-lg text-white font-medium">{{ news.title }}</p>
 

@@ -1,7 +1,7 @@
 <template>
    <div class="flex flex-col items-center justify-start gap-7">
       <!-- Заголовок страницы -->
-      <p class="w-full text-h2 font-semibold text-start">Новости</p>
+      <p class="w-full text-h1 font-semibold text-start">Новости</p>
 
       <!-- Контейнер для всех новостей -->
       <div
@@ -20,7 +20,6 @@
 
 <script setup lang="ts">
 import { mockNews } from "~/lib/mockData";
-
 const news = ref<News[]>(mockNews);
 const _date = ref<Date>(new Date());
 const dateFormat = computed(() => {

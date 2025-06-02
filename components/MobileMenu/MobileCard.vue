@@ -18,11 +18,13 @@
             :modal="true"
             v-model:open="openReplenishment"
             side="bottom"
-            overlay-class="bg-black/40"
+            class="z-50 duration-500"
             :ui="{
-               body: 'bg-balance ',
+               body: ' bg-balance ',
+
                container: '',
-               content: 'bg-balance  !ring-transparent  !rounded-t-4xl  pt-4',
+               content:
+                  'z-50 bg-balance  !ring-transparent  !rounded-t-4xl  pt-4',
                handle: [
                   ' mt-2 py-[0.1vw]  px-[9vw] !bg-[#737373] ',
                   '  transition-opacity   ',
@@ -36,7 +38,6 @@
          >
             <UButton
                class="w-full flex justify-between bg-(--main-blue) h-[12.6vw] font-medium px-3.5"
-               to="/balance"
                trailing-icon="i-lucide-circle-plus"
                >Пополнить баланс</UButton
             >
@@ -68,20 +69,9 @@
                      color="secondary"
                      placeholder="Сумма пополнения ($GOVNO)"
                      v-model="stateValue"
-                     class="w-full text-(--support-text-color)"
+                     class="border-(--line-gray) w-full text-(--support-text-color)"
                   />
-                  <UButton
-                     @click="handleSubmit"
-                     class="h-[13.1vw] bg-(--main-blue) flex justify-center items-center text-black rounded-[3.5vw] text-(length:--support-text)"
-                  >
-                     Криптой
-                  </UButton>
-                  <NuxtLink
-                     to="https://g-crypto.ru/login"
-                     class="h-[13.1vw] bg-white flex justify-center items-center text-black rounded-[3.5vw] text-(length:--support-text)"
-                  >
-                     Банковской картой
-                  </NuxtLink>
+                  <BalanceExchange :num="stateValue" />
                   <div
                      class="bg-[url(/balance/coin-balance.svg)] w-[234px] h-[189px] bg-cover mx-auto"
                   ></div>
@@ -98,6 +88,7 @@ const stateValue = ref<number>();
 const { focusScroll, focusScrollUnlock } = useAdaptiveStore();
 const openReplenishment = ref(false);
 const config = useRuntimeConfig();
+const { open } = inject("open");
 const { user, loading, refreshBalance, govno, usd, fetchWithValidate } =
    useUserStore();
 watchEffect(async () => {
@@ -111,6 +102,14 @@ watchEffect(async () => {
          };
       } catch (e) {}
    }
+});
+watch(open, async () => {
+   await refreshBalance();
+
+   moneyVal.value = {
+      govno: govno,
+      usd: usd,
+   };
 });
 async function handleSubmit() {
    if (!user?.id) return;

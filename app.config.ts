@@ -104,13 +104,18 @@ export default defineAppConfig({
          variants: {
             variant: {
                outline:
-                  "text-(--support-text-color) bg-default ring ring-inset ring-accented",
+                  "text-(--support-text-color) bg-[#171918] !border-(--line-gray) ring ring-inset ring-accented",
                soft: "text-(--support-text-color) bg-elevated/50 hover:bg-elevated focus:bg-elevated disabled:bg-elevated/50",
                subtle:
                   "text-(--support-text-color) bg-elevated ring ring-inset ring-accented",
                ghost: "text-(--support-text-color) bg-transparent hover:bg-elevated focus:bg-elevated disabled:bg-transparent dark:disabled:bg-transparent",
                none: "text-(--support-text-color) bg-transparent",
             },
+         },
+      },
+      drawer: {
+         slots: {
+            content: "!z-50 ",
          },
       },
    },

@@ -21,7 +21,7 @@ const { toggleSidebar } = useSidebar();
       :class="cn('size-12', props.class)"
       @click="toggleSidebar"
    >
-      <NuxtImg src="/menu/bit-expand-menu.svg" class="" alt="" preload />
+      <img src="/menu/bit-expand-menu.svg" class="" alt="" preload />
       <span class="sr-only">Toggle Sidebar</span>
    </Button>
 </template>

@@ -32,12 +32,11 @@ async function buy() {
          openConfirmDrawer.value = false;
       }
    }
-   console.log(product ,{ 
-       user_id: user?.id,
-         skin_id: product.id,
-         username: user.userName,
-         
-   })
+   console.log(product, {
+      user_id: user?.id,
+      skin_id: product.id,
+      username: user.userName,
+   });
    const { data, status } = await fetchWithValidate("/shop/purchase_skin", {
       method: "post",
       body: {
@@ -47,6 +46,11 @@ async function buy() {
       },
    });
    if (status.value == "success") {
+               window.Telegram?.WebApp?.showPopup({
+            title: `💩 ${product.skin_name} Скин уже у вас!`,
+            message: "Теперь вы можете использовать его на карте!",
+            buttons: [{ text: "Продожить", type: "ok" }],
+         });
       openConfirmDrawer.value = false;
    }
 }
@@ -73,11 +77,13 @@ async function buy() {
          >
 
          <NuxtImg
+         v-if="type != 'skin'"
             :src="product.skin_url"
             alt=""
             class="mx-auto h-[180px]"
             preload
          />
+         <img v-if="type == 'skin'" :src="product.skin_url" class="mx-auto h-[180px]" alt="">
       </div>
       <div class="bg-card-gradient rounded-b-[20px] p-3">
          <p class="text-xl lg:text-xl">{{ product.skin_name }}</p>

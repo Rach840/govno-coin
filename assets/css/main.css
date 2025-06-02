@@ -194,7 +194,7 @@ body {
    }
 
    .line-gray {
-      background-color: #616161;
+      background-color: #616161 !important;
    }
 
    .background-black {
@@ -212,6 +212,10 @@ body {
 
 body {
    @apply font-sans;
+     min-height: 100vh;
+}
+#__nuxt{
+     min-height: 100vh;
 }
 
 /* Если нужно задать Inter везде, независимо от reset, можешь добавить: */

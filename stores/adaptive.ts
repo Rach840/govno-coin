@@ -5,33 +5,27 @@ export const useAdaptiveStore = defineStore("adaptiveStore", {
       menuVisible: ref(true),
    }),
    actions: {
-      changeVisible() {},
+      changeVisible() {
+         this.menuVisible = !this.menuVisible;
+      },
       focusScroll() {
          this.menuVisible = false;
          console.log("asda", this.menuVisible);
 
          setTimeout(() => {
-            const scrollTarget = Math.max(
-               document.documentElement.scrollHeight,
-               document.body.scrollHeight,
-            );
+
             // window.scrollTo({
             //    top: scrollTarget,
             //    behavior: "smooth",
             // });
             document.addEventListener("dblclick", (e) => {
-               window.scrollTo({
-                  top: scrollTarget,
-                  behavior: "instant",
-               });
+  
                e.preventDefault();
             });
          }, 500);
       },
       focusScrollUnlock() {
          this.menuVisible = true;
-         console.log("asdf", this.menuVisible);
-
          document.removeEventListener("dblclick", (e) => {});
       },
    },

@@ -12,7 +12,7 @@
                   class="balance-interaction-select-point text-(--support-text-color) p-0 text-(length:--h4)"
                   @click="actionSelect = 'replenishment'"
                   :class="{
-                     'underline underline-offset-1 decoration-(--main-blue) text-white':
+                     'underline underline-offset-6 decoration-(--main-blue) text-white':
                         actionSelect === 'replenishment',
                   }"
                >
@@ -23,7 +23,7 @@
                   class="balance-interaction-select-point text-(--support-text-color) p-0 text-(length:--h4)"
                   @click="actionSelect = 'withdrawal'"
                   :class="{
-                     'underline underline-offset-1 decoration-(--main-blue) text-white':
+                     'underline underline-offset-6 decoration-(--main-blue) text-white':
                         actionSelect === 'withdrawal',
                   }"
                >
@@ -35,34 +35,34 @@
                   orientation="vertical"
                   type="number"
                   :min="1"
+                  :max="1000"
                   @focus="(e) => focusScroll(e)"
                   @focusout="(e) => focusScrollUnlock(e)"
                   size="xl"
-                  variant="outline"
-                  class="h-[13.1vw] rounded-[3.5vw] text-(--support-text-color) text-(length:--support-text)"
+                  
+                  trailing-icon="i-lucide-dollar-sign"
+                  variant="none"
+                  class="h-[13.1vw] rounded-[3.5vw] !text-(--support-text-color) border-1 !border-(--line-gray) text-(length:--support-text)"
                   :ui="{
-                     base: 'bg-transparent p-4',
+                     base: '!text-(--support-text-color) bg-transparent p-4',
                      increment: 'hidden',
                      decrement: 'hidden',
+
                   }"
-                  color="secondary"
-                  placeholder="Сумма пополнения ($GOVNO)"
+                  placeholder="Сумма пополнения $"
                   v-model="stateValue"
                />
                <UButton
                   @click="handleSubmit"
+                  v-if="actionSelect == 'withdrawal'"
                   class="h-[13.1vw] bg-(--main-blue) flex justify-center items-center text-black rounded-[3.5vw] text-(length:--support-text)"
-                  :class="{ 'bg-red-500': actionSelect !== 'replenishment' }"
                >
-                  {{ actionSelect == "replenishment" ? "Криптой" : "Вывести" }}
+                  Вывести
                </UButton>
-               <NuxtLink
+               <BalanceExchange
+                  :num="stateValue"
                   v-if="actionSelect == 'replenishment'"
-                  to="https://g-crypto.ru/login"
-                  class="h-[13.1vw] bg-white flex justify-center items-center text-black rounded-[3.5vw] text-(length:--support-text)"
-               >
-                  Банковской картой
-               </NuxtLink>
+               />
             </div>
          </div>
       </div>
@@ -86,8 +86,6 @@ watchEffect(async () => {
    if (!loading && user?.id) {
       try {
          await refreshBalance();
-         console.log("balanceVal", govno, usd);
-
          moneyVal.value = {
             govno: govno,
             usd: usd,
@@ -100,22 +98,6 @@ async function handleSubmit() {
    if (!user?.id) return;
 
    try {
-      if (actionSelect.value === "replenishment") {
-         const { data, status } = await fetchWithValidate(
-            "/balance/create_invoice",
-            {
-               method: "post",
-               body: {
-                  amount: stateValue.value,
-                  user_id: user.id,
-               },
-            },
-         );
-
-         if (status.value === "success" && data.value) {
-            window.location.href = data.value;
-         }
-      } else {
          const { data, status } = await fetchWithValidate(
             "/balance/withdraw_govno",
             {
@@ -130,7 +112,7 @@ async function handleSubmit() {
          if (status.value === "success") {
             await refreshBalance();
          }
-      }
+      
    } catch (error) {
       console.error("Ошибка при отправке суммы ❌❌❌", error);
    }

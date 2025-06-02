@@ -1,7 +1,10 @@
 <template>
    <UApp class=" ">
       <TelegramPreloader v-if="loading" />
-      <UContainer v-if="isMobile" class="padding-container mx-auto pb-[100px]">
+      <UContainer
+         class="padding-container mx-auto z-10 pt-[100px] w-[100vw] pb-[100px]"
+         v-if="isMobile"
+      >
          <slot />
       </UContainer>
       <!-- <SidebarProvider v-else>
@@ -36,7 +39,6 @@ import { useMediaQuery } from "@vueuse/core";
 const { loading } = useUserStore();
 const { fullPath } = useRoute();
 const isLoading = ref(true);
-
 const isMobile = useMediaQuery("(max-width: 900px)");
 watch(loading, () => {
    isLoading.value = loading;

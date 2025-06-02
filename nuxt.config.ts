@@ -4,9 +4,11 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineNuxtConfig({
    compatibilityDate: "2025-05-15",
    css: ["~/assets/css/main.css"],
-
+   image: {
+      dir: "public",
+   },
    app: {
-      pageTransition: { name: "trans", mode: "in-out" },
+      pageTransition: { name: "page", mode: "in-out" },
       head: {
          link: [
             {
@@ -41,8 +43,6 @@ export default defineNuxtConfig({
    nitro: {
       prerender: {
          ignore: ["/admin/**"],
-
       },
-      
    },
 });
