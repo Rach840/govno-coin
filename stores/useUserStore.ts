@@ -22,7 +22,8 @@ export const useUserStore = defineStore("userStore", {
 
     actions: {
         async refreshBalance() {
-            if (!this.loading && this.user?.id) {
+            await this.loading;
+            if (this.user?.id) {
                 try {
                     const config = useRuntimeConfig();
 
