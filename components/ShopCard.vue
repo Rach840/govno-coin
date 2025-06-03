@@ -73,12 +73,11 @@ async function buy() {
                 >{{ product.skin_emission }} шт
             </UBadge>
 
-            <NuxtImg
+            <img
                 v-if="type != 'skin'"
                 :src="product.skin_url"
                 alt=""
                 class="mx-auto h-[180px]"
-                preload
             />
             <img
                 v-if="type == 'skin'"
@@ -93,7 +92,7 @@ async function buy() {
                 <p class="text-2xl lg:text-2xl">
                     {{ product.skin_price }} $GOVNO
                 </p>
-                <p class="text-(length--support-text) text-support lg:text-xl">
+                <p class="text-support lg:text-xl">
                     ~ {{ +product.skin_price * 0.1 }} $USDT
                 </p>
             </div>
@@ -173,11 +172,10 @@ async function buy() {
                                         </UBadge>
                                     </div>
 
-                                    <NuxtImg
+                                    <img
                                         :src="product.skin_url"
                                         alt=""
                                         class="mx-auto h-[180px]"
-                                        preload
                                     />
                                 </div>
                                 <div class="px-6">
@@ -194,9 +192,7 @@ async function buy() {
                                         <p class="text-2xl lg:text-2xl">
                                             {{ product.skin_price }} $GOVNO
                                         </p>
-                                        <p
-                                            class="text-(length--support-text) text-support lg:text-xl"
-                                        >
+                                        <p class="text-support lg:text-xl">
                                             ~
                                             {{ +product.skin_price * 0.1 }}
                                             $USDT
@@ -266,9 +262,7 @@ async function buy() {
                         <p class="text-2xl font-bold text-white">
                             {{ govno }} $GOVNO
                         </p>
-                        <span class="text-(length--support-text) text-support">
-                            ~ $ {{ usd }}
-                        </span>
+                        <span class="text-support"> ~ $ {{ usd }} </span>
                     </div>
                 </div>
 
@@ -328,9 +322,7 @@ async function buy() {
                         <p class="text-2xl font-bold text-white">
                             {{ govno }} $GOVNO
                         </p>
-                        <span class="text-(length--support-text) text-support">
-                            ~ $ {{ usd }}
-                        </span>
+                        <span class="text-support"> ~ $ {{ usd }} </span>
                     </div>
                 </div>
 

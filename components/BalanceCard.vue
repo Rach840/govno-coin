@@ -33,7 +33,7 @@ const mockBalance = ref<
                 <p class="text-4xl font-bold text-white">
                     $ {{ moneyVal.usd >= 0 ? moneyVal.usd.toFixed(2) : "0.00" }}
                 </p>
-                <span class="text-(length--support-text) text-support">
+                <span class="text-support">
                     ~
                     {{
                         moneyVal.govno >= 0 ? moneyVal.govno.toFixed(2) : "0.00"
