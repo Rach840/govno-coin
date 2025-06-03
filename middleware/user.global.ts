@@ -1,23 +1,18 @@
 import { useUserStore } from "~/stores/useUserStore";
 
 export default defineNuxtRouteMiddleware(async () => {
-    const {
-        user,
-        toRubExchange,
-        token,
-        setUser,
-        setTestUser,
-        validateUser,
-        refreshBalance,
-    } = useUserStore();
+    const userStore = useUserStore();
 
     try {
-        if ((!user && !token && !toRubExchange) || token) {
-            setUser();
-            await validateUser();
-            await refreshBalance();
+        if (
+            (!userStore.user && !userStore.token && !userStore.toRubExchange) ||
+            userStore.token
+        ) {
+            userStore.setUser();
+            await userStore.validateUser();
+            await userStore.refreshBalance();
         } else {
-            await refreshBalance();
+            await userStore.refreshBalance();
         }
     } catch (error) {}
 });
