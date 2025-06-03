@@ -1,42 +1,37 @@
-<script setup lang="ts">
-const { news }: { news: News; date: string } = defineProps(["news"]);
-console.log(news.date);
+<script lang="ts" setup>
+const { news } = defineProps<{
+    news: News;
+    date: string;
+}>();
 </script>
 
 <template>
-   <UCard variant="solid" class="!bg-balance w-full">
-      <div class="space-y-4 !bg-balance w-full">
-         <!-- Заголовок новости -->
-         <p class="text-lg text-white font-medium">{{ news.title }}</p>
-
-         <!-- Содержание новости -->
-         <p class="text-[length:15px] text-white font-normal">
-            {{ news.content }}
-         </p>
-
-         <!-- Источник новости -->
-
-         <!-- Источник-ссылка для криптовера -->
-         <div class="space-x-1 flex justify-between">
-            <p
-               v-if="news.source !== 't.me/cryptover1'"
-               class="text-[14px] font-normal text-[var(--support-text-color)]"
-            >
-               {{ news.source }}
+    <UCard class="!bg-balance w-full" variant="solid">
+        <div class="!bg-balance w-full space-y-4">
+            <p class="text-lg font-medium text-white">{{ news.title }}</p>
+            <p class="text-[length:15px] font-normal text-white">
+                {{ news.content }}
             </p>
-            <NuxtLink
-               class="underline text-[#008EFA] text-sm"
-               v-else
-               :to="`https://t.me/cryptover1`"
-            >
-               t.me/cryptover1
-            </NuxtLink>
-            <h4
-               class="text-[14px] font-normal text-[var(--support-text-color)]"
-            >
-               {{ news.date }}
-            </h4>
-         </div>
-      </div>
-   </UCard>
+            <div class="flex justify-between space-x-1">
+                <p
+                    v-if="news.source !== 't.me/cryptover1'"
+                    class="text-[14px] font-normal text-[var(--support-text-color)]"
+                >
+                    {{ news.source }}
+                </p>
+                <a
+                    v-else
+                    class="text-sm text-[#008EFA] underline"
+                    href="`https://t.me/cryptover1`"
+                >
+                    t.me/cryptover1
+                </a>
+                <h4
+                    class="text-[14px] font-normal text-[var(--support-text-color)]"
+                >
+                    {{ news.date }}
+                </h4>
+            </div>
+        </div>
+    </UCard>
 </template>

@@ -6,21 +6,21 @@ import { DrawerOverlay } from "vaul-vue";
 import { cn } from "@/lib/utils";
 
 const props = defineProps<
-   DialogOverlayProps & { class?: HTMLAttributes["class"] }
+    DialogOverlayProps & { class?: HTMLAttributes["class"] }
 >();
 
 const delegatedProps = reactiveOmit(props, "class");
 </script>
 
 <template>
-   <DrawerOverlay
-      data-slot="drawer-overlay"
-      v-bind="delegatedProps"
-      :class="
-         cn(
-            'data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-10 bg-black/80',
-            props.class,
-         )
-      "
-   />
+    <DrawerOverlay
+        data-slot="drawer-overlay"
+        v-bind="delegatedProps"
+        :class="
+            cn(
+                'data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-10 bg-black/80',
+                props.class,
+            )
+        "
+    />
 </template>

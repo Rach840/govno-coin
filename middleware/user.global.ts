@@ -1,17 +1,23 @@
-import { useUserStore } from "~/stores/user";
+import { useUserStore } from "~/stores/useUserStore";
 
 export default defineNuxtRouteMiddleware(async () => {
-   console.log("asdfasdfidhf;dhsakfjsdhafjhdsjlkfdjfh");
+    const {
+        user,
+        toRubExchange,
+        token,
+        setUser,
+        setTestUser,
+        validateUser,
+        refreshBalance,
+    } = useUserStore();
 
-   const { user,toRubExchange, token,setUser,validateUser, refreshBalance,  } = useUserStore();
-   try {
-      if (!user && !token && !toRubExchange) {
-      setUser();
-      await validateUser();
-      await refreshBalance();  
-      }  else{
-      await refreshBalance();  
-
-      }
-   } catch (error) {}
+    try {
+        if ((!user && !token && !toRubExchange) || token) {
+            setUser();
+            await validateUser();
+            await refreshBalance();
+        } else {
+            await refreshBalance();
+        }
+    } catch (error) {}
 });

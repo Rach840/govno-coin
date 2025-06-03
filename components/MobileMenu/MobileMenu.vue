@@ -1,78 +1,72 @@
-<script setup lang="ts">
-import { ref } from "vue";
-import MobileMenuBar from "./MobileMenuBar.vue";
+<script lang="ts" setup>
 import MobileMiniProfile from "~/components/MobileMenu/MobileMiniProfile.vue";
 import MobileCard from "~/components/MobileMenu/MobileCard.vue";
-import { templateRef } from "@vueuse/core";
-import { Drawer, DrawerContent } from "@/components/ui/drawer";
-const open = ref(false);
+import { Drawer, DrawerContent } from "~/components/ui/drawer";
+
+const open = ref<boolean>(false);
 const updateOpen = () => (open.value = !open.value);
 provide("open", {
-   open,
-   updateOpen,
+    open,
+    updateOpen,
 });
 
 const navigation = [
-   {
-      name: "Задания",
-      link: "/tasks",
-   },
-   {
-      name: "Магазин",
-      link: "/shop",
-   },
-   {
-      name: "Опрос",
-      link: "/quiz",
-   },
-   {
-      name: "Новости",
-      link: "/news",
-   },
-   {
-      name: "Партнеры",
-      link: "/partners",
-   },
+    {
+        name: "Задания",
+        link: "/tasks",
+    },
+    {
+        name: "Магазин",
+        link: "/shop",
+    },
+    {
+        name: "Опрос",
+        link: "/quiz",
+    },
+    {
+        name: "Новости",
+        link: "/news",
+    },
+    {
+        name: "Партнеры",
+        link: "/partners",
+    },
 ];
 
 const router = useRouter();
-const { fullPath } = useRoute();
-console.log(fullPath);
-const menu = templateRef<HTMLDivElement>("menu");
 </script>
 
 <template>
-   <MobileMenuBar/>
-   <Drawer class="bg-[#262827]" v-model:open="open">
-      <DrawerContent>
-         <div
-            class="px-5.5 flex flex-col items-center text-center gap-5 overflow-auto mt-4"
-         >
-            <MobileMiniProfile />
-            <MobileCard
-               class="bg-[linear-gradient(162deg,_#3C3C3C_0%,_#2F2F2F_100%)] rounded-[5.3vw]"
-            />
+    <MobileMenuBar />
+    <Drawer v-model:open="open" class="bg-[#262827]">
+        <DrawerContent>
+            <div
+                class="mt-4 flex flex-col items-center gap-5 overflow-auto px-5.5 text-center"
+            >
+                <MobileMiniProfile />
+                <MobileCard
+                    class="rounded-[5.3vw] bg-[linear-gradient(162deg,_#3C3C3C_0%,_#2F2F2F_100%)]"
+                />
 
-            <div class="flex flex-col gap-2.5 w-full mb-9">
-               <UButton
-                  class="w-full pointer-events-auto flex justify-between h-[12.6vw] px-4 bg-none border-1 border-(--line-gray)"
-                  :ui="{
-                     trailingIcon: 'size-6',
-                  }"
-                  @click="
-                     () => {
-                        updateOpen();
-                        router.push(navItem.link);
-                     }
-                  "
-                  trailing-icon="i-lucide-move-right"
-                  v-for="navItem in navigation"
-                  variant="link"
-                  >{{ navItem.name }}</UButton
-               >
+                <div class="mb-9 flex w-full flex-col gap-2.5">
+                    <UButton
+                        v-for="navItem in navigation"
+                        :ui="{
+                            trailingIcon: 'size-6',
+                        }"
+                        class="pointer-events-auto flex h-[12.6vw] w-full justify-between border-1 border-(--line-gray) bg-none px-4"
+                        trailing-icon="i-lucide-move-right"
+                        variant="link"
+                        @click="
+                            () => {
+                                updateOpen();
+                                router.push(navItem.link);
+                            }
+                        "
+                        >{{ navItem.name }}
+                    </UButton>
+                </div>
             </div>
-         </div>
-      </DrawerContent>
-   </Drawer>
-
+        </DrawerContent>
+    </Drawer>
 </template>

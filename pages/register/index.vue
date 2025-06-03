@@ -1,10 +1,8 @@
-<script setup lang="ts">
-import { ref, reactive, computed, onMounted, onBeforeUnmount } from "vue";
-import axios from "axios";
-import { useRouter } from "vue-router";
+<script lang="ts" setup>
 definePageMeta({
-   layout: "register",
+    layout: "register",
 });
+
 const router = useRouter();
 const step = ref(1);
 const direction = ref<"forward" | "backward">("forward");
@@ -14,343 +12,338 @@ const block = ref();
 const { focusScroll, focusScrollUnlock } = useAdaptiveStore();
 
 onMounted(() => {
-   document.body.style.overflow = "hidden";
-   document.documentElement.style.overflow = "hidden";
+    document.body.style.overflow = "hidden";
+    document.documentElement.style.overflow = "hidden";
 });
 
 onBeforeUnmount(() => {
-   document.body.style.overflow = "";
-   document.documentElement.style.overflow = "";
+    document.body.style.overflow = "";
+    document.documentElement.style.overflow = "";
 });
 
 const form = reactive({
-   weight: "",
-   height: "",
-   age: "",
-   amt: "",
-   gender: true,
+    weight: "",
+    height: "",
+    age: "",
+    amt: "",
+    gender: true,
 });
 
-// ошибки по шагам
 const errors = reactive({
-   weight: false,
-   height: false,
-   age: false,
-   amt: false,
+    weight: false,
+    height: false,
+    age: false,
+    amt: false,
 });
 
 const tg = window?.Telegram?.WebApp;
 
 function validateStep(stepNum: number): boolean {
-   let valid = true;
+    let valid = true;
 
-   if (stepNum === 1) {
-      errors.weight =
-         !form.weight || Number(form.weight) < 1 || Number(form.weight) > 300;
-      errors.height =
-         !form.height || Number(form.height) < 1 || Number(form.height) > 250;
-      valid = !errors.weight && !errors.height;
-   }
+    if (stepNum === 1) {
+        errors.weight =
+            !form.weight ||
+            Number(form.weight) < 1 ||
+            Number(form.weight) > 300;
+        errors.height =
+            !form.height ||
+            Number(form.height) < 1 ||
+            Number(form.height) > 250;
+        valid = !errors.weight && !errors.height;
+    }
 
-   if (stepNum === 2) {
-      errors.age = !form.age || Number(form.age) < 1 || Number(form.age) > 110;
-      valid = !errors.age;
-   }
+    if (stepNum === 2) {
+        errors.age =
+            !form.age || Number(form.age) < 1 || Number(form.age) > 110;
+        valid = !errors.age;
+    }
 
-   if (stepNum === 3) {
-      errors.amt = !form.amt || Number(form.amt) < 1 || Number(form.amt) > 10;
-      valid = !errors.amt;
-   }
+    if (stepNum === 3) {
+        errors.amt = !form.amt || Number(form.amt) < 1 || Number(form.amt) > 10;
+        valid = !errors.amt;
+    }
 
-   return valid;
+    return valid;
 }
 
 function goNext() {
-   isButtonClicked.value = true;
+    isButtonClicked.value = true;
 
-   if (!validateStep(step.value)) {
-      return;
-   }
+    if (!validateStep(step.value)) {
+        return;
+    }
 
-   direction.value = "forward";
+    direction.value = "forward";
 
-   if (step.value < 3) {
-      step.value++;
-      isButtonClicked.value = false;
-   } else {
-      isFinishing.value = true;
-      step.value++;
-      submitForm();
-   }
+    if (step.value < 3) {
+        step.value++;
+        isButtonClicked.value = false;
+    } else {
+        isFinishing.value = true;
+        step.value++;
+        submitForm();
+    }
 }
 
 function goBack() {
-   if (step.value > 1) {
-      direction.value = "backward";
-      step.value--;
-      isButtonClicked.value = false;
-   }
+    if (step.value > 1) {
+        direction.value = "backward";
+        step.value--;
+        isButtonClicked.value = false;
+    }
 }
 
 function goToStep(target: number) {
-   if (target < step.value) {
-      direction.value = "backward";
-   } else if (target > step.value) {
-      direction.value = "forward";
-   }
-   step.value = target;
+    if (target < step.value) {
+        direction.value = "backward";
+    } else if (target > step.value) {
+        direction.value = "forward";
+    }
+    step.value = target;
 }
 
 async function submitForm() {
-   const config = useRuntimeConfig();
-   try {
-      const response = await axios.post(
-         `${config.public.apiUrl}/auth/user_reg`,
-         {
-            user_id: tg?.initDataUnsafe?.user?.id,
-            username: tg?.initDataUnsafe?.user?.first_name,
-            user_age: form.age,
-            user_height: form.height,
-            user_weight: form.weight,
-            user_sex: form.gender,
-            user_toilet_visits: form.amt,
-            referredCode: tg?.initDataUnsafe?.start_param || "None",
-         },
-      );
+    const config = useRuntimeConfig();
+    try {
+        const response = await fetch(`${config.public.apiUrl}/auth/user_reg`, {
+            body: JSON.stringify({
+                user_id: tg?.initDataUnsafe?.user?.id,
+                username: tg?.initDataUnsafe?.user?.first_name,
+                user_age: form.age,
+                user_height: form.height,
+                user_weight: form.weight,
+                user_sex: form.gender,
+                user_toilet_visits: form.amt,
+                referredCode: tg?.initDataUnsafe?.start_param || "None",
+            }),
+        });
 
-      if (response.status === 200) {
-         setTimeout(() => {
-            router.push("/balance");
-         }, 100);
-      }
-   } catch (err) {
-      console.error("не отправилось");
-   }
+        if (response.status === 200) {
+            await router.push("/balance");
+        }
+    } catch (err) {
+        console.error("Ошибка при отправке формы:", err);
+    }
 }
+
 const isInputFocused = ref(false);
 </script>
 
 <template>
-   <div
-      class="absolute inset-0 duration-[999999999s] h-screen z-0 pointer-events-none"
-   >
-      <img
-         src="/register/register-background-mobile.svg"
-         alt="background"
-         class="w-full h-full object-cover"
-      />
-   </div>
-   <div :ref="block" class="overflow-x-hidden">
-      <div class="z-20 relative px-3.5 flex flex-col gap-3.5 text-center">
-         <h1 class="text-(length:--h1)">Заполнение профиля</h1>
+    <div
+        class="pointer-events-none absolute inset-0 z-0 h-screen duration-[999999999s]"
+    >
+        <img
+            alt="background"
+            class="h-full w-full object-cover"
+            src="/register/register-background-mobile.svg"
+        />
+    </div>
+    <div :ref="block" class="overflow-x-hidden">
+        <div class="relative z-20 flex flex-col gap-3.5 px-3.5 text-center">
+            <h1 class="text-(length:--h1)">Заполнение профиля</h1>
 
-         <div class="flex gap-2.5">
-            <UButton
-               variant="link"
-               class="w-full h-1 p-0"
-               :class="
-                  step == 1 ? 'bg-(--main-blue)' : 'bg-(--disable-button-color)'
-               "
-               @click="goToStep(1)"
-            >
-            </UButton>
-            <UButton
-               variant="link"
-               class="w-full h-1 p-0"
-               :class="
-                  step == 2 ? 'bg-(--main-blue)' : 'bg-(--disable-button-color)'
-               "
-               @click="goToStep(2)"
-            >
-            </UButton>
-            <UButton
-               variant="link"
-               class="w-full h-1 p-0"
-               :class="
-                  step == 3 ? 'bg-(--main-blue)' : 'bg-(--disable-button-color)'
-               "
-               @click="goToStep(3)"
-            >
-            </UButton>
-         </div>
-
-         <transition
-            :name="
-               direction === 'forward'
-                  ? 'fade-slide-forward'
-                  : 'fade-slide-backward'
-            "
-            mode="out-in"
-         >
-            <div :key="step">
-               <!-- Шаг 1 -->
-               <div v-if="step === 1" class="flex flex-col gap-3.5">
-                  <h2 class="text-(length:--h3)">Параметры вашего тела</h2>
-                  <div class="flex gap-3">
-                     <UInput
-                        type="number"
-                        min="1"
-                        max="300"
-                        @focus="
-                           (e) => {
-                              isInputFocused = true;
-                              focusScroll(e);
-                           }
-                        "
-                        @focusout="
-                           (e) => {
-                              isInputFocused = false;
-                              focusScrollUnlock(e);
-                           }
-                        "
-                        :class="[
-                           'w-full h-11.5 border-1 rounded-[3vw]   ',
-                           errors.weight
-                              ? 'border-red-500'
-                              : 'border-(--line-gray)',
-                        ]"
-                        variant="none"
-                        placeholder="Вес (кг)"
-                        v-model="form.weight"
-                        size="xl"
-                     />
-                     <UInput
-                        type="number"
-                        min="1"
-                        max="250"
-                        @focus="
-                           (e) => {
-                              isInputFocused = true;
-                              focusScroll(e);
-                           }
-                        "
-                        @focusout="
-                           (e) => {
-                              isInputFocused = false;
-                              focusScrollUnlock(e);
-                           }
-                        "
-                        :class="[
-                           'w-full h-11.5 border-1 rounded-[3vw] !text-(--support-text-color)',
-                           errors.height
-                              ? 'border-red-500'
-                              : 'border-(--line-gray)',
-                        ]"
-                        variant="none"
-                        placeholder="Рост (см)"
-                        v-model="form.height"
-                        size="xl"
-                     />
-                  </div>
-               </div>
-
-               <!-- Шаг 2 -->
-               <div v-else-if="step === 2" class="flex flex-col gap-3.5">
-                  <h2 class="text-(length:--h3)">Параметры вашего тела</h2>
-                  <UInput
-                     type="number"
-                     min="1"
-                     max="110"
-                     @focus="
-                        (e) => {
-                           isInputFocused = true;
-                           focusScroll(e);
-                        }
-                     "
-                     @focusout="
-                        (e) => {
-                           isInputFocused = false;
-                           focusScrollUnlock(e);
-                        }
-                     "
-                     :class="[
-                        'w-full h-11.5 border-1 rounded-[3vw] !text-(--support-text-color)',
-                        errors.age ? 'border-red-500' : 'border-(--line-gray)',
-                     ]"
-                     variant="none"
-                     placeholder="Возраст (лет)"
-                     v-model="form.age"
-                     size="xl"
-                  />
-                  <div class="flex gap-2">
-                     <UButton
-                        class="w-full h-11.5 flex justify-center"
-                        @click="form.gender = true"
-                        :class="
-                           form.gender === true
-                              ? 'bg-(--main-blue) text-white'
-                              : 'bg-(--disable-button-color) !text-(--support-text-color)'
-                        "
-                     >
-                        Мужчина</UButton
-                     >
-                     <UButton
-                        class="w-full h-11.5 flex justify-center"
-                        @click="form.gender = false"
-                        :class="
-                           form.gender === false
-                              ? 'bg-(--main-blue) text-white'
-                              : 'bg-(--disable-button-color) !text-(--support-text-color)'
-                        "
-                     >
-                        Женщина</UButton
-                     >
-                  </div>
-               </div>
-
-               <!-- Шаг 3 -->
-               <div v-else-if="step === 3" class="flex flex-col gap-3.5">
-                  <h2 class="text-(length:--h3)">Ваш вклад в развитие</h2>
-                  <UInput
-                     type="number"
-                     min="1"
-                     max="10"
-                     @focus="
-                        (e) => {
-                           isInputFocused = true;
-                           focusScroll(e);
-                        }
-                     "
-                     @focusout="
-                        (e) => {
-                           isInputFocused = false;
-                           focusScrollUnlock(e);
-                        }
-                     "
-                     :class="[
-                        'w-full h-11.5 border-1 rounded-[3vw] !text-(--support-text-color)',
-                        errors.amt ? 'border-red-500' : 'border-(--line-gray)',
-                     ]"
-                     variant="none"
-                     placeholder="Сколько раз в день майнишь в туалете?"
-                     v-model="form.amt"
-                     size="xl"
-                  />
-               </div>
+            <div class="flex gap-2.5">
+                <UButton
+                    :class="
+                        step == 1
+                            ? 'bg-(--main-blue)'
+                            : 'bg-(--disable-button-color)'
+                    "
+                    class="h-1 w-full p-0"
+                    variant="link"
+                    @click="goToStep(1)"
+                >
+                </UButton>
+                <UButton
+                    :class="
+                        step == 2
+                            ? 'bg-(--main-blue)'
+                            : 'bg-(--disable-button-color)'
+                    "
+                    class="h-1 w-full p-0"
+                    variant="link"
+                    @click="goToStep(2)"
+                >
+                </UButton>
+                <UButton
+                    :class="
+                        step == 3
+                            ? 'bg-(--main-blue)'
+                            : 'bg-(--disable-button-color)'
+                    "
+                    class="h-1 w-full p-0"
+                    variant="link"
+                    @click="goToStep(3)"
+                >
+                </UButton>
             </div>
-         </transition>
 
-         <div class="flex gap-3 justify-between mt-12">
-            <UButton
-               class="w-[35%] h-11.5 rounded-[3vw] flex justify-center border-1 border-(--line-gray)"
-               @click="goBack"
-               variant="link"
-               :disabled="step === 1"
-               >Назад</UButton
+            <transition
+                :name="
+                    direction === 'forward'
+                        ? 'fade-slide-forward'
+                        : 'fade-slide-backward'
+                "
+                mode="out-in"
             >
-            <UButton
-               class="w-[100%] text-center h-11.5 rounded-[3vw] px-5 text-black flex justify-center bg-(--main-blue)"
-               @click="goNext"
-               variant="link"
-               :trailing-icon="
-                  step === 3 ? 'i-lucide-check' : 'i-lucide-move-right'
-               "
-            >
-               {{ step < 3 ? "Продолжить" : "Завершить" }}
-            </UButton>
-         </div>
-      </div>
-   </div>
+                <div :key="step">
+                    <div v-if="step === 1" class="flex flex-col gap-3.5">
+                        <h2 class="text-(length:--h3)">
+                            Параметры вашего тела
+                        </h2>
+                        <div class="flex gap-3">
+                            <UInput
+                                v-model="form.weight"
+                                :class="[
+                                    'h-11.5 w-full rounded-[3vw] border-1',
+                                    errors.weight
+                                        ? 'border-red-500'
+                                        : 'border-(--line-gray)',
+                                ]"
+                                max="300"
+                                min="1"
+                                placeholder="Вес (кг)"
+                                size="xl"
+                                type="number"
+                                variant="none"
+                                @focus="
+                                    isInputFocused = true;
+                                    focusScroll();
+                                "
+                                @focusout="
+                                    isInputFocused = false;
+                                    focusScrollUnlock();
+                                "
+                            />
+                            <UInput
+                                v-model="form.height"
+                                :class="[
+                                    'h-11.5 w-full rounded-[3vw] border-1 !text-(--support-text-color)',
+                                    errors.height
+                                        ? 'border-red-500'
+                                        : 'border-(--line-gray)',
+                                ]"
+                                max="250"
+                                min="1"
+                                placeholder="Рост (см)"
+                                size="xl"
+                                type="number"
+                                variant="none"
+                                @focus="
+                                    isInputFocused = true;
+                                    focusScroll();
+                                "
+                                @focusout="
+                                    isInputFocused = false;
+                                    focusScrollUnlock();
+                                "
+                            />
+                        </div>
+                    </div>
+                    <div v-else-if="step === 2" class="flex flex-col gap-3.5">
+                        <h2 class="text-(length:--h3)">
+                            Параметры вашего тела
+                        </h2>
+                        <UInput
+                            v-model="form.age"
+                            :class="[
+                                'h-11.5 w-full rounded-[3vw] border-1 !text-(--support-text-color)',
+                                errors.age
+                                    ? 'border-red-500'
+                                    : 'border-(--line-gray)',
+                            ]"
+                            max="110"
+                            min="1"
+                            placeholder="Возраст (лет)"
+                            size="xl"
+                            type="number"
+                            variant="none"
+                            @focus="
+                                isInputFocused = true;
+                                focusScroll();
+                            "
+                            @focusout="
+                                isInputFocused = false;
+                                focusScrollUnlock();
+                            "
+                        />
+                        <div class="flex gap-2">
+                            <UButton
+                                :class="
+                                    form.gender === true
+                                        ? 'bg-(--main-blue) text-white'
+                                        : 'bg-(--disable-button-color) !text-(--support-text-color)'
+                                "
+                                class="flex h-11.5 w-full justify-center"
+                                @click="form.gender = true"
+                            >
+                                Мужчина
+                            </UButton>
+                            <UButton
+                                :class="
+                                    form.gender === false
+                                        ? 'bg-(--main-blue) text-white'
+                                        : 'bg-(--disable-button-color) !text-(--support-text-color)'
+                                "
+                                class="flex h-11.5 w-full justify-center"
+                                @click="form.gender = false"
+                            >
+                                Женщина
+                            </UButton>
+                        </div>
+                    </div>
+                    <div v-else-if="step === 3" class="flex flex-col gap-3.5">
+                        <h2 class="text-(length:--h3)">Ваш вклад в развитие</h2>
+                        <UInput
+                            v-model="form.amt"
+                            :class="[
+                                'h-11.5 w-full rounded-[3vw] border-1 !text-(--support-text-color)',
+                                errors.amt
+                                    ? 'border-red-500'
+                                    : 'border-(--line-gray)',
+                            ]"
+                            max="10"
+                            min="1"
+                            placeholder="Сколько раз в день майнишь в туалете?"
+                            size="xl"
+                            type="number"
+                            variant="none"
+                            @focus="
+                                isInputFocused = true;
+                                focusScroll();
+                            "
+                            @focusout="
+                                isInputFocused = false;
+                                focusScrollUnlock();
+                            "
+                        />
+                    </div>
+                </div>
+            </transition>
+
+            <div class="mt-12 flex justify-between gap-3">
+                <UButton
+                    :disabled="step === 1"
+                    class="flex h-11.5 w-[35%] justify-center rounded-[3vw] border-1 border-(--line-gray)"
+                    variant="link"
+                    @click="goBack"
+                    >Назад
+                </UButton>
+                <UButton
+                    :trailing-icon="
+                        step === 3 ? 'i-lucide-check' : 'i-lucide-move-right'
+                    "
+                    class="flex h-11.5 w-[100%] justify-center rounded-[3vw] bg-(--main-blue) px-5 text-center text-black"
+                    variant="link"
+                    @click="goNext"
+                >
+                    {{ step < 3 ? "Продолжить" : "Завершить" }}
+                </UButton>
+            </div>
+        </div>
+    </div>
 </template>
 
 <style>
@@ -358,24 +351,26 @@ const isInputFocused = ref(false);
 .fade-slide-forward-leave-active,
 .fade-slide-backward-enter-active,
 .fade-slide-backward-leave-active {
-   transition: all 0.6s ease-in-out;
+    transition: all 0.6s ease-in-out;
 }
 
 .fade-slide-forward-enter-from {
-   opacity: 0;
-   transform: translateX(13vw);
+    opacity: 0;
+    transform: translateX(13vw);
 }
+
 .fade-slide-forward-leave-to {
-   opacity: 0;
-   transform: translateX(-13vw);
+    opacity: 0;
+    transform: translateX(-13vw);
 }
 
 .fade-slide-backward-enter-from {
-   opacity: 0;
-   transform: translateX(-13vw);
+    opacity: 0;
+    transform: translateX(-13vw);
 }
+
 .fade-slide-backward-leave-to {
-   opacity: 0;
-   transform: translateX(13vw);
+    opacity: 0;
+    transform: translateX(13vw);
 }
 </style>

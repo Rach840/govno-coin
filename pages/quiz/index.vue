@@ -1,140 +1,136 @@
 <template>
-   <div class="survey-container" id="content_app">
-      <section v-if="surveyState == 1" class="">
-         <div class="mb-5 flex justify-between items-center">
-            <h1 class="text-h1 lg:text-3xl font-semibold">Опрос</h1>
-            <p class="text-xl text-(--support-text-color)">
-               {{ currentQuestionIndex + 1 }} / 10
-            </p>
-         </div>
-         <h3 class="text-h2 mb-5">
-            {{
-               questions.length > 0
-                  ? questions[currentQuestionIndex]
-                  : "Загрузка вопросов..."
-            }}
-         </h3>
-         <UInput
-            size="xl"
-            :ui="{
-               base: 'p-4 !border-(--line-gray)',
-            }"
-          @focus="(e)=> {
-            isInputFocused = true
-            focusScroll()
-          }"
-            @focusout="(e) =>  {
-               isInputFocused = false
-               focusScrollUnlock(e)}"
-             variant="outline"
-            
-            v-model="userValue"
-            class="!border-(--line-gray) w-full !text-(--support-text-color)"
-         />
-         <UButton
-            @click="nextQuestion"
-            :disabled="userValue.trim() === ''"
-            class="w-full pointer-events-auto bg-white text-black flex justify-between mt-4"
-            size="xxl"
-            :ui="{}"
-            trailing-icon="i-lucide-move-right"
-         >
-            Продолжить
-         </UButton> 
- <transition
-  name="fade-slide"
-  mode="out-in"
->
-  <div
-    v-if="!isInputFocused"
-    class="absolute w-[90vw]  pointer-events-none bottom-[120px] left-0 mx-[20px]"
-  >
-    <img
-      class="rounded-[10px] w-full"
-      src="/surveys/ad.svg"
-      alt=""
-    />
-  </div>
-</transition>
-      </section>
-
-      <section v-else-if="surveyState == 2" class="results-section">
-         <h1 class="text-h1 lg:text-3xl font-semibold mt-8 mb-5">Опрос</h1>
-         <div class="results-content">
-            <h3 class="text-h2 lg:text-2xl font-semibold">
-               ✅ Опрос завершён!
-            </h3>
-            <p class="green-color my-5 text-h2 lg:text-2xl">
-               +{{ correctAnswersGovno }} $GOVNO
-               <span class="text-(--support-text-color) text-base lg:text-xl"
-                  >~ {{ correctAnswersUsdt }} $USDT</span
-               >
-            </p>
-            <div class="space-y-4">
-               <p class="text-base">
-                  Сегодня вы ответили правильно на {{ correctAnswersCount }} из
-                  {{ questionsLength }} вопросов, приходите завтра!
-               </p>
-               <p class="text-(--support-text-color) text-sm">
-                  Опросы обновляются ежедневно, за их прохождение вы сможете
-                  заработать $GOVNO
-               </p>
+    <div id="content_app" class="survey-container">
+        <section v-if="surveyState == 1" class="">
+            <div class="mb-5 flex items-center justify-between">
+                <h1 class="text-h1 font-semibold lg:text-3xl">Опрос</h1>
+                <p class="text-xl text-(--support-text-color)">
+                    {{ currentQuestionIndex + 1 }} / 10
+                </p>
             </div>
-            
-         </div>
-         <div class="absolute w-[90vw] bottom-[120px] left-0 mx-[20px]">
-            <img
-               class=" w-full rounded-[10px]"
-               src="/surveys/ad.svg"
-               alt=""
-               preload
+            <h3 class="text-h2 mb-5">
+                {{
+                    questions.length > 0
+                        ? questions[currentQuestionIndex]
+                        : "Загрузка вопросов..."
+                }}
+            </h3>
+            <UInput
+                v-model="userValue"
+                :ui="{
+                    base: 'p-4 !border-(--line-gray)',
+                }"
+                class="w-full !border-(--line-gray) !text-(--support-text-color)"
+                size="xl"
+                variant="outline"
+                @focus="
+                    isInputFocused = true;
+                    focusScroll();
+                "
+                @focusout="
+                    isInputFocused = false;
+                    focusScrollUnlock();
+                "
             />
             <UButton
-               to="/balance"
-               class="w-full bg-white text-black flex justify-between mt-4"
-               size="xxl"
-               :ui="{}"
-               trailing-icon="i-lucide-move-right"
+                :disabled="userValue.trim() === ''"
+                :ui="{}"
+                class="pointer-events-auto mt-4 flex w-full justify-between bg-white text-black"
+                size="xxl"
+                trailing-icon="i-lucide-move-right"
+                @click="nextQuestion"
             >
-               Перейти к балансу
+                Продолжить
             </UButton>
-         </div>
-      </section>
+            <transition mode="out-in" name="fade-slide">
+                <div
+                    v-if="!isInputFocused"
+                    class="pointer-events-none absolute bottom-[120px] left-0 mx-[20px] w-[90vw]"
+                >
+                    <img
+                        alt=""
+                        class="w-full rounded-[10px]"
+                        src="/surveys/ad.svg"
+                    />
+                </div>
+            </transition>
+        </section>
 
-      <section
-         v-else-if="surveyState == 3"
-         class="bg-[url(/surveys/background-mobile.svg)] mt-[30px] pt-[50px] md:bg-[url(/surveys/background-desktop.svg)] bg-size-[105vw_100vh] md:flex flex-col items-center justify-center absolute left-0 w-screen -top-8 h-screen "
-      >
-         <h2 class="text-h2 lg:!text-2xl mx-4 mt-10 lg:mb-4">
-            ✅ Опросы на сегодня завершены!
-         </h2>
-         <div class="absolute w-[90vw]  lg:static bottom-[120px] left-0 mx-[20px]">
-            <img
-               class="w-full rounded-[10px]"
-               src="/surveys/ad.svg"
-               alt=""
-               preload
-            />
-            <UButton
-               class="w-full bg-white text-black flex justify-between mt-4"
-               size="xxl"
-               to="/balance"
-               trailing-icon="i-lucide-move-right"
+        <section v-else-if="surveyState == 2" class="results-section">
+            <h1 class="text-h1 mt-8 mb-5 font-semibold lg:text-3xl">Опрос</h1>
+            <div class="results-content">
+                <h3 class="text-h2 font-semibold lg:text-2xl">
+                    ✅ Опрос завершён!
+                </h3>
+                <p class="green-color text-h2 my-5 lg:text-2xl">
+                    +{{ correctAnswersGovno }} $GOVNO
+                    <span
+                        class="text-base text-(--support-text-color) lg:text-xl"
+                        >~ {{ correctAnswersUsdt }} $USDT</span
+                    >
+                </p>
+                <div class="space-y-4">
+                    <p class="text-base">
+                        Сегодня вы ответили правильно на
+                        {{ correctAnswersCount }} из
+                        {{ questionsLength }} вопросов, приходите завтра!
+                    </p>
+                    <p class="text-sm text-(--support-text-color)">
+                        Опросы обновляются ежедневно, за их прохождение вы
+                        сможете заработать $GOVNO
+                    </p>
+                </div>
+            </div>
+            <div class="absolute bottom-[120px] left-0 mx-[20px] w-[90vw]">
+                <img
+                    alt=""
+                    class="w-full rounded-[10px]"
+                    src="/surveys/ad.svg"
+                />
+                <UButton
+                    :ui="{}"
+                    class="mt-4 flex w-full justify-between bg-white text-black"
+                    size="xxl"
+                    to="/balance"
+                    trailing-icon="i-lucide-move-right"
+                >
+                    Перейти к балансу
+                </UButton>
+            </div>
+        </section>
+
+        <section
+            v-else-if="surveyState == 3"
+            class="absolute -top-8 left-0 mt-[30px] h-screen w-screen flex-col items-center justify-center bg-[url(/surveys/background-mobile.svg)] bg-size-[105vw_100vh] pt-[50px] md:flex md:bg-[url(/surveys/background-desktop.svg)]"
+        >
+            <h2 class="text-h2 mx-4 mt-10 lg:mb-4 lg:!text-2xl">
+                ✅ Опросы на сегодня завершены!
+            </h2>
+            <div
+                class="absolute bottom-[120px] left-0 mx-[20px] w-[90vw] lg:static"
             >
-               Перейти к балансу
-            </UButton>
-         </div>
-      </section>
-   </div>
+                <img
+                    alt=""
+                    class="w-full rounded-[10px]"
+                    src="/surveys/ad.svg"
+                />
+                <UButton
+                    class="mt-4 flex w-full justify-between bg-white text-black"
+                    size="xxl"
+                    to="/balance"
+                    trailing-icon="i-lucide-move-right"
+                >
+                    Перейти к балансу
+                </UButton>
+            </div>
+        </section>
+    </div>
 
-   <div v-if="surveyState == 3" class="finished-section-background"></div>
+    <div v-if="surveyState == 3" class="finished-section-background"></div>
 </template>
 
-<script setup lang="ts">
-
+<script lang="ts" setup>
 const userValue = ref<string>("");
 const surveyState = ref<number>(1);
-const showFinishedMessage = ref<boolean>(false);
 const currentQuestionIndex = ref<number>(0);
 const questions = ref<string[]>([]);
 const questionsLength = ref<number>(0);
@@ -143,129 +139,134 @@ const correctAnswersCount = ref<number>(0);
 const correctAnswersUsdt = ref<number>(0);
 const correctAnswersGovno = ref<number>(0);
 const { user, fetchWithValidate } = useUserStore();
-const config = useRuntimeConfig();
-const {  focusScrollUnlock, focusScroll} = useAdaptiveStore();
+const { focusScrollUnlock, focusScroll } = useAdaptiveStore();
 const userId = user?.id;
 const date = new Date();
-const storageKey = `quiz_questions_${encodeURIComponent(userId)}_${date.getDate()}_${date.getFullYear()}_${date.getMonth()}`;
-const isInputFocused = ref(false)
+const storageKey = `quiz_questions_${encodeURIComponent(userId ?? "")}_${date.getDate()}_${date.getFullYear()}_${date.getMonth()}`;
+const isInputFocused = ref(false);
+
 watchEffect(async () => {
-   const saved = localStorage.getItem(storageKey);
+    const saved = localStorage.getItem(storageKey);
 
-   if (saved) {
-      try {
-         const parsed = JSON.parse(saved);
+    if (saved) {
+        try {
+            const parsed = JSON.parse(saved);
 
-         if (parsed.answers.length == 10) {
-            surveyState.value = 2;
-         } else {
-            questions.value = parsed.questions || [];
+            if (parsed.answers.length == 10) {
+                surveyState.value = 2;
+            } else {
+                questions.value = parsed.questions || [];
 
-            currentQuestionIndex.value = parsed.currentIndex || 0;
-            userAnswers.value = parsed.answers || [];
-            questionsLength.value = questions.value.length;
-         }
-      } catch (e) {
-         console.error("Ошибка при чтении данных из localStorage", e);
-         await generateAndSaveQuestions();
-      }
-   } else {
-      generateAndSaveQuestions();
-   }
+                currentQuestionIndex.value = parsed.currentIndex || 0;
+                userAnswers.value = parsed.answers || [];
+                questionsLength.value = questions.value.length;
+            }
+        } catch (e) {
+            console.error("Ошибка при чтении данных из localStorage", e);
+            await generateAndSaveQuestions();
+        }
+    } else {
+        await generateAndSaveQuestions();
+    }
 });
 
 async function generateAndSaveQuestions() {
-   try {
-      if (!(await checkQuestion())) return;
-      const response = await fetchWithValidate("/quiz/get_questions", {
-         method: "post",
-         body: {
-            user_id: user?.id,
-         },
-      });
-      console.log(response.data.value);
+    try {
+        if (!(await checkQuestion())) return;
+        const response = await fetchWithValidate("/quiz/get_questions", {
+            method: "POST",
+            body: {
+                user_id: user?.id,
+            },
+        });
 
-      if (response.data.value && response.status.value == "success") {
-         questions.value = response.data.value;
-         console.log("sdafd", questions.value);
-         questionsLength.value = questions.value.length;
-         currentQuestionIndex.value = 0;
-         userAnswers.value = [];
+        if (response.data && response.status == "success") {
+            questions.value = response.data as string[];
+            questionsLength.value = questions.value.length;
+            currentQuestionIndex.value = 0;
+            userAnswers.value = [];
 
-         saveProgress();
-      }
-   } catch (error) {
-      surveyState.value = 3;
-      console.error("Ошибка при получении вопросов", error);
-   }
+            saveProgress();
+        }
+    } catch (error) {
+        surveyState.value = 3;
+        console.error("Ошибка при получении вопросов", error);
+    }
 }
 
 function saveProgress() {
-   localStorage.setItem(
-      storageKey,
-      JSON.stringify({
-         questions: questions.value,
-         currentIndex: currentQuestionIndex.value,
-         answers: userAnswers.value,
-      }),
-   );
+    localStorage.setItem(
+        storageKey,
+        JSON.stringify({
+            questions: questions.value,
+            currentIndex: currentQuestionIndex.value,
+            answers: userAnswers.value,
+        }),
+    );
 }
 
 async function nextQuestion() {
-   if (userValue.value.trim() === "") {
-      return;
-   }
+    if (userValue.value.trim() === "") {
+        return;
+    }
 
-   userAnswers.value.push(userValue.value.trim());
-   userValue.value = "";
+    userAnswers.value.push(userValue.value.trim());
+    userValue.value = "";
 
-   if (currentQuestionIndex.value < questions.value.length - 1) {
-      currentQuestionIndex.value++;
-      saveProgress();
-   } else {
-      surveyState.value = 2;
-      await sendAnswers();
-      localStorage.removeItem(storageKey);
-   }
+    if (currentQuestionIndex.value < questions.value.length - 1) {
+        currentQuestionIndex.value++;
+        saveProgress();
+    } else {
+        surveyState.value = 2;
+        await sendAnswers();
+        localStorage.removeItem(storageKey);
+    }
 }
+
 async function checkQuestion() {
-   const responce = await fetchWithValidate("/quiz/check_question", {
-      method: "post",
-      body: {
-         user_id: userId,
-      },
-   });
-   console.log(responce);
+    const response = await fetchWithValidate("/quiz/check_question", {
+        method: "POST",
+        body: {
+            user_id: userId,
+        },
+    });
 
-   if (responce.status.value == "success") {
-      surveyState.value = 1;
-      return true;
-   } else {
-      surveyState.value = 3;
-      return false;
-   }
+    if (response.status == "success") {
+        surveyState.value = 1;
+        return true;
+    } else {
+        surveyState.value = 3;
+        return false;
+    }
 }
-async function sendAnswers() {
-   try {
-      console.log(userId, questions.value, userAnswers.value);
-      const response = await fetchWithValidate("/quiz/validate-answers", {
-         method: "post",
-         body: {
-            user_id: user.id,
-            questions: questions.value,
-            answers: userAnswers.value,
-         },
-      });
-      console.log(response.data.value);
 
-      if (response.status.value === "success") {
-         correctAnswersCount.value = response.data.value?.correctAnswersCount;
-         correctAnswersUsdt.value = response.data.value?.usdt;
-         correctAnswersGovno.value = response.data.value?.govno;
-         localStorage.removeItem(storageKey);
-      }
-   } catch (error) {
-      console.error("Ошибка при отправке ответов", error);
-   }
+async function sendAnswers() {
+    try {
+        const response = await fetchWithValidate("/quiz/validate-answers", {
+            method: "POST",
+            body: {
+                user_id: user?.id,
+                questions: questions.value,
+                answers: userAnswers.value,
+            },
+        });
+
+        type ResponseData = {
+            correctAnswersCount: number;
+            usdt: number;
+            govno: number;
+        };
+
+        if (response.status === "success") {
+            correctAnswersCount.value = (
+                response.data as ResponseData
+            ).correctAnswersCount;
+            correctAnswersUsdt.value = (response.data as ResponseData).usdt;
+            correctAnswersGovno.value = (response.data as ResponseData).govno;
+            localStorage.removeItem(storageKey);
+        }
+    } catch (error) {
+        console.error("Ошибка при отправке ответов", error);
+    }
 }
 </script>

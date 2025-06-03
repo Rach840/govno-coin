@@ -1,50 +1,54 @@
 interface News {
-   title: string;
-   content: string;
-   source: string;
+    title: string;
+    content: string;
+    source: string;
 }
+
 interface Terms {
-   title: string;
-   text?: stirng;
-   content: {
-      subtitle1: string;
-      list: {
-         listTitle: string;
-         subList: string[];
-      }[];
-      subtitle2: string;
-   }[];
+    title: string;
+    text?: stirng;
+    content: {
+        subtitle1: string;
+        list: {
+            listTitle: string;
+            subList: string[];
+        }[];
+        subtitle2: string;
+    }[];
 }
+
 interface News {
-   title: string;
-   content: string;
-   source: string;
-   createdAt?: Date;
+    title: string;
+    content: string;
+    source: string;
+    createdAt?: Date;
 }
-interface UserResp {
-   id: number;
-   first_name: string;
-   last_name: string;
-   photo_url: string;
-   username: string;
+
+interface UserResponse {
+    id: number;
+    first_name: string;
+    last_name?: string;
+    photo_url?: string;
+    username?: string;
 }
+
 interface User {
-   id: number;
-   firstName: string;
-   lastName: string;
-   avatarUrl: string;
-   userName: string;
+    id: number;
+    firstName: string;
+    lastName?: string;
+    avatarUrl?: string;
+    userName?: string;
 }
 
 interface Product {
-   id: number;
-   skin_name: string;
-   skin_price: string;
-   skin_emission: number;
-   skin_url: string;
+    id: number;
+    skin_name: string;
+    skin_price: string;
+    skin_emission: number;
+    skin_url: string;
 }
 
 interface MoneyValues {
-   usd: number;
-   govno: number;
+    usd: number;
+    govno: number;
 }
