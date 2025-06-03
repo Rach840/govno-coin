@@ -16,7 +16,6 @@ export const useUserStore = defineStore("userStore", {
         loading: new Promise((_r) => {}),
         govno: 0,
         usd: 0,
-        token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDg5MzY1NTQsImlhdCI6MTc0ODg5MzM1NCwidXNlcl9pZCI6NTUzNzgzMzI1fQ.S2EZINUQVfPr7Q_6-7Vy53op24SIJ3L5GqNzP2CDpiI",
         toRubExchange: 0,
         toUsdtExchange: 0,
     }),
@@ -94,7 +93,7 @@ export const useUserStore = defineStore("userStore", {
             return {
                 toTon:
                     num >= 0
-                        ? (num / data.value?.rates.TON.prices.USD).toFixed(2)
+                        ? (num / data?.rates.TON.prices.USD).toFixed(2)
                         : "0.00",
                 toUsdt:
                     num >= 0 ? (num / this.toUsdtExchange).toFixed(2) : "0.00",

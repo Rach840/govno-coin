@@ -1,7 +1,7 @@
 <template>
     <div class="grid grid-cols-4 gap-3">
         <UButton
-            class="col-span-4 flex h-[13.1vw] items-center justify-center rounded-[3.5vw] bg-(--main-blue) text-(length:--support-text) !font-medium text-black"
+            class="col-span-4 flex items-center justify-center rounded-lg bg-(--main-blue) py-3 text-(length:--support-text) !font-medium text-black"
             color="info"
             variant="solid"
             @click="replenishmentWithGovno"
@@ -9,7 +9,7 @@
             {{ exchange?.toUsdt ? exchange?.toUsdt : "0.00" }} $GOVNO
         </UButton>
         <UButton
-            class="col-span-2 flex h-[13.1vw] items-center justify-center rounded-[3.5vw] bg-white text-(length:--support-text) !font-medium text-[#737373]"
+            class="col-span-2 flex items-center justify-center rounded-lg bg-white py-3 text-(length:--support-text) !font-medium text-[#737373]"
             variant="solid"
             @click="
                 () => {
@@ -23,7 +23,7 @@
         </UButton>
 
         <UButton
-            class="col-span-2 flex h-[13.1vw] items-center justify-center rounded-[3.5vw] bg-white text-(length:--support-text) !font-medium text-[#737373]"
+            class="col-span-2 flex items-center justify-center rounded-lg bg-white py-3 text-(length:--support-text) !font-medium text-[#737373]"
             variant="solid"
             @click="drawersContent[1].open.value = true"
         >
@@ -31,7 +31,7 @@
             <span class="text-[#008FEA]"> $TON</span>
         </UButton>
         <UButton
-            class="col-span-4 flex h-[13.1vw] items-center justify-center rounded-[3.5vw] bg-white text-(length:--support-text) !font-medium text-[#737373]"
+            class="col-span-4 flex items-center justify-center rounded-lg bg-white py-3 text-(length:--support-text) !font-medium text-[#737373]"
             target="_blank"
             to="https://g-crypto.ru/login"
             variant="solid"
@@ -75,14 +75,14 @@
                     @click="drawer.open.value = false"
                 />
                 <div class="">
-                    <h2 class="text-h2 mb-3">
+                    <h2 class="mb-3 text-2xl">
                         Пополнение баланса токеном $USDT
                     </h2>
                     <p class="mb-3 text-lg">
                         ⚠️ Прямое пополнение в ${{ drawer.coin }} находится в
                         разработке.
                     </p>
-                    <p class="mb-3 text-lg text-(--support-text-color)">
+                    <p class="text-support mb-3 text-lg">
                         Вы можете обменять $USDT на $GOVNO в
                         <span class="text-[#008FEA]">Tonkeeper</span> и
                         произвести процедуру пополнения через $GOVNO
@@ -96,7 +96,7 @@
                     />
                 </div>
                 <UButton
-                    class="col-span-2 flex h-[13.1vw] items-center justify-center rounded-[3.5vw] bg-white text-(length:--support-text) !font-medium text-[#737373]"
+                    class="col-span-2 flex items-center justify-center rounded-lg bg-white font-medium text-[#737373]"
                     target="_blank"
                     to="https://tonkeeper.com/"
                     variant="solid"
@@ -105,7 +105,7 @@
                 >
 
                 <UButton
-                    class="flex h-[12.6vw] w-full justify-center border-1 border-(--line-gray) bg-none px-4"
+                    class="border-light-light-gray flex w-full justify-center border bg-none px-4"
                     variant="link"
                     @click="
                         () => {
@@ -119,7 +119,7 @@
     </UDrawer>
 </template>
 <script lang="ts" setup>
-const { num } = defineProps<{ num: number }>();
+const { num } = defineProps<{ num?: number }>();
 const numCurrent = ref<string | number>("0.00");
 const { user, calcUsdExchange, fetchWithValidate } = useUserStore();
 const exchange = ref<Record<string, string> | null>({
@@ -141,10 +141,9 @@ const drawersContent = [
     },
 ];
 watchEffect(async () => {
-    numCurrent.value = !isNaN(num) ? +num : "0.00";
-    exchange.value = await calcUsdExchange(num);
+    numCurrent.value = !isNaN(num ?? 0) ? +(num ?? 0) : "0.00";
+    exchange.value = await calcUsdExchange(num ?? 0);
 });
-console.log(numCurrent.value, exchange.value, exchange.value);
 
 async function replenishmentWithGovno() {
     const { data, status } = await fetchWithValidate(

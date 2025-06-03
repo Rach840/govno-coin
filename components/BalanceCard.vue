@@ -26,16 +26,14 @@ const mockBalance = ref<
     />
     <div class="flex flex-col gap-4">
         <div v-for="balance in mockBalance" class="">
-            <p class="text-(length:--support-text) text-(--support-text-color)">
+            <p class="text-support">
                 {{ balance.title }}
             </p>
             <div class="flex flex-col">
-                <p class="text-h0 font-bold text-white">
+                <p class="text-4xl font-bold text-white">
                     $ {{ moneyVal.usd >= 0 ? moneyVal.usd.toFixed(2) : "0.00" }}
                 </p>
-                <span
-                    class="text-(length--support-text) text-(--support-text-color)"
-                >
+                <span class="text-(length--support-text) text-support">
                     ~
                     {{
                         moneyVal.govno >= 0 ? moneyVal.govno.toFixed(2) : "0.00"

@@ -76,7 +76,7 @@ watchEffect(async () => {
 <template>
     <div class="flex flex-col items-center justify-start gap-7">
         <!-- Заголовок страницы -->
-        <p class="text-h1 w-full text-start font-semibold">Новости</p>
+        <p class="w-full text-start text-3xl font-semibold">Новости</p>
 
         <!-- Контейнер для всех новостей -->
         <div

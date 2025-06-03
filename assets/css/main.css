@@ -2,13 +2,6 @@
 @import "@nuxt/ui";
 @import "tw-animate-css";
 
-@custom-variant dark (&:is(.dark *));
-
-::placeholder {
-    color: var(--support-text-color);
-    font-size: var(--support-text);
-}
-
 @theme {
     --container-8xl: 90rem;
 }
@@ -60,22 +53,12 @@ body {
 @theme {
     --color-light-gray: rgba(60, 60, 60, 1);
     --color-dark-gray: rgba(47, 47, 47, 1);
-    --h0: 10vw;
-    --h1: 6.7vw;
-    --h2: 5.6vw;
-    --h3: 5.05vw;
-    --h4: 4.3vw;
-    --button-text1: 0.95vw;
-    --button-text2: 3.9vw;
-    --edit-text1: 18px;
-    --support-text: 3.9vw;
-    --low-priorety-text: 14px;
     --reder: #ff3f3f;
-    --support-text-color: #b8b8b8;
     --main-blue: #008fea;
     --disable-button-color: rgba(47, 54, 58, 1);
     --disable-text-color: #737373;
-    --line-gray: rgba(97, 97, 97, 1);
+    --color-light-light-gray: rgba(97, 97, 97, 1);
+    --color-support: #b8b8b8;
 }
 @theme inline {
     --color-background: var(--background);
@@ -127,8 +110,8 @@ body {
 }
 
 @layer utilities {
-    .text-h0 {
-        font-size: var(--h0);
+    .bg-gray-gradient {
+        background: linear-gradient(162deg, #3c3c3c 0%, #2f2f2f 100%);
     }
 
     .bg-card-gradient {
@@ -141,47 +124,11 @@ body {
             linear-gradient(0deg, #282828, #282828);
     }
 
-    .text-h2 {
-        font-size: var(--h2);
-    }
-
-    .text-h1 {
-        font-size: var(--h1);
-    }
-
-    .text-h3 {
-        font-size: var(--h3);
-    }
-
-    .text-button-text1 {
-        font-size: var(--button-text1);
-    }
-
-    .text-edit-text1 {
-        font-size: var(--edit-text1);
-    }
-
-    /*.text-support-text {*/
-    /*  font-size: var(--support-text);*/
-    /*}*/
-    .text-low-priority-text {
-        font-size: var(--low-priorety-text);
-    }
-
-    .main-blue {
-        background-color: #008fea;
-    }
-
-    .white {
-        background-color: #ffffff;
-    }
-
     .padding-container {
         padding: var(--tg-safe-area-inset-top, env(safe-area-inset-top, 0px))
             var(--tg-safe-area-inset-right, env(safe-area-inset-right, 0px))
             var(--tg-safe-area-inset-bottom, env(safe-area-inset-bottom, 0px))
             var(--tg-safe-area-inset-left, env(safe-area-inset-left, 0px));
-        margin-top: 40px;
     }
 
     .disable-text {
@@ -205,16 +152,6 @@ body {
     }
 }
 
-body {
-    @apply font-sans;
-    min-height: 100vh;
-}
-
-#__nuxt {
-    min-height: 100vh;
-}
-
-/* Если нужно задать Inter везде, независимо от reset, можешь добавить: */
 * {
     font-family: "Inter", ui-sans-serif, system-ui, sans-serif;
     touch-action: manipulation;

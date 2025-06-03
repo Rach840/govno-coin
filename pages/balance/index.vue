@@ -6,7 +6,7 @@ const { user, loading, refreshBalance, govno, usd, fetchWithValidate } =
 const { focusScroll, focusScrollUnlock } = useAdaptiveStore();
 const actionSelect = ref<ActionType>("replenishment");
 const moneyVal = ref<MoneyValues>({ usd: 0, govno: 0 });
-const stateValue = ref<number>(0);
+const stateValue = ref<number>();
 
 watchEffect(async () => {
     if (!loading && user?.id) {
@@ -42,22 +42,20 @@ async function handleSubmit() {
 </script>
 
 <template>
-    <div ref="block" class="flex flex-col gap-5">
-        <p class="text-center text-(length:--h1) font-semibold">
-            $GOVNO кошелёк
-        </p>
+    <div class="mx-auto flex min-w-xs flex-col gap-5">
+        <p class="text-center text-3xl font-semibold">$GOVNO кошелёк</p>
         <div
-            class="relative flex flex-col gap-5 rounded-[4vw] bg-[linear-gradient(162deg,_#3C3C3C_0%,_#2F2F2F_100%)] p-3.5"
+            class="bg-gray-gradient relative flex flex-col gap-5 rounded-lg p-3.5"
         >
             <BalanceCard :moneyVal="moneyVal" />
             <div class="flex w-full flex-col gap-2.5">
-                <div class="flex gap-3.5 text-(length:--h3)">
+                <div class="flex gap-3.5 text-2xl">
                     <UButton
                         :class="{
                             'text-white underline decoration-(--main-blue) underline-offset-6':
                                 actionSelect === 'replenishment',
                         }"
-                        class="balance-interaction-select-point p-0 text-(length:--h4) text-(--support-text-color)"
+                        class="balance-interaction-select-point text-support p-0 text-lg"
                         variant="link"
                         @click="actionSelect = 'replenishment'"
                     >
@@ -68,7 +66,7 @@ async function handleSubmit() {
                             'text-white underline decoration-(--main-blue) underline-offset-6':
                                 actionSelect === 'withdrawal',
                         }"
-                        class="balance-interaction-select-point p-0 text-(length:--h4) text-(--support-text-color)"
+                        class="balance-interaction-select-point text-support p-0 text-lg"
                         variant="link"
                         @click="actionSelect = 'withdrawal'"
                     >
@@ -81,14 +79,14 @@ async function handleSubmit() {
                         :max="1000"
                         :min="1"
                         :ui="{
-                            base: '!text-(--support-text-color) bg-transparent p-4',
+                            base: '!text-support bg-transparent p-4',
                             increment: 'hidden',
                             decrement: 'hidden',
                         }"
-                        class="h-[13.1vw] rounded-[3.5vw] border-1 !border-(--line-gray) text-(length:--support-text) !text-(--support-text-color)"
+                        class="border-light-light-gray rounded-xl border"
                         orientation="vertical"
                         placeholder="Сумма пополнения $"
-                        size="xl"
+                        size="lg"
                         trailing-icon="i-lucide-dollar-sign"
                         type="number"
                         variant="none"
@@ -97,7 +95,7 @@ async function handleSubmit() {
                     />
                     <UButton
                         v-if="actionSelect == 'withdrawal'"
-                        class="flex h-[13.1vw] items-center justify-center rounded-[3.5vw] bg-(--main-blue) text-(length:--support-text) text-black"
+                        class="flex h-[13.1vw] items-center justify-center rounded-[3.5vw] bg-(--main-blue) text-black"
                         @click="handleSubmit"
                     >
                         Вывести

@@ -90,7 +90,7 @@ async function buy() {
         <div class="bg-card-gradient rounded-b-[20px] p-3">
             <p class="text-xl lg:text-xl">{{ product.skin_name }}</p>
             <div class="mb-4 flex items-center space-x-1">
-                <p class="text-h2 lg:text-2xl">
+                <p class="text-2xl lg:text-2xl">
                     {{ product.skin_price }} $GOVNO
                 </p>
                 <p
@@ -182,7 +182,7 @@ async function buy() {
                                     />
                                 </div>
                                 <div class="px-6">
-                                    <h2 class="text-h2 mb-3">
+                                    <h2 class="mb-3 text-2xl">
                                         {{ product.skin_name }}
                                     </h2>
                                     <p
@@ -194,7 +194,7 @@ async function buy() {
                                     <div
                                         class="mb-4 flex items-center space-x-1"
                                     >
-                                        <p class="text-h2 lg:text-2xl">
+                                        <p class="text-2xl lg:text-2xl">
                                             {{ product.skin_price }} $GOVNO
                                         </p>
                                         <p
@@ -261,7 +261,7 @@ async function buy() {
                     @click="openErrorDrawer = false"
                 />
                 <div class="mb-32">
-                    <h2 class="text-h2 mb-3">❌ Ошибка!</h2>
+                    <h2 class="mb-3 text-2xl">❌ Ошибка!</h2>
                     <p class="mb-3 text-lg">
                         Недостаточно средств на балансе внутреннего кошелька!
                     </p>
@@ -269,7 +269,7 @@ async function buy() {
                         Недостаточно средств на балансе внутреннего кошелька!
                     </p>
                     <div class="space- flex items-center">
-                        <p class="text-h2 font-bold text-white">
+                        <p class="text-2xl font-bold text-white">
                             {{ govno }} $GOVNO
                         </p>
                         <span
@@ -330,13 +330,13 @@ async function buy() {
                     @click="openConfirmDrawer = false"
                 />
                 <div class="mb-56">
-                    <h2 class="text-h2 mb-3">✅ Подтвердите покупку</h2>
+                    <h2 class="mb-3 text-2xl">✅ Подтвердите покупку</h2>
                     <p class="mb-3 text-lg">Вы точно хотите купить?</p>
                     <p class="mb-1 text-lg text-(--support-text-color)">
                         {{ product.skin_name }}
                     </p>
                     <div class="space- flex items-center">
-                        <p class="text-h2 font-bold text-white">
+                        <p class="text-2xl font-bold text-white">
                             {{ govno }} $GOVNO
                         </p>
                         <span

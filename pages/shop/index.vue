@@ -74,7 +74,7 @@ function select(index: number) {
 
 <template>
     <div class="min-h-screen">
-        <h1 class="text-h1 mb-4 text-white lg:text-2xl">Магазин</h1>
+        <h1 class="mb-4 text-3xl text-white lg:text-2xl">Магазин</h1>
         <div class="mx-auto flex max-w-xs justify-between gap-1 pt-4">
             <div class="mt-4 mb-4 flex w-full gap-4 overflow-y-scroll">
                 <UButton
@@ -116,7 +116,7 @@ function select(index: number) {
                         :product="sub"
                         type="skin"
                     />
-                    <h2 v-if="item == 'interface'" class="text-h2">Скоро!</h2>
+                    <h2 v-if="item == 'interface'" class="text-2xl">Скоро!</h2>
                 </div>
             </UCarousel>
         </div>

@@ -2,7 +2,7 @@
 const router = useRouter();
 
 const moneyVal = ref<MoneyValues>({ usd: 0, govno: 0 });
-const stateValue = ref<number>(0);
+const stateValue = ref<number>();
 
 const { focusScroll, focusScrollUnlock } = useAdaptiveStore();
 
@@ -124,7 +124,7 @@ async function handleSubmit() {
                             variant="ghost"
                             @click="openReplenishment = false"
                         />
-                        <h2 class="text-h2">Пополнить баланс</h2>
+                        <h2 class="text-2xl">Пополнить баланс</h2>
 
                         <UInputNumber
                             v-model="stateValue"

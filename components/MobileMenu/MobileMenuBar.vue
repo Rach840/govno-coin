@@ -25,7 +25,7 @@ const { fullPath } = useRoute();
     <transition mode="out-in" name="fade-slide">
         <div
             v-if="menuVisible"
-            :class="`fixed bottom-0 left-0 z-20 mt-14 flex w-full items-center justify-center gap-3 rounded-t-2xl bg-[#262827] py-4 ${fullPath == '/register/' ? 'hidden' : ''}`"
+            :class="`sticky inset-x-0 bottom-0 z-20 mt-10 flex w-full items-center justify-center gap-3 rounded-t-2xl bg-[#262827] py-4 ${fullPath == '/register/' ? 'hidden' : ''}`"
         >
             <UButton
                 class="flex size-[15vw] items-center justify-center border-1 border-(--line-gray)"

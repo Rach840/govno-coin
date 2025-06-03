@@ -70,6 +70,6 @@ if (
 
 <template>
     <div class="py-13">
-        <h1 class="text-h1 text-center text-white">{{ validateText }}</h1>
+        <h1 class="text-center text-3xl text-white">{{ validateText }}</h1>
     </div>
 </template>

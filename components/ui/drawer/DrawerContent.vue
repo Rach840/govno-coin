@@ -36,6 +36,5 @@ const forwarded = useForwardPropsEmits(props, emits);
             />
             <slot />
         </DrawerContent>
-        <MobileMenuBar />
     </DrawerPortal>
 </template>

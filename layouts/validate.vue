@@ -1,30 +1,24 @@
 <script lang="ts" setup>
+import { useMediaQuery } from "@vueuse/core";
+
+const isMobile = useMediaQuery("(max-width: 1024px)");
+
 const user = useUserStore();
 await user.loading;
 </script>
 
 <template>
     <UContainer
-        class="padding-container z-10 mx-auto w-[100vw] pt-[100px] pb-[100px] lg:hidden"
+        v-if="isMobile"
+        class="padding-container z-10 flex min-h-screen flex-col lg:hidden"
     >
-        <slot />
-    </UContainer>
-    <!-- <SidebarProvider v-else>
-      <AdminSidebar />
-      <main class="w-full">
-         <UContainer
-            ref="container"
-            class="padding-container mx-auto w-[80vw] py-6"
-         >
+        <div class="flex-1 px-5 py-10">
             <slot />
-         </UContainer>
-      </main>
-   </SidebarProvider> -->
-    <main class="hidden w-full lg:block">
-        <UContainer
-            ref="container"
-            class="padding-container mx-auto w-[80vw] py-6"
-        >
+        </div>
+    </UContainer>
+
+    <main v-else class="hidden w-full lg:block">
+        <UContainer class="padding-container mx-auto w-[80vw] py-6">
             <h1 class="text-center text-6xl text-white">
                 Данное приложение пока работает только в мобильном режиме
             </h1>

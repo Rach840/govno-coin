@@ -2,12 +2,12 @@
     <div id="content_app" class="survey-container">
         <section v-if="surveyState == 1" class="">
             <div class="mb-5 flex items-center justify-between">
-                <h1 class="text-h1 font-semibold lg:text-3xl">Опрос</h1>
+                <h1 class="text-3xl font-semibold lg:text-3xl">Опрос</h1>
                 <p class="text-xl text-(--support-text-color)">
                     {{ currentQuestionIndex + 1 }} / 10
                 </p>
             </div>
-            <h3 class="text-h2 mb-5">
+            <h3 class="mb-5 text-2xl">
                 {{
                     questions.length > 0
                         ? questions[currentQuestionIndex]
@@ -56,12 +56,12 @@
         </section>
 
         <section v-else-if="surveyState == 2" class="results-section">
-            <h1 class="text-h1 mt-8 mb-5 font-semibold lg:text-3xl">Опрос</h1>
+            <h1 class="mt-8 mb-5 text-3xl font-semibold lg:text-3xl">Опрос</h1>
             <div class="results-content">
-                <h3 class="text-h2 font-semibold lg:text-2xl">
+                <h3 class="text-2xl font-semibold lg:text-2xl">
                     ✅ Опрос завершён!
                 </h3>
-                <p class="green-color text-h2 my-5 lg:text-2xl">
+                <p class="green-color my-5 text-2xl lg:text-2xl">
                     +{{ correctAnswersGovno }} $GOVNO
                     <span
                         class="text-base text-(--support-text-color) lg:text-xl"
@@ -102,7 +102,7 @@
             v-else-if="surveyState == 3"
             class="absolute -top-8 left-0 mt-[30px] h-screen w-screen flex-col items-center justify-center bg-[url(/surveys/background-mobile.svg)] bg-size-[105vw_100vh] pt-[50px] md:flex md:bg-[url(/surveys/background-desktop.svg)]"
         >
-            <h2 class="text-h2 mx-4 mt-10 lg:mb-4 lg:!text-2xl">
+            <h2 class="mx-4 mt-10 text-2xl lg:mb-4 lg:!text-2xl">
                 ✅ Опросы на сегодня завершены!
             </h2>
             <div
