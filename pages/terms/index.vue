@@ -76,7 +76,7 @@ function replace() {
             :class="
                 agree
                     ? 'bg-main-blue'
-                    : 'disabled:bg-(--disable-button-color) disabled:text-(--disable-text-color)'
+                    : 'disabled:bg-disabled disabled:text-(--disable-text-color)'
             "
             :disabled="!agree"
             class="flex h-12 justify-between rounded-lg px-4.5 text-(length:--button-text2)"

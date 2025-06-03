@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { z } from "zod";
+
 definePageMeta({
     layout: "register",
 });
@@ -21,6 +23,53 @@ onBeforeUnmount(() => {
     document.documentElement.style.overflow = "";
 });
 
+const schema = z.object({
+    weight: z
+        .number({
+            required_error: "Введите вес",
+            invalid_type_error: "Вес должен быть числом",
+        })
+        .int({
+            message: "Вес должен быть целым числом",
+        })
+        .min(1, "Вес должен быть больше 0")
+        .max(300, "Вес не может превышать 300 кг")
+        .describe("Вес"),
+    height: z
+        .number({
+            required_error: "Введите рост",
+            invalid_type_error: "Рост должен быть числом",
+        })
+        .int({
+            message: "Рост должен быть целым числом",
+        })
+        .min(1, "Рост должен быть больше 0")
+        .max(250, "Рост не может превышать 250 см")
+        .describe("Рост"),
+    age: z
+        .number({
+            required_error: "Введите возраст",
+            invalid_type_error: "Возраст должен быть числом",
+        })
+        .int({
+            message: "Возраст должен быть целым числом",
+        })
+        .min(1, "Возраст должен быть больше 0")
+        .max(110, "Возраст не может превышать 110 лет")
+        .describe("Возраст"),
+    amt: z
+        .number({
+            required_error: "Введите количество посещений",
+            invalid_type_error: "Количество посещений должно быть числом",
+        })
+        .int({
+            message: "Количество посещений должно быть целым числом",
+        })
+        .min(1, "Количество посещений должно быть больше 0")
+        .max(10, "Количество посещений не может превышать 10")
+        .describe("Количество посещений"),
+});
+
 const form = reactive({
     weight: "",
     height: "",
@@ -36,6 +85,8 @@ const errors = reactive({
     amt: false,
 });
 
+const errorMessages = ref();
+
 const tg = window?.Telegram?.WebApp;
 
 function validateStep(stepNum: number): boolean {
@@ -50,17 +101,35 @@ function validateStep(stepNum: number): boolean {
             !form.height ||
             Number(form.height) < 1 ||
             Number(form.height) > 250;
+        errorMessages.value = Object.fromEntries(
+            schema
+                .pick({ weight: true, height: true })
+                .safeParse(form)
+                .error?.errors.map((e) => [e.path[0], e.message]) ?? [],
+        );
         valid = !errors.weight && !errors.height;
     }
 
     if (stepNum === 2) {
         errors.age =
             !form.age || Number(form.age) < 1 || Number(form.age) > 110;
+        errorMessages.value = Object.fromEntries(
+            schema
+                .pick({ age: true })
+                .safeParse(form)
+                .error?.errors.map((e) => [e.path[0], e.message]) ?? [],
+        );
         valid = !errors.age;
     }
 
     if (stepNum === 3) {
         errors.amt = !form.amt || Number(form.amt) < 1 || Number(form.amt) > 10;
+        errorMessages.value = Object.fromEntries(
+            schema
+                .pick({ amt: true })
+                .safeParse(form)
+                .error?.errors.map((e) => [e.path[0], e.message]) ?? [],
+        );
         valid = !errors.amt;
     }
 
@@ -95,6 +164,10 @@ function goBack() {
 }
 
 function goToStep(target: number) {
+    if (!validateStep(step.value)) {
+        return;
+    }
+
     if (target < step.value) {
         direction.value = "backward";
     } else if (target > step.value) {
@@ -146,33 +219,21 @@ const isInputFocused = ref(false);
 
             <div class="flex gap-2.5">
                 <UButton
-                    :class="
-                        step == 1
-                            ? 'bg-main-blue'
-                            : 'bg-(--disable-button-color)'
-                    "
+                    :class="step == 1 ? 'bg-main-blue' : 'bg-disabled'"
                     class="h-1 w-full p-0"
                     variant="link"
                     @click="goToStep(1)"
                 >
                 </UButton>
                 <UButton
-                    :class="
-                        step == 2
-                            ? 'bg-main-blue'
-                            : 'bg-(--disable-button-color)'
-                    "
+                    :class="step == 2 ? 'bg-main-blue' : 'bg-disabled'"
                     class="h-1 w-full p-0"
                     variant="link"
                     @click="goToStep(2)"
                 >
                 </UButton>
                 <UButton
-                    :class="
-                        step == 3
-                            ? 'bg-main-blue'
-                            : 'bg-(--disable-button-color)'
-                    "
+                    :class="step == 3 ? 'bg-main-blue' : 'bg-disabled'"
                     class="h-1 w-full p-0"
                     variant="link"
                     @click="goToStep(3)"
@@ -190,9 +251,7 @@ const isInputFocused = ref(false);
             >
                 <div :key="step">
                     <div v-if="step === 1" class="flex flex-col gap-3.5">
-                        <h2 class="text-(length:--h3)">
-                            Параметры вашего тела
-                        </h2>
+                        <h2 class="text-xl">Параметры вашего тела</h2>
                         <div class="flex gap-3">
                             <UInput
                                 v-model="form.weight"
@@ -243,9 +302,7 @@ const isInputFocused = ref(false);
                         </div>
                     </div>
                     <div v-else-if="step === 2" class="flex flex-col gap-3.5">
-                        <h2 class="text-(length:--h3)">
-                            Параметры вашего тела
-                        </h2>
+                        <h2 class="text-xl">Параметры вашего тела</h2>
                         <UInput
                             v-model="form.age"
                             :class="[
@@ -274,7 +331,7 @@ const isInputFocused = ref(false);
                                 :class="
                                     form.gender === true
                                         ? 'bg-main-blue text-white'
-                                        : 'text-support bg-(--disable-button-color)'
+                                        : 'text-support bg-disabled'
                                 "
                                 class="flex h-11.5 w-full justify-center"
                                 @click="form.gender = true"
@@ -285,7 +342,7 @@ const isInputFocused = ref(false);
                                 :class="
                                     form.gender === false
                                         ? 'bg-main-blue text-white'
-                                        : 'text-support bg-(--disable-button-color)'
+                                        : 'text-support bg-disabled'
                                 "
                                 class="flex h-11.5 w-full justify-center"
                                 @click="form.gender = false"
@@ -295,7 +352,7 @@ const isInputFocused = ref(false);
                         </div>
                     </div>
                     <div v-else-if="step === 3" class="flex flex-col gap-3.5">
-                        <h2 class="text-(length:--h3)">Ваш вклад в развитие</h2>
+                        <h2 class="text-xl">Ваш вклад в развитие</h2>
                         <UInput
                             v-model="form.amt"
                             :class="[
@@ -322,7 +379,11 @@ const isInputFocused = ref(false);
                     </div>
                 </div>
             </transition>
-
+            <div class="flex flex-col items-start self-start text-red-500">
+                <p v-for="error in errorMessages">
+                    {{ error }}
+                </p>
+            </div>
             <div class="mt-12 flex justify-between gap-3">
                 <UButton
                     :disabled="step === 1"
