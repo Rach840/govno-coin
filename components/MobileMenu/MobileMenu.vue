@@ -38,15 +38,13 @@ const router = useRouter();
 
 <template>
     <MobileMenuBar />
-    <Drawer v-model:open="open" class="bg-[#262827]">
-        <DrawerContent>
+    <Drawer v-model:open="open">
+        <DrawerContent class="bg-mobile-background min-w-sm">
             <div
                 class="mt-4 flex flex-col items-center gap-5 overflow-auto px-5.5 text-center"
             >
                 <MobileMiniProfile />
-                <MobileCard
-                    class="rounded-[5.3vw] bg-[linear-gradient(162deg,_#3C3C3C_0%,_#2F2F2F_100%)]"
-                />
+                <MobileCard />
 
                 <div class="mb-9 flex w-full flex-col gap-2.5">
                     <UButton
@@ -54,7 +52,7 @@ const router = useRouter();
                         :ui="{
                             trailingIcon: 'size-6',
                         }"
-                        class="pointer-events-auto flex h-[12.6vw] w-full justify-between border-1 border-(--line-gray) bg-none px-4"
+                        class="border-light-light-gray pointer-events-auto flex h-12 w-full justify-between border px-4"
                         trailing-icon="i-lucide-move-right"
                         variant="link"
                         @click="

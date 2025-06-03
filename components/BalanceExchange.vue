@@ -1,7 +1,7 @@
 <template>
     <div class="grid grid-cols-4 gap-3">
         <UButton
-            class="col-span-4 flex items-center justify-center rounded-lg bg-(--main-blue) py-3 text-(length:--support-text) !font-medium text-black"
+            class="bg-main-blue col-span-4 flex items-center justify-center rounded-lg py-3 font-medium text-black"
             color="info"
             variant="solid"
             @click="replenishmentWithGovno"
@@ -9,7 +9,7 @@
             {{ exchange?.toUsdt ? exchange?.toUsdt : "0.00" }} $GOVNO
         </UButton>
         <UButton
-            class="col-span-2 flex items-center justify-center rounded-lg bg-white py-3 text-(length:--support-text) !font-medium text-[#737373]"
+            class="text-muted col-span-2 flex items-center justify-center rounded-lg bg-white py-3 font-medium"
             variant="solid"
             @click="
                 () => {
@@ -19,25 +19,25 @@
             "
         >
             {{ numCurrent ? numCurrent : "0.00" }}
-            <span class="text-[#709853]"> $USDT</span>
+            <span class="text-usdt"> $USDT</span>
         </UButton>
 
         <UButton
-            class="col-span-2 flex items-center justify-center rounded-lg bg-white py-3 text-(length:--support-text) !font-medium text-[#737373]"
+            class="text-muted col-span-2 flex items-center justify-center rounded-lg bg-white py-3 font-medium"
             variant="solid"
             @click="drawersContent[1].open.value = true"
         >
             {{ exchange?.toTon ? exchange?.toTon : "0.00" }}
-            <span class="text-[#008FEA]"> $TON</span>
+            <span class="text-ton"> $TON</span>
         </UButton>
         <UButton
-            class="col-span-4 flex items-center justify-center rounded-lg bg-white py-3 text-(length:--support-text) !font-medium text-[#737373]"
+            class="text-muted col-span-4 flex items-center justify-center rounded-lg bg-white py-3 font-medium"
             target="_blank"
             to="https://g-crypto.ru/login"
             variant="solid"
         >
             {{ exchange?.toRub ? exchange?.toRub : "0.00" }} руб
-            <span class="text-[#64CF13]">G-CRYPTO </span>
+            <span class="text-gcrypto">G-CRYPTO </span>
         </UButton>
     </div>
     <UDrawer
@@ -50,13 +50,10 @@
             leaveActiveClass: 'duration-200',
         }"
         :ui="{
-            body: 'bg-balance ',
+            body: 'bg-balance',
             container: '',
-            content: 'bg-balance !ring-transparent  !rounded-t-4xl  pt-4',
-            handle: [
-                ' mt-2 py-[0.1vw]  px-[9vw] !bg-[#737373] ',
-                '  transition-opacity  ',
-            ],
+            content: 'bg-balance ring-transparent rounded-t-4xl pt-4',
+            handle: [' mt-2 py-1 px-12 bg-muted ', '  transition-opacity  '],
             overlay: 'bg-black/40',
         }"
         overlay-class="bg-black/40"
@@ -68,7 +65,7 @@
                     :ui="{
                         leadingIcon: 'size-8',
                     }"
-                    class="absolute top-3 right-6 text-[#737373]"
+                    class="text-muted absolute top-3 right-6"
                     icon="i-lucide-x"
                     size="xl"
                     variant="ghost"
@@ -84,8 +81,8 @@
                     </p>
                     <p class="text-support mb-3 text-lg">
                         Вы можете обменять $USDT на $GOVNO в
-                        <span class="text-[#008FEA]">Tonkeeper</span> и
-                        произвести процедуру пополнения через $GOVNO
+                        <span class="text-ton">Tonkeeper</span> и произвести
+                        процедуру пополнения через $GOVNO
                     </p>
                     <img
                         :src="drawer.image"
@@ -96,12 +93,11 @@
                     />
                 </div>
                 <UButton
-                    class="col-span-2 flex items-center justify-center rounded-lg bg-white font-medium text-[#737373]"
+                    class="text-muted col-span-2 flex items-center justify-center rounded-lg bg-white font-medium"
                     target="_blank"
                     to="https://tonkeeper.com/"
                     variant="solid"
-                    >Перейти в
-                    <span class="text-[#008FEA]">Tonkeeper</span></UButton
+                    >Перейти в <span class="text-ton">Tonkeeper</span></UButton
                 >
 
                 <UButton

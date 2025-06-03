@@ -18,7 +18,7 @@ await user.loading;
     </UContainer>
 
     <main v-else class="hidden w-full lg:block">
-        <UContainer class="padding-container mx-auto w-[80vw] py-6">
+        <UContainer class="padding-container mx-auto w-3/4 py-6">
             <h1 class="text-center text-6xl text-white">
                 Данное приложение пока работает только в мобильном режиме
             </h1>

@@ -3,7 +3,7 @@
         <section v-if="surveyState == 1" class="">
             <div class="mb-5 flex items-center justify-between">
                 <h1 class="text-3xl font-semibold lg:text-3xl">Опрос</h1>
-                <p class="text-xl text-(--support-text-color)">
+                <p class="text-support text-xl">
                     {{ currentQuestionIndex + 1 }} / 10
                 </p>
             </div>
@@ -17,9 +17,9 @@
             <UInput
                 v-model="userValue"
                 :ui="{
-                    base: 'p-4 !border-(--line-gray)',
+                    base: 'p-4 border-light-light-gray',
                 }"
-                class="w-full !border-(--line-gray) !text-(--support-text-color)"
+                class="text-support border-light-light-gray w-full"
                 size="xl"
                 variant="outline"
                 @focus="
@@ -44,7 +44,7 @@
             <transition mode="out-in" name="fade-slide">
                 <div
                     v-if="!isInputFocused"
-                    class="pointer-events-none absolute bottom-[120px] left-0 mx-[20px] w-[90vw]"
+                    class="pointer-events-none absolute bottom-[120px] left-0 mx-auto w-5/6"
                 >
                     <img
                         alt=""
@@ -63,8 +63,7 @@
                 </h3>
                 <p class="green-color my-5 text-2xl lg:text-2xl">
                     +{{ correctAnswersGovno }} $GOVNO
-                    <span
-                        class="text-base text-(--support-text-color) lg:text-xl"
+                    <span class="text-support text-base lg:text-xl"
                         >~ {{ correctAnswersUsdt }} $USDT</span
                     >
                 </p>
@@ -74,13 +73,13 @@
                         {{ correctAnswersCount }} из
                         {{ questionsLength }} вопросов, приходите завтра!
                     </p>
-                    <p class="text-sm text-(--support-text-color)">
+                    <p class="text-support text-sm">
                         Опросы обновляются ежедневно, за их прохождение вы
                         сможете заработать $GOVNO
                     </p>
                 </div>
             </div>
-            <div class="absolute bottom-[120px] left-0 mx-[20px] w-[90vw]">
+            <div class="absolute bottom-[120px] left-0 mx-[20px] w-5/6">
                 <img
                     alt=""
                     class="w-full rounded-[10px]"
@@ -102,11 +101,11 @@
             v-else-if="surveyState == 3"
             class="absolute -top-8 left-0 mt-[30px] h-screen w-screen flex-col items-center justify-center bg-[url(/surveys/background-mobile.svg)] bg-size-[105vw_100vh] pt-[50px] md:flex md:bg-[url(/surveys/background-desktop.svg)]"
         >
-            <h2 class="mx-4 mt-10 text-2xl lg:mb-4 lg:!text-2xl">
+            <h2 class="mx-4 mt-10 text-2xl lg:mb-4 lg:text-2xl">
                 ✅ Опросы на сегодня завершены!
             </h2>
             <div
-                class="absolute bottom-[120px] left-0 mx-[20px] w-[90vw] lg:static"
+                class="absolute bottom-[120px] left-0 mx-[20px] w-5/6 lg:static"
             >
                 <img
                     alt=""

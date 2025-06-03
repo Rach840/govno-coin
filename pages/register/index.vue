@@ -148,7 +148,7 @@ const isInputFocused = ref(false);
                 <UButton
                     :class="
                         step == 1
-                            ? 'bg-(--main-blue)'
+                            ? 'bg-main-blue'
                             : 'bg-(--disable-button-color)'
                     "
                     class="h-1 w-full p-0"
@@ -159,7 +159,7 @@ const isInputFocused = ref(false);
                 <UButton
                     :class="
                         step == 2
-                            ? 'bg-(--main-blue)'
+                            ? 'bg-main-blue'
                             : 'bg-(--disable-button-color)'
                     "
                     class="h-1 w-full p-0"
@@ -170,7 +170,7 @@ const isInputFocused = ref(false);
                 <UButton
                     :class="
                         step == 3
-                            ? 'bg-(--main-blue)'
+                            ? 'bg-main-blue'
                             : 'bg-(--disable-button-color)'
                     "
                     class="h-1 w-full p-0"
@@ -197,10 +197,10 @@ const isInputFocused = ref(false);
                             <UInput
                                 v-model="form.weight"
                                 :class="[
-                                    'h-11.5 w-full rounded-[3vw] border-1',
+                                    'h-11.5 w-full rounded-lg border',
                                     errors.weight
                                         ? 'border-red-500'
-                                        : 'border-(--line-gray)',
+                                        : 'border-light-light-gray',
                                 ]"
                                 max="300"
                                 min="1"
@@ -220,10 +220,10 @@ const isInputFocused = ref(false);
                             <UInput
                                 v-model="form.height"
                                 :class="[
-                                    'h-11.5 w-full rounded-[3vw] border-1 !text-(--support-text-color)',
+                                    'text-support h-11.5 w-full rounded-lg border',
                                     errors.height
                                         ? 'border-red-500'
-                                        : 'border-(--line-gray)',
+                                        : 'border-light-light-gray',
                                 ]"
                                 max="250"
                                 min="1"
@@ -249,10 +249,10 @@ const isInputFocused = ref(false);
                         <UInput
                             v-model="form.age"
                             :class="[
-                                'h-11.5 w-full rounded-[3vw] border-1 !text-(--support-text-color)',
+                                'text-support h-11.5 w-full rounded-lg border',
                                 errors.age
                                     ? 'border-red-500'
-                                    : 'border-(--line-gray)',
+                                    : 'border-light-light-gray',
                             ]"
                             max="110"
                             min="1"
@@ -273,8 +273,8 @@ const isInputFocused = ref(false);
                             <UButton
                                 :class="
                                     form.gender === true
-                                        ? 'bg-(--main-blue) text-white'
-                                        : 'bg-(--disable-button-color) !text-(--support-text-color)'
+                                        ? 'bg-main-blue text-white'
+                                        : 'text-support bg-(--disable-button-color)'
                                 "
                                 class="flex h-11.5 w-full justify-center"
                                 @click="form.gender = true"
@@ -284,8 +284,8 @@ const isInputFocused = ref(false);
                             <UButton
                                 :class="
                                     form.gender === false
-                                        ? 'bg-(--main-blue) text-white'
-                                        : 'bg-(--disable-button-color) !text-(--support-text-color)'
+                                        ? 'bg-main-blue text-white'
+                                        : 'text-support bg-(--disable-button-color)'
                                 "
                                 class="flex h-11.5 w-full justify-center"
                                 @click="form.gender = false"
@@ -299,10 +299,10 @@ const isInputFocused = ref(false);
                         <UInput
                             v-model="form.amt"
                             :class="[
-                                'h-11.5 w-full rounded-[3vw] border-1 !text-(--support-text-color)',
+                                'text-support h-11.5 w-full rounded-lg border',
                                 errors.amt
                                     ? 'border-red-500'
-                                    : 'border-(--line-gray)',
+                                    : 'border-light-light-gray',
                             ]"
                             max="10"
                             min="1"
@@ -326,7 +326,7 @@ const isInputFocused = ref(false);
             <div class="mt-12 flex justify-between gap-3">
                 <UButton
                     :disabled="step === 1"
-                    class="flex h-11.5 w-[35%] justify-center rounded-[3vw] border-1 border-(--line-gray)"
+                    class="border-light-light-gray flex h-11.5 w-[35%] justify-center rounded-lg border"
                     variant="link"
                     @click="goBack"
                     >Назад
@@ -335,7 +335,7 @@ const isInputFocused = ref(false);
                     :trailing-icon="
                         step === 3 ? 'i-lucide-check' : 'i-lucide-move-right'
                     "
-                    class="flex h-11.5 w-[100%] justify-center rounded-[3vw] bg-(--main-blue) px-5 text-center text-black"
+                    class="bg-main-blue flex h-11.5 w-[100%] justify-center rounded-lg px-5 text-center text-black"
                     variant="link"
                     @click="goNext"
                 >

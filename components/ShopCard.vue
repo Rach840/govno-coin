@@ -57,7 +57,7 @@ async function buy() {
         <div class="relative rounded-t-[20px] bg-black py-2.5">
             <UBadge
                 v-if="type != 'skin'"
-                class="absolute top-3 left-3 bg-[#2F363A] text-white"
+                class="bg-light-blue absolute top-3 left-3 text-white"
                 color="primary"
                 size="xl"
                 variant="solid"
@@ -65,7 +65,7 @@ async function buy() {
             </UBadge>
             <UBadge
                 v-if="type != 'skin'"
-                class="absolute top-3 right-3 bg-[#2F363A] text-white"
+                class="bg-light-blue absolute top-3 right-3 text-white"
                 color="primary"
                 icon="i-lucide-boxes"
                 size="xl"
@@ -93,20 +93,19 @@ async function buy() {
                 <p class="text-2xl lg:text-2xl">
                     {{ product.skin_price }} $GOVNO
                 </p>
-                <p
-                    class="text-(length--support-text) text-(--support-text-color) lg:text-xl"
-                >
+                <p class="text-(length--support-text) text-support lg:text-xl">
                     ~ {{ +product.skin_price * 0.1 }} $USDT
                 </p>
             </div>
 
             <div class="grid grid-cols-3 grid-rows-1">
                 <UButton
-                    class="col-span-2 flex justify-center border !border-[#008FEA]"
+                    class="border-ton col-span-2 flex justify-center border"
                     size="xxs"
                     variant="ghost"
                     @click="checkBalance"
-                    >Купить
+                >
+                    Купить
                 </UButton>
                 <UDrawer
                     v-model:open="openDetailsDrawer"
@@ -120,9 +119,9 @@ async function buy() {
                         body: 'bg-balance ',
                         container: '',
                         content:
-                            'bg-balance !ring-transparent  !rounded-t-4xl  pt-4',
+                            'bg-balance ring-transparent  rounded-t-4xl  pt-4',
                         handle: [
-                            ' mt-2 py-[0.1vw]  px-[9vw] !bg-[#737373] ',
+                            ' mt-2 py-1  px-12 bg-muted ',
                             '  transition-opacity  ',
                         ],
                         overlay: 'bg-black/40',
@@ -143,7 +142,7 @@ async function buy() {
                                 :ui="{
                                     leadingIcon: 'size-8   ',
                                 }"
-                                class="absolute top-3 right-6 text-[#737373]"
+                                class="text-muted absolute top-3 right-6"
                                 icon="i-lucide-x"
                                 size="xl"
                                 variant="ghost"
@@ -156,7 +155,7 @@ async function buy() {
                                     >
                                         <UBadge
                                             v-if="type != 'skin'"
-                                            class="bg-[#2F363A] text-white"
+                                            class="bg-light-blue text-white"
                                             color="primary"
                                             size="xl"
                                             variant="solid"
@@ -164,7 +163,7 @@ async function buy() {
                                         </UBadge>
                                         <UBadge
                                             v-if="type != 'skin'"
-                                            class="bg-[#2F363A] text-white"
+                                            class="bg-light-blue text-white"
                                             color="primary"
                                             icon="i-lucide-boxes"
                                             size="xl"
@@ -185,9 +184,7 @@ async function buy() {
                                     <h2 class="mb-3 text-2xl">
                                         {{ product.skin_name }}
                                     </h2>
-                                    <p
-                                        class="mb-1 text-lg text-(--support-text-color)"
-                                    >
+                                    <p class="text-support mb-1 text-lg">
                                         Недостаточно средств на балансе
                                         внутреннего кошелька!
                                     </p>
@@ -198,7 +195,7 @@ async function buy() {
                                             {{ product.skin_price }} $GOVNO
                                         </p>
                                         <p
-                                            class="text-(length--support-text) text-(--support-text-color) lg:text-xl"
+                                            class="text-(length--support-text) text-support lg:text-xl"
                                         >
                                             ~
                                             {{ +product.skin_price * 0.1 }}
@@ -206,13 +203,13 @@ async function buy() {
                                         </p>
                                     </div>
                                     <UButton
-                                        class="mb-3 flex h-[12.6vw] w-full justify-center bg-(--main-blue) px-3.5 font-medium"
+                                        class="bg-main-blue mb-3 flex h-12 w-full justify-center px-3.5 font-medium"
                                         size="xxl"
                                         @click="buy"
                                         >Купить
                                     </UButton>
                                     <UButton
-                                        class="flex h-[12.6vw] w-full justify-center border-1 border-(--line-gray) bg-none px-4"
+                                        class="border-light-light-gray flex h-12 w-full justify-center border bg-none px-4"
                                         variant="link"
                                         @click="
                                             () => {
@@ -241,11 +238,8 @@ async function buy() {
         :ui="{
             body: 'bg-balance ',
             container: '',
-            content: 'bg-balance !ring-transparent  !rounded-t-4xl  pt-4',
-            handle: [
-                ' mt-2 py-[0.1vw]  px-[9vw] !bg-[#737373] ',
-                '  transition-opacity  ',
-            ],
+            content: 'bg-balance ring-transparent  rounded-t-4xl  pt-4',
+            handle: [' mt-2 py-1 px-12 bg-muted ', '  transition-opacity  '],
             overlay: 'bg-black/40',
         }"
         overlay-class="bg-black/40"
@@ -254,7 +248,7 @@ async function buy() {
         <template #content>
             <div class="bg-balance flex flex-col gap-3.5 px-6 py-6">
                 <UButton
-                    class="absolute top-4 right-6 text-[#737373]"
+                    class="text-muted absolute top-4 right-6"
                     icon="i-lucide-x"
                     size="xl"
                     variant="ghost"
@@ -265,29 +259,27 @@ async function buy() {
                     <p class="mb-3 text-lg">
                         Недостаточно средств на балансе внутреннего кошелька!
                     </p>
-                    <p class="mb-1 text-lg text-(--support-text-color)">
+                    <p class="text-support mb-1 text-lg">
                         Недостаточно средств на балансе внутреннего кошелька!
                     </p>
                     <div class="space- flex items-center">
                         <p class="text-2xl font-bold text-white">
                             {{ govno }} $GOVNO
                         </p>
-                        <span
-                            class="text-(length--support-text) text-(--support-text-color)"
-                        >
+                        <span class="text-(length--support-text) text-support">
                             ~ $ {{ usd }}
                         </span>
                     </div>
                 </div>
 
                 <UButton
-                    class="flex h-[12.6vw] w-full justify-between bg-(--main-blue) px-3.5 font-medium"
+                    class="bg-main-blue flex h-12 w-full justify-between px-3.5 font-medium"
                     to="/balance"
                     trailing-icon="i-lucide-circle-plus"
                     >Пополнить баланс
                 </UButton>
                 <UButton
-                    class="flex h-[12.6vw] w-full justify-center border-1 border-(--line-gray) bg-none px-4"
+                    class="border-light-light-gray flex h-12 w-full justify-center border bg-none px-4"
                     variant="link"
                     @click="
                         () => {
@@ -310,11 +302,8 @@ async function buy() {
         :ui="{
             body: 'bg-balance ',
             container: '',
-            content: 'bg-balance !ring-transparent  !rounded-t-4xl  pt-4',
-            handle: [
-                ' mt-2 py-[0.1vw]  px-[9vw] !bg-[#737373] ',
-                '  transition-opacity  ',
-            ],
+            content: 'bg-balance ring-transparent  rounded-t-4xl  pt-4',
+            handle: [' mt-2 py-1 px-12 bg-muted ', '  transition-opacity  '],
             overlay: 'bg-black/40',
         }"
         overlay-class="bg-black/40"
@@ -323,7 +312,7 @@ async function buy() {
         <template #content>
             <div class="bg-balance flex flex-col gap-3.5 px-6 pt-6">
                 <UButton
-                    class="absolute top-4 right-6 text-[#737373]"
+                    class="text-muted absolute top-4 right-6"
                     icon="i-lucide-x"
                     size="xl"
                     variant="ghost"
@@ -332,29 +321,27 @@ async function buy() {
                 <div class="mb-56">
                     <h2 class="mb-3 text-2xl">✅ Подтвердите покупку</h2>
                     <p class="mb-3 text-lg">Вы точно хотите купить?</p>
-                    <p class="mb-1 text-lg text-(--support-text-color)">
+                    <p class="text-support mb-1 text-lg">
                         {{ product.skin_name }}
                     </p>
                     <div class="space- flex items-center">
                         <p class="text-2xl font-bold text-white">
                             {{ govno }} $GOVNO
                         </p>
-                        <span
-                            class="text-(length--support-text) text-(--support-text-color)"
-                        >
+                        <span class="text-(length--support-text) text-support">
                             ~ $ {{ usd }}
                         </span>
                     </div>
                 </div>
 
                 <UButton
-                    class="flex h-[12.6vw] w-full justify-between bg-(--main-blue) px-3.5 font-medium"
+                    class="bg-main-blue flex h-12 w-full justify-between px-3.5 font-medium"
                     trailing-icon="i-lucide-circle-plus"
                     @click="buy"
                     >Подтвердить покупку
                 </UButton>
                 <UButton
-                    class="flex h-[12.6vw] w-full justify-center border-1 border-(--line-gray) bg-none px-4"
+                    class="border-light-light-gray flex h-12 w-full justify-center border bg-none px-4"
                     variant="link"
                     @click="openConfirmDrawer = false"
                     >Закрыть

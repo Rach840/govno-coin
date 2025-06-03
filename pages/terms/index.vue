@@ -22,7 +22,7 @@ function replace() {
             <h1 class="text-(length:--h2)">
                 📜 Пользовательское соглашение GOVNO COIN (18+)
             </h1>
-            <p class="text-(length:--support-text)">
+            <p class="">
                 Вступает в силу с момента первого взаимодействия с Приложением,
                 включая его загрузку, открытие или использование любых функций.
             </p>
@@ -30,21 +30,18 @@ function replace() {
         <div
             v-for="(term, termIndex) in mockTerms"
             :key="termIndex"
-            class="box-border flex max-w-[90vw] flex-col gap-2.5"
+            class="box-border flex max-w-5/6 flex-col gap-2.5"
         >
             <h1 class="text-(length:--h4)">
                 {{ term.title }}
             </h1>
-            <p
-                v-if="term.text"
-                class="text-(length:--support-text) font-normal"
-            >
+            <p v-if="term.text" class="font-normal">
                 {{ term.text }}
             </p>
             <div
                 v-for="(content, contentIndex) in term.content"
                 :key="contentIndex"
-                class="flex flex-col items-center justify-center gap-5 text-(length:--support-text) font-normal text-(--support-text-color)"
+                class="text-support flex flex-col items-center justify-center gap-5 font-normal"
             >
                 <h2 v-if="content.subtitle1">
                     {{ content.subtitle1 }}
@@ -54,11 +51,11 @@ function replace() {
                 </p>
             </div>
         </div>
-        <p class="text-(length:--support-text)">
+        <p class="">
             DAO GOVNO COIN не обязано ничего никому. Добро пожаловать в
             Свободный Децентрализованный Беспредел.
         </p>
-        <p class="text-(length:--support-text) text-(--support-text-color)">
+        <p class="text-support">
             Приложение разработано децентрализованной группой разработчиков, не
             являющейся юридическим лицом. Все действия осуществляются на
             добровольной основе, вне рамок какой-либо юрисдикции.
@@ -67,7 +64,7 @@ function replace() {
             <UCheckbox
                 v-model="agree"
                 :ui="{
-                    label: 'font-normal text-(length:--support-text) text-(--support-text-color)',
+                    label: 'font-normal  text-support',
                 }"
                 default-value
                 label="  Я согласен с данными правилами"
@@ -78,11 +75,11 @@ function replace() {
         <UButton
             :class="
                 agree
-                    ? 'bg-(--main-blue)'
+                    ? 'bg-main-blue'
                     : 'disabled:bg-(--disable-button-color) disabled:text-(--disable-text-color)'
             "
             :disabled="!agree"
-            class="flex h-[13.1vw] justify-between rounded-[3vw] px-4.5 text-(length:--button-text2)"
+            class="flex h-12 justify-between rounded-lg px-4.5 text-(length:--button-text2)"
             size="xl"
             trailing-icon="i-lucide-arrow-right"
             @click="replace()"

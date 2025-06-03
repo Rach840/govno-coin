@@ -70,15 +70,13 @@ async function handleSubmit() {
 </script>
 
 <template>
-    <UCard class="bg-balance w-full" variant="solid">
+    <UCard class="bg-balance w-full rounded-lg" variant="solid">
         <div class="flex w-full flex-col items-start justify-start gap-4">
             <div class="flex flex-col gap-0">
                 <p class="text-(length:--h0) font-semibold text-white">
                     $ {{ moneyVal.usd >= 0 ? moneyVal.usd.toFixed(2) : "0.00" }}
                 </p>
-                <span
-                    class="text-left text-(length:--support-text) font-[100] text-(--support-text-color)"
-                >
+                <span class="text-support text-left font-[100]">
                     ~
                     {{
                         moneyVal.govno >= 0 ? moneyVal.govno.toFixed(2) : "0.00"
@@ -99,9 +97,9 @@ async function handleSubmit() {
 
                     container: '',
                     content:
-                        'z-50 bg-balance  !ring-transparent  !rounded-t-4xl  pt-4',
+                        'z-50 bg-balance  ring-transparent  rounded-t-4xl  pt-4',
                     handle: [
-                        ' mt-2 py-[0.1vw]  px-[9vw] !bg-[#737373] ',
+                        ' mt-2 py-1 px-12 bg-muted ',
                         '  transition-opacity   ',
                     ],
                     overlay: 'bg-black/40',
@@ -110,7 +108,7 @@ async function handleSubmit() {
                 side="bottom"
             >
                 <UButton
-                    class="flex h-[12.6vw] w-full justify-between bg-(--main-blue) px-3.5 font-medium"
+                    class="bg-main-blue flex h-12 w-full justify-between px-3.5 font-medium"
                     trailing-icon="i-lucide-circle-plus"
                     >Пополнить баланс
                 </UButton>
@@ -118,7 +116,7 @@ async function handleSubmit() {
                 <template #content>
                     <div class="bg-balance flex flex-col gap-3.5 px-6 pt-6">
                         <UButton
-                            class="absolute top-4 right-6 text-[#737373]"
+                            class="text-muted absolute top-4 right-6"
                             icon="i-lucide-x"
                             size="xl"
                             variant="ghost"
@@ -134,7 +132,7 @@ async function handleSubmit() {
                                 increment: 'hidden',
                                 decrement: 'hidden',
                             }"
-                            class="w-full border-(--line-gray) text-(--support-text-color)"
+                            class="text-support border-light-light-gray w-full"
                             color="secondary"
                             orientation="vertical"
                             placeholder="Сумма пополнения ($GOVNO)"

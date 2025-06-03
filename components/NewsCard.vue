@@ -6,8 +6,8 @@ const { news } = defineProps<{
 </script>
 
 <template>
-    <UCard class="!bg-balance w-full" variant="solid">
-        <div class="!bg-balance w-full space-y-4">
+    <UCard class="bg-balance w-full" variant="solid">
+        <div class="bg-balance w-full space-y-4">
             <p class="text-lg font-medium text-white">{{ news.title }}</p>
             <p class="text-[length:15px] font-normal text-white">
                 {{ news.content }}
@@ -21,7 +21,7 @@ const { news } = defineProps<{
                 </p>
                 <a
                     v-else
-                    class="text-sm text-[#008EFA] underline"
+                    class="text-ton text-sm underline"
                     href="`https://t.me/cryptover1`"
                 >
                     t.me/cryptover1

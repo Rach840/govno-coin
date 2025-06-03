@@ -4,16 +4,30 @@
 
 @theme {
     --container-8xl: 90rem;
+
+    --color-light-gray: rgba(60, 60, 60, 1);
+    --color-dark-gray: rgba(47, 47, 47, 1);
+    --reder: #ff3f3f;
+    --color-main-blue: #008fea;
+    --disable-button-color: rgba(47, 54, 58, 1);
+    --disable-text-color: #737373;
+    --color-light-light-gray: rgba(97, 97, 97, 1);
+    --color-support: #b8b8b8;
+    --color-mobile-background: #262827;
+    --color-muted: #737373;
+
+    --color-light-blue: #2f363a;
+
+    --color-ton: #008fea;
+    --color-usdt: #709853;
+    --color-gcrypto: #64cf13;
 }
 html {
     scroll-behavior: smooth;
 }
 
-body {
-    background-color: #171918;
-}
-
 :root {
+    --ui-bg-muted: var(--color-muted);
     --ui-container: var(--container-8xl);
     --card: oklch(1 0 0);
     --card-foreground: oklch(0.129 0.042 264.695);
@@ -50,16 +64,6 @@ body {
     --foreground: oklch(1 0 0);
 }
 
-@theme {
-    --color-light-gray: rgba(60, 60, 60, 1);
-    --color-dark-gray: rgba(47, 47, 47, 1);
-    --reder: #ff3f3f;
-    --main-blue: #008fea;
-    --disable-button-color: rgba(47, 54, 58, 1);
-    --disable-text-color: #737373;
-    --color-light-light-gray: rgba(97, 97, 97, 1);
-    --color-support: #b8b8b8;
-}
 @theme inline {
     --color-background: var(--background);
     --color-foreground: var(--foreground);
@@ -136,7 +140,7 @@ body {
     }
 
     .line-gray {
-        background-color: #616161 !important;
+        background-color: #616161;
     }
 
     .background-black {

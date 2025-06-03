@@ -79,11 +79,11 @@ async function handleSubmit() {
                         :max="1000"
                         :min="1"
                         :ui="{
-                            base: '!text-support bg-transparent p-4',
+                            base: 'text-support bg-transparent p-4',
                             increment: 'hidden',
                             decrement: 'hidden',
                         }"
-                        class="border-light-light-gray rounded-xl border"
+                        class="border-light-light-gray text-support rounded-xl border"
                         orientation="vertical"
                         placeholder="Сумма пополнения $"
                         size="lg"
@@ -95,7 +95,7 @@ async function handleSubmit() {
                     />
                     <UButton
                         v-if="actionSelect == 'withdrawal'"
-                        class="flex h-[13.1vw] items-center justify-center rounded-[3.5vw] bg-(--main-blue) text-black"
+                        class="bg-main-blue flex h-12 items-center justify-center rounded-lg text-black"
                         @click="handleSubmit"
                     >
                         Вывести

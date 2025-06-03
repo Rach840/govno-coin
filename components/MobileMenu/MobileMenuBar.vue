@@ -25,10 +25,10 @@ const { fullPath } = useRoute();
     <transition mode="out-in" name="fade-slide">
         <div
             v-if="menuVisible"
-            :class="`sticky inset-x-0 bottom-0 z-20 mt-10 flex w-full items-center justify-center gap-3 rounded-t-2xl bg-[#262827] py-4 ${fullPath == '/register/' ? 'hidden' : ''}`"
+            :class="`bg-mobile-background sticky inset-x-0 bottom-0 z-20 mt-10 flex w-full items-center justify-around gap-3 rounded-t-2xl py-4 ${fullPath == '/register/' ? 'hidden' : ''}`"
         >
             <UButton
-                class="flex size-[15vw] items-center justify-center border-1 border-(--line-gray)"
+                class="border-light-light-gray flex size-12 items-center justify-center border"
                 color="primary"
                 to="/balance"
                 variant="link"
@@ -38,7 +38,7 @@ const { fullPath } = useRoute();
             </UButton>
             <UButton
                 v-for="button in otherButtons"
-                class="flex size-[15vw] items-center justify-center bg-[linear-gradient(162deg,_#3C3C3C_0%,_#2F2F2F_100%)]"
+                class="bg-gray-gradient flex size-12 items-center justify-center"
                 variant="link"
                 @click="() => (type == 'drawerMenu' ? updateOpen() : '')"
             >
@@ -46,7 +46,7 @@ const { fullPath } = useRoute();
             </UButton>
 
             <UButton
-                class="pointer-events-auto flex size-[15vw] items-center justify-center border-1 border-(--line-gray)"
+                class="border-light-light-gray pointer-events-auto flex size-12 items-center justify-center border"
                 icon="i-lucide-ellipsis"
                 variant="link"
                 @click="(e) => updateOpen(e)"

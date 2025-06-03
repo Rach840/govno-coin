@@ -84,7 +84,7 @@ function select(index: number) {
                     :ui="{
                         label: 'text-sm ',
                     }"
-                    class="flex min-w-[111px] justify-center bg-[#2F363A]"
+                    class="bg-light-blue flex min-w-[111px] justify-center"
                     size="lg"
                     variant="solid"
                     @click="select(index)"
@@ -102,7 +102,7 @@ function select(index: number) {
                     container: 'm-0 space-x-2',
                     item: 'w-full p-0 ',
                 }"
-                class="!m-0 w-full"
+                class="m-0 w-full"
             >
                 <div class="space-y-3">
                     <ShopCard
