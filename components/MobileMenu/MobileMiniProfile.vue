@@ -4,7 +4,7 @@ const { user } = useUserStore();
 
 <template>
     <div class="flex w-full items-center justify-start gap-3.5">
-        <img :src="user?.avatarUrl" alt="" class="size-16 rounded-full" />
+        <NuxtImg :src="user?.avatarUrl" alt="" class="size-16 rounded-full" />
         <div class="flex flex-col gap-1">
             <h4 class="text-(length:--h3) font-[100] text-white">
                 {{ user?.firstName }} 🚀

@@ -19,7 +19,7 @@ const mockBalance = ref<
 </script>
 
 <template>
-    <img
+    <NuxtImg
         alt=""
         class="absolute top-2.5 right-2.5 h-[160px] w-[140px]"
         src="/balance/coin-balance.svg"

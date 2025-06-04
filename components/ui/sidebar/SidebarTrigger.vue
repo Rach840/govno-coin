@@ -20,7 +20,7 @@ const { toggleSidebar } = useSidebar();
         variant="ghost"
         @click="toggleSidebar"
     >
-        <img alt="" class="" preload src="/menu/bit-expand-menu.svg" />
+        <NuxtImg alt="" class="" preload src="/menu/bit-expand-menu.svg" />
         <span class="sr-only">Toggle Sidebar</span>
     </Button>
 </template>

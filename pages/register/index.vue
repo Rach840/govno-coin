@@ -207,7 +207,7 @@ const isInputFocused = ref(false);
     <div
         class="pointer-events-none absolute inset-0 z-0 h-screen duration-[999999999s]"
     >
-        <img
+        <NuxtImg
             alt="background"
             class="h-full w-full object-cover"
             src="/register/register-background-mobile.svg"

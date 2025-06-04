@@ -34,7 +34,7 @@ const { fullPath } = useRoute();
                 variant="link"
                 @click="() => (type == 'drawerMenu' ? updateOpen() : '')"
             >
-                <img class="h-6 w-7" src="/menu/menu-balance.svg" />
+                <NuxtImg class="h-6 w-7" src="/menu/menu-balance.svg" />
             </UButton>
             <UButton
                 v-for="button in otherButtons"
@@ -42,7 +42,7 @@ const { fullPath } = useRoute();
                 variant="link"
                 @click="() => (type == 'drawerMenu' ? updateOpen() : '')"
             >
-                <img :src="button.icon" class="h-10 w-10" />
+                <NuxtImg :src="button.icon" class="h-10 w-10" />
             </UButton>
 
             <UButton

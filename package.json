@@ -8,7 +8,8 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "analyze": "nuxt analyze"
   },
   "dependencies": {
     "@nuxt/fonts": "^0.11.4",

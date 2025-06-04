@@ -16,6 +16,7 @@ export const useUserStore = defineStore("userStore", {
         loading: new Promise((_r) => {}),
         govno: 0,
         usd: 0,
+        token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDg5MzY1NTQsImlhdCI6MTc0ODg5MzM1NCwidXNlcl9pZCI6NTUzNzgzMzI1fQ.S2EZINUQVfPr7Q_6-7Vy53op24SIJ3L5GqNzP2CDpiI",
         toRubExchange: 0,
         toUsdtExchange: 0,
     }),

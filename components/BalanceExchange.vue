@@ -84,7 +84,7 @@
                         <span class="text-ton">Tonkeeper</span> и произвести
                         процедуру пополнения через $GOVNO
                     </p>
-                    <img
+                    <NuxtImg
                         :src="drawer.image"
                         alt=""
                         class="mx-auto mb-2"
