@@ -48,24 +48,79 @@ watchEffect(() => {
         delayedOpen.value = true;
     }
 });
+const container = useTemplateRef("container");
+
+let drawerStartY = 0;
+
+const drawerOnTouchStart = (e: TouchEvent) => {
+    drawerStartY = e.touches[0].clientY;
+};
+
+const drawerOnTouchMove = (e: TouchEvent) => {
+    const currentY = e.touches[0].clientY;
+    const diffY = currentY - drawerStartY;
+    if (diffY > 100 && container.value?.scrollTop === 0) {
+        updateOpen(false);
+    }
+};
+
+watch(container, (newVal, oldVal) => {
+    newVal?.addEventListener("touchstart", drawerOnTouchStart);
+    newVal?.addEventListener("touchmove", drawerOnTouchMove);
+    oldVal?.removeEventListener("touchstart", drawerOnTouchStart);
+    oldVal?.removeEventListener("touchmove", drawerOnTouchMove);
+});
+
+let touchY = 0;
+
+function handleTouchStart(e: TouchEvent) {
+    touchY = e.touches[0].clientY;
+}
+
+function handleTouchMove(e: TouchEvent) {
+    const deltaY = touchY - e.touches[0].clientY;
+    if (
+        deltaY > 50 &&
+        window.scrollY === document.body.scrollHeight - window.innerHeight
+    )
+        updateOpen(true);
+}
+
+onMounted(() => {
+    window.addEventListener("touchstart", handleTouchStart);
+    window.addEventListener("touchmove", handleTouchMove);
+});
+
+onBeforeUnmount(() => {
+    container.value?.removeEventListener("touchstart", drawerOnTouchStart);
+    container.value?.removeEventListener("touchmove", drawerOnTouchMove);
+
+    window.removeEventListener("touchstart", handleTouchStart);
+    window.removeEventListener("touchmove", handleTouchMove);
+});
 </script>
 
 <template>
     <Teleport to="body">
         <MobileMenuBar
-            :class="{ '!fixed': delayedOpen, 'z-[60]': delayedOpen }"
+            :class="{
+                '!visible': delayedOpen,
+            }"
+            class="invisible !fixed z-[60]"
         />
     </Teleport>
+    <MobileMenuBar />
 
     <Drawer v-model:open="open">
         <DrawerContent class="bg-mobile-background min-w-sm">
             <div
-                class="mt-4 flex flex-col items-center gap-5 overflow-hidden px-5.5 text-center"
+                ref="container"
+                class="mt-4 flex flex-col items-center gap-5 overflow-y-auto px-5.5 text-center"
             >
                 <MobileMiniProfile />
                 <MobileCard />
 
-                <div class="mb-9 flex w-full flex-col gap-2.5">
+                <div class="flex w-full flex-col gap-2.5">
                     <UButton
                         v-for="navItem in navigation"
                         :ui="{
