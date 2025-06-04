@@ -23,10 +23,5 @@ export default defineNuxtConfig({
     runtimeConfig: {
         public: { apiUrl: "https://orchidshop.shop/api" },
     },
-    nitro: {
-        prerender: {
-            ignore: ["/admin/**"],
-        },
-    },
     ssr: false,
 });

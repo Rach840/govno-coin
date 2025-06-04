@@ -3,17 +3,28 @@ import { defineStore } from "pinia";
 export const useAdaptiveStore = defineStore("adaptiveStore", {
     state: () => ({
         menuVisible: ref(true),
+
+        viewport: ref({
+            maxHeight: window?.visualViewport?.height,
+            maxWidth: window?.visualViewport?.width,
+        }),
+
         focus: (e) => {
             e.preventDefault();
         },
     }),
     actions: {
         changeVisible() {
-            this.menuVisible = true;
+            this.menuVisible = !this.menuVisible;
         },
-        focusScroll() {
-            this.menuVisible = true;
 
+        updateViewport() {
+            this.viewport.height = window?.visualViewport?.height;
+            this.viewport.width = window?.visualViewport?.width;
+        },
+
+        focusScroll() {
+            this.menuVisible = false;
             setTimeout(() => {
                 document.addEventListener("dblclick", this.focus);
             }, 500);
