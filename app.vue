@@ -26,7 +26,7 @@ onBeforeUnmount(() => {
     </Head>
     <UApp>
         <Suspense>
-            <NuxtLayout name="default">
+            <NuxtLayout>
                 <NuxtPage />
             </NuxtLayout>
 
