@@ -46,7 +46,7 @@
                     v-if="!isInputFocused"
                     class="pointer-events-none absolute bottom-[120px] left-0 mx-auto w-5/6"
                 >
-                    <NuxtImg
+                    <img
                         alt=""
                         class="w-full rounded-[10px]"
                         src="/surveys/ad.svg"
@@ -80,7 +80,7 @@
                 </div>
             </div>
             <div class="absolute bottom-[120px] left-0 mx-[20px] w-5/6">
-                <NuxtImg
+                <img
                     alt=""
                     class="w-full rounded-[10px]"
                     src="/surveys/ad.svg"
@@ -107,7 +107,7 @@
             <div
                 class="absolute bottom-[120px] left-0 mx-[20px] w-5/6 lg:static"
             >
-                <NuxtImg
+                <img
                     alt=""
                     class="w-full rounded-[10px]"
                     src="/surveys/ad.svg"

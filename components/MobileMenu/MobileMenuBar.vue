@@ -3,7 +3,6 @@ const { updateOpen } = inject("open");
 const menuVisible = computed(() => {
     return useAdaptiveStore().menuVisible;
 });
-const { type }: { type?: string } = defineProps(["type"]);
 const otherButtons = [
     {
         link: "",
@@ -25,31 +24,31 @@ const { fullPath } = useRoute();
     <transition mode="out-in" name="fade-slide">
         <div
             v-if="menuVisible"
-            :class="`bg-mobile-background sticky inset-x-0 bottom-0 z-20 mt-10 flex w-full items-center justify-around gap-3 rounded-t-2xl py-4 ${fullPath == '/register/' ? 'hidden' : ''}`"
+            :class="`bg-mobile-background sticky inset-x-0 bottom-0 z-20 mt-10 flex w-full items-center justify-around gap-3 rounded-t-2xl py-4 ${fullPath == '/register/' ? 'hidden' : ''} ${$attrs.class}`"
         >
             <UButton
-                class="border-light-light-gray flex size-12 items-center justify-center border"
+                class="border-light-light-gray point flex size-12 items-center justify-center border"
                 color="primary"
                 to="/balance"
                 variant="link"
-                @click="() => (type == 'drawerMenu' ? updateOpen() : '')"
+                @click="updateOpen(false)"
             >
-                <NuxtImg class="h-6 w-7" src="/menu/menu-balance.svg" />
+                <img class="h-6 w-7" src="/menu/menu-balance.svg" />
             </UButton>
             <UButton
                 v-for="button in otherButtons"
                 class="bg-gray-gradient flex size-12 items-center justify-center"
                 variant="link"
-                @click="() => (type == 'drawerMenu' ? updateOpen() : '')"
+                @click="updateOpen(false)"
             >
-                <NuxtImg :src="button.icon" class="h-10 w-10" />
+                <img :src="button.icon" class="h-10 w-10" />
             </UButton>
 
             <UButton
-                class="border-light-light-gray pointer-events-auto flex size-12 items-center justify-center border"
+                class="border-light-light-gray flex size-12 items-center justify-center border"
                 icon="i-lucide-ellipsis"
                 variant="link"
-                @click="(e) => updateOpen(e)"
+                @click="updateOpen()"
             />
         </div>
     </transition>

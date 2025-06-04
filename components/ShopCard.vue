@@ -73,13 +73,13 @@ async function buy() {
                 >{{ product.skin_emission }} шт
             </UBadge>
 
-            <NuxtImg
+            <img
                 v-if="type != 'skin'"
                 :src="product.skin_url"
                 alt=""
                 class="mx-auto h-[180px]"
             />
-            <NuxtImg
+            <img
                 v-if="type == 'skin'"
                 :src="product.skin_url"
                 alt=""
@@ -172,7 +172,7 @@ async function buy() {
                                         </UBadge>
                                     </div>
 
-                                    <NuxtImg
+                                    <img
                                         :src="product.skin_url"
                                         alt=""
                                         class="mx-auto h-[180px]"
