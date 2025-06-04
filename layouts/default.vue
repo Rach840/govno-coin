@@ -16,9 +16,9 @@ onMounted(() => {
 <template>
     <UContainer
         v-if="isMobile"
-        class="padding-container flex min-h-screen flex-col lg:hidden"
+        class="bg-mobile-background padding-container flex min-h-screen flex-col lg:hidden"
     >
-        <div class="flex-1 px-5 py-10">
+        <div class="bg-background flex-1 px-5 py-10 pb-10">
             <slot />
         </div>
         <MobileMenu />

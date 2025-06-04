@@ -1,13 +1,19 @@
 <script lang="ts" setup>
 const adaptiveStore = useAdaptiveStore();
 
-// onMounted(() => {
-//     document.addEventListener("resize", adaptiveStore.handleResize);
-// });
-//
-// onBeforeUnmount(() => {
-//     document.removeEventListener("resize", adaptiveStore.handleResize);
-// });
+onMounted(() => {
+    window.visualViewport?.addEventListener(
+        "resize",
+        adaptiveStore.updateViewport,
+    );
+});
+
+onBeforeUnmount(() => {
+    window.visualViewport?.removeEventListener(
+        "resize",
+        adaptiveStore.updateViewport,
+    );
+});
 </script>
 
 <template>
