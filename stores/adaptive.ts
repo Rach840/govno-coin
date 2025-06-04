@@ -9,10 +9,10 @@ export const useAdaptiveStore = defineStore("adaptiveStore", {
     }),
     actions: {
         changeVisible() {
-            this.menuVisible = !this.menuVisible;
+            this.menuVisible = true;
         },
         focusScroll() {
-            this.menuVisible = false;
+            this.menuVisible = true;
 
             setTimeout(() => {
                 document.addEventListener("dblclick", this.focus);

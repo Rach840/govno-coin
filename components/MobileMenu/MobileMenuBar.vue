@@ -1,8 +1,7 @@
 <script lang="ts" setup>
 const { updateOpen } = inject("open");
-const menuVisible = computed(() => {
-    return useAdaptiveStore().menuVisible;
-});
+
+const adaptiveStore = useAdaptiveStore();
 const otherButtons = [
     {
         link: "",
@@ -23,7 +22,7 @@ const { fullPath } = useRoute();
 <template>
     <transition mode="out-in" name="fade-slide">
         <div
-            v-if="menuVisible"
+            v-if="adaptiveStore.menuVisible"
             :class="`bg-mobile-background sticky inset-x-0 bottom-0 z-20 mt-10 flex w-full items-center justify-around gap-3 rounded-t-2xl py-4 ${fullPath == '/register/' ? 'hidden' : ''} ${$attrs.class}`"
         >
             <UButton
