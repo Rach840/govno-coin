@@ -36,10 +36,26 @@ const navigation = [
 ];
 
 const router = useRouter();
+
+const delayedOpen = ref<boolean>(open.value);
+
+watchEffect(() => {
+    if (!open.value) {
+        setTimeout(() => {
+            delayedOpen.value = false;
+        }, 300);
+    } else {
+        delayedOpen.value = true;
+    }
+});
 </script>
 
 <template>
-    <MobileMenuBar />
+    <Teleport to="body">
+        <MobileMenuBar
+            :class="{ '!fixed': delayedOpen, 'z-[60]': delayedOpen }"
+        />
+    </Teleport>
 
     <Drawer v-model:open="open">
         <DrawerContent class="bg-mobile-background min-w-sm">
@@ -68,7 +84,7 @@ const router = useRouter();
                     </UButton>
                 </div>
             </div>
-            <MobileMenuBar class="!m-0 w-full" />
+            <MobileMenuBar class="!m-0" />
         </DrawerContent>
     </Drawer>
 </template>
