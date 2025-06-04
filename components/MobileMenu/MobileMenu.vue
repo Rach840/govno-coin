@@ -4,8 +4,9 @@ import MobileCard from "~/components/MobileMenu/MobileCard.vue";
 import { Drawer, DrawerContent } from "~/components/ui/drawer";
 
 const open = ref<boolean>(false);
-const updateOpen = (state = open.value) =>
-    state ? (open.value = state) : (open.value = !open.value);
+const updateOpen = (state?: boolean) =>
+    state !== undefined ? (open.value = state) : (open.value = !open.value);
+
 provide("open", {
     open,
     updateOpen,
@@ -41,10 +42,7 @@ const router = useRouter();
     <MobileMenuBar />
 
     <Drawer v-model:open="open">
-        <DrawerContent
-            :disable-outside-pointer-events="false"
-            class="bg-mobile-background min-w-sm"
-        >
+        <DrawerContent class="bg-mobile-background min-w-sm">
             <div
                 class="mt-4 flex flex-col items-center gap-5 overflow-auto px-5.5 text-center"
             >
