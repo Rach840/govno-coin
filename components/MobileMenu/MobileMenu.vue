@@ -42,9 +42,9 @@ const router = useRouter();
     <MobileMenuBar />
 
     <Drawer v-model:open="open">
-        <DrawerContent class="bg-mobile-background min-w-sm overflow-hidden">
+        <DrawerContent class="bg-mobile-background min-w-sm">
             <div
-                class="mt-4 flex flex-col items-center gap-5 overflow-auto px-5.5 text-center"
+                class="mt-4 flex flex-col items-center gap-5 overflow-hidden px-5.5 text-center"
             >
                 <MobileMiniProfile />
                 <MobileCard />
