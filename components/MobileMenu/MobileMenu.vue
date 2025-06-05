@@ -106,7 +106,7 @@ onBeforeUnmount(() => {
             :class="{
                 '!visible': delayedOpen,
             }"
-            class="invisible !fixed z-[60]"
+            class="invisible !fixed z-[60] pb-[var(--tg-safe-area-inset-bottom,env(safe-area-inset-bottom,0px))]"
         />
     </Teleport>
     <MobileMenuBar />
@@ -139,7 +139,10 @@ onBeforeUnmount(() => {
                     </UButton>
                 </div>
             </div>
-            <MobileMenuBar class="!m-0" />
+
+            <MobileMenuBar
+                class="!m-0 pb-[var(--tg-safe-area-inset-bottom,env(safe-area-inset-bottom,0px))]"
+            />
         </DrawerContent>
     </Drawer>
 </template>

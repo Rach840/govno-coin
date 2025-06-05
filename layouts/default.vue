@@ -21,7 +21,9 @@ onMounted(() => {
         <div class="bg-background flex-1 px-5 py-10 pb-10">
             <slot />
         </div>
-        <MobileMenu />
+        <MobileMenu
+            class="pb-[var(--tg-safe-area-inset-bottom,env(safe-area-inset-bottom,0px))]"
+        />
     </UContainer>
 
     <main v-else class="hidden w-full lg:block">
