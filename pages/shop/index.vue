@@ -1,10 +1,6 @@
 <script lang="ts" setup>
 import type { TabsItem } from "@nuxt/ui";
 
-definePageMeta({
-    pageTransition: { name: "shop", mode: "in-out" },
-});
-
 const products = ref<Product[] | null>(null);
 const subs = ref<Product[]>([
     {
@@ -74,9 +70,9 @@ function select(index: number) {
 
 <template>
     <div class="min-h-screen">
-        <h1 class="mb-4 text-3xl text-white lg:text-2xl">Магазин</h1>
-        <div class="mx-auto flex max-w-xs justify-between gap-1 pt-4">
-            <div class="mt-4 mb-4 flex w-full gap-4 overflow-y-scroll">
+        <h1 class="mb-3 text-3xl text-white lg:text-2xl">Магазин</h1>
+        <div class="mx-auto flex max-w-xs justify-between gap-1 ">
+            <div class=" mb-4 flex w-full gap-4 overflow-y-scroll">
                 <UButton
                     v-for="(item, index) in itemsMenu"
                     :key="index"

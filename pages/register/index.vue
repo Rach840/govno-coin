@@ -4,7 +4,7 @@ import { z } from "zod";
 definePageMeta({
     layout: "register",
 });
-
+const userStore = useUserStore()
 const router = useRouter();
 const step = ref(1);
 const direction = ref<"forward" | "backward">("forward");
@@ -22,7 +22,7 @@ onBeforeUnmount(() => {
     document.body.style.overflow = "";
     document.documentElement.style.overflow = "";
 });
-
+const loading = ref(false)
 const schema = z.object({
     weight: z
         .number({
@@ -193,6 +193,8 @@ async function submitForm() {
         });
 
         if (response.status === 200) {
+            loading.value = true
+            await userStore.refreshBalance();
             await router.push("/balance");
         }
     } catch (err) {
@@ -204,7 +206,9 @@ const isInputFocused = ref(false);
 </script>
 
 <template>
+      <TelegramPreloader  v-if="loading"/>
     <div
+v-else
         class="pointer-events-none absolute inset-0 z-0 h-screen duration-[999999999s]"
     >
         <img

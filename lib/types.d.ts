@@ -1,9 +1,3 @@
-interface News {
-    title: string;
-    content: string;
-    source: string;
-}
-
 interface Terms {
     title: string;
     text?: stirng;
@@ -21,7 +15,7 @@ interface News {
     title: string;
     content: string;
     source: string;
-    createdAt?: Date;
+    date?: Date;
 }
 
 interface UserResponse {

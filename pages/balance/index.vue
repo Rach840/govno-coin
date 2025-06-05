@@ -52,7 +52,7 @@ async function handleSubmit() {
                 <div class="flex gap-3.5 text-2xl">
                     <UButton
                         :class="{
-                            'text-white underline decoration-(--main-blue) underline-offset-6':
+                            'text-white underline decoration-(--color-main-blue) underline-offset-6':
                                 actionSelect === 'replenishment',
                         }"
                         class="balance-interaction-select-point text-support p-0 text-lg"
@@ -63,7 +63,7 @@ async function handleSubmit() {
                     </UButton>
                     <UButton
                         :class="{
-                            'text-white underline decoration-(--main-blue) underline-offset-6':
+                            'text-white underline decoration-(--color-main-blue) underline-offset-6':
                                 actionSelect === 'withdrawal',
                         }"
                         class="balance-interaction-select-point text-support p-0 text-lg"
@@ -80,22 +80,26 @@ async function handleSubmit() {
                         :min="1"
                         :ui="{
                             base: 'text-support bg-transparent p-4',
-                            increment: 'hidden',
                             decrement: 'hidden',
+                            increment: 'h-full'
                         }"
-                        class="border-light-light-gray text-support rounded-xl border"
+                        class="border-light-light-gray  text-support rounded-xl border"
                         orientation="vertical"
-                        placeholder="Сумма пополнения $"
+                        placeholder="Сумма пополнения"
                         size="lg"
                         trailing-icon="i-lucide-dollar-sign"
                         type="number"
                         variant="none"
                         @focus="focusScroll"
                         @focusout="focusScrollUnlock"
-                    />
+                    >
+                <template #increment>
+                  <UIcon name="i-lucide-dollar-sign" class="size-7 text-[#737373]" />
+                </template>
+                </UInputNumber>
                     <UButton
                         v-if="actionSelect == 'withdrawal'"
-                        class="bg-main-blue flex h-12 items-center justify-center rounded-lg text-black"
+                        class="bg-red-500 flex h-12 items-center justify-center rounded-lg text-black"
                         @click="handleSubmit"
                     >
                         Вывести

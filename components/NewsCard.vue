@@ -7,7 +7,7 @@ const { news } = defineProps<{
 
 <template>
     <UCard class="bg-balance w-full" variant="solid">
-        <div class="bg-balance w-full space-y-4">
+        <div class=" w-full border-0 space-y-4">
             <p class="text-lg font-medium text-white">{{ news.title }}</p>
             <p class="text-[length:15px] font-normal text-white">
                 {{ news.content }}
@@ -15,7 +15,7 @@ const { news } = defineProps<{
             <div class="flex justify-between space-x-1">
                 <p
                     v-if="news.source !== 't.me/cryptover1'"
-                    class="text-[14px] font-normal text-[var(--support-text-color)]"
+                    class="text-sm font-normal text-support"
                 >
                     {{ news.source }}
                 </p>
@@ -27,7 +27,7 @@ const { news } = defineProps<{
                     t.me/cryptover1
                 </a>
                 <h4
-                    class="text-[14px] font-normal text-[var(--support-text-color)]"
+                    class="text-sm font-normal text-support"
                 >
                     {{ news.date }}
                 </h4>

@@ -95,7 +95,7 @@
                 <UButton
                     class="text-muted col-span-2 flex items-center justify-center rounded-lg bg-white font-medium"
                     target="_blank"
-                    to="https://tonkeeper.com/"
+                    :to="drawer.url"
                     variant="solid"
                     >Перейти в <span class="text-ton">Tonkeeper</span></UButton
                 >
@@ -129,11 +129,13 @@ const drawersContent = [
         coin: "USDT",
         image: "/balance/usdt 1.png",
         open: ref(false),
+        url:'https://app.tonkeeper.com/swap?ft=USDT&tt=EQBIWgKnh_qbFYTXfKgGAQPxkxFsArDOSr9n|ARSzydpNP (https://app.tonkeeper.com/swap?ft=USDT&tt=EQBIW)'
     },
     {
         coin: "TON",
         image: "/balance/usdt 2.png",
         open: ref(false),
+        url: 'https://tonkeeper.com/'
     },
 ];
 watchEffect(async () => {
