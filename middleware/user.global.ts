@@ -9,7 +9,7 @@ export default defineNuxtRouteMiddleware(async () => {
             (!userStore.user && !userStore.token && !userStore.toRubExchange) ||
             userStore.token
         ) {
-            userStore.setTestUser();
+            userStore.setUser();
             await userStore.validateUser();
             await userStore.refreshBalance();
         } else if (cacheStore.news) {
