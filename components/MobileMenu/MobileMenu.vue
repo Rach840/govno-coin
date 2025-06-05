@@ -64,13 +64,6 @@ const drawerOnTouchMove = (e: TouchEvent) => {
     }
 };
 
-watch(container, (newVal, oldVal) => {
-    newVal?.addEventListener("touchstart", drawerOnTouchStart);
-    newVal?.addEventListener("touchmove", drawerOnTouchMove);
-    oldVal?.removeEventListener("touchstart", drawerOnTouchStart);
-    oldVal?.removeEventListener("touchmove", drawerOnTouchMove);
-});
-
 let touchY = 0;
 
 function handleTouchStart(e: TouchEvent) {
@@ -85,6 +78,13 @@ function handleTouchMove(e: TouchEvent) {
     )
         updateOpen(true);
 }
+
+watch(container, (newVal, oldVal) => {
+    newVal?.addEventListener("touchstart", drawerOnTouchStart);
+    newVal?.addEventListener("touchend", drawerOnTouchMove);
+    oldVal?.removeEventListener("touchstart", drawerOnTouchStart);
+    oldVal?.removeEventListener("touchmove", drawerOnTouchMove);
+});
 
 onMounted(() => {
     window.addEventListener("touchstart", handleTouchStart);

@@ -18,7 +18,7 @@ onMounted(() => {
         v-if="isMobile"
         class="bg-mobile-background padding-container flex min-h-screen flex-col lg:hidden"
     >
-        <div class="bg-background flex-1 px-5 py-10 pb-10">
+        <div class="bg-background flex-1 overflow-y-auto px-5 py-10 pb-10">
             <slot />
         </div>
         <MobileMenu
