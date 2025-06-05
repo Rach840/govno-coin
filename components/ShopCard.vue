@@ -43,6 +43,7 @@ async function buy() {
         },
     });
     if (status == "success") {
+        await refreshBalance();
         window.Telegram?.WebApp?.showPopup({
             title: `💩 ${product.skin_name} Скин уже у вас!`,
             message: "Теперь вы можете использовать его на карте!",
@@ -90,10 +91,10 @@ async function buy() {
             <p class="text-xl lg:text-xl">{{ product.skin_name }}</p>
             <div class="mb-4 flex items-center space-x-1">
                 <p class="text-2xl lg:text-2xl">
-                    {{ product.skin_price }} $GOVNO
+                    {{ +product.skin_price * 0.1 }} $USDT
                 </p>
                 <p class="text-support lg:text-xl">
-                    ~ {{ +product.skin_price * 0.1 }} $USDT
+                    ~ {{ product.skin_price }} $GOVNO
                 </p>
             </div>
 
@@ -319,10 +320,8 @@ async function buy() {
                         {{ product.skin_name }}
                     </p>
                     <div class="space- flex items-center">
-                        <p class="text-2xl font-bold text-white">
-                            {{ govno }} $GOVNO
-                        </p>
-                        <span class="text-support"> ~ $ {{ usd }} </span>
+                        <p class="text-2xl font-bold text-white">$ {{ usd }}</p>
+                        <span class="text-support"> ~ {{ govno }} $GOVNO </span>
                     </div>
                 </div>
 

@@ -44,7 +44,7 @@
             <transition mode="out-in" name="fade-slide">
                 <div
                     v-if="!isInputFocused"
-                    class="pointer-events-none absolute bottom-[120px] left-0 mx-auto w-5/6"
+                    class="pointer-events-none absolute bottom-[120px] left-0 mx-auto"
                 >
                     <img
                         alt=""
@@ -79,7 +79,7 @@
                     </p>
                 </div>
             </div>
-            <div class="absolute bottom-[120px] left-0 mx-[20px] w-5/6">
+            <div class="absolute bottom-[120px] left-0 mx-[20px] ">
                 <img
                     alt=""
                     class="w-full rounded-[10px]"
@@ -105,7 +105,7 @@
                 ✅ Опросы на сегодня завершены!
             </h2>
             <div
-                class="absolute bottom-[120px] left-0 mx-[20px] w-5/6 lg:static"
+                class="absolute bottom-[120px] left-0 mx-[20px]  lg:static"
             >
                 <img
                     alt=""

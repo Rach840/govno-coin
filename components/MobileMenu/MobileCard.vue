@@ -99,8 +99,8 @@ async function handleSubmit() {
                     content:
                         'z-50 bg-balance  ring-transparent  rounded-t-4xl  pt-4',
                     handle: [
-                        ' mt-2 py-1 px-12 bg-muted ',
-                        '  transition-opacity   ',
+                        ' mt-2 py-1 bg-[#616161] px-12 bg-muted ',
+                            '  transition-opacity  ',
                     ],
                     overlay: 'bg-black/40',
                 }"
@@ -128,20 +128,25 @@ async function handleSubmit() {
                             v-model="stateValue"
                             :min="1"
                             :ui="{
-                                base: 'bg-transparent p-4',
-                                increment: 'hidden',
+                                base: ' text-support bg-transparent p-4',
+                                increment: 'h-full',
+
                                 decrement: 'hidden',
                             }"
-                            class="text-support border-light-light-gray w-full"
+                            class="border-light-light-gray  text-support rounded-xl border w-full"
                             color="secondary"
                             orientation="vertical"
-                            placeholder="Сумма пополнения ($GOVNO)"
+                            placeholder="Сумма пополнения"
                             size="xl"
                             type="number"
-                            variant="outline"
+                            variant="none"
                             @focus="focusScroll"
                             @focusout="focusScrollUnlock"
-                        />
+                        >
+                       <template #increment>
+                  <UIcon name="i-lucide-dollar-sign" class="size-7 text-[#737373]" />
+                </template>
+                    </UInputNumber>
                         <BalanceExchange :num="stateValue" />
                         <div
                             class="mx-auto h-[189px] w-[234px] bg-[url(/balance/coin-balance.svg)] bg-cover"

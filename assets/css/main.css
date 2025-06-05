@@ -140,7 +140,9 @@ html {
     .line-gray {
         background-color: #616161;
     }
-
+.text-support{
+    color: var(--color-support) !important;
+}
     .background-black {
         background-color: #171918;
     }

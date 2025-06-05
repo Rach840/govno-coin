@@ -23,7 +23,7 @@ if (
 
     const initData = tg.initData;
     const initDataUnsafe = tg.initDataUnsafe;
-    fetch(`${config.public.apiUrl}/auth/validate_user`, {
+    await fetch(`${config.public.apiUrl}/auth/validate_user`, {
         method: "POST",
         body: JSON.stringify({
             initData,
@@ -69,7 +69,7 @@ if (
 </script>
 
 <template>
-    <div class="py-13">
+<div class="py-13">
         <h1 class="text-center text-3xl text-white">{{ validateText }}</h1>
     </div>
 </template>
