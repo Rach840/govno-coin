@@ -7,7 +7,7 @@ definePageMeta({
 });
 
 const { refreshBalance } = useUserStore();
-
+const {cacheNews } = useCacheStore()
 if (
     !!window.Telegram &&
     !!window.Telegram?.WebApp &&
@@ -35,6 +35,7 @@ if (
                 await router.push("/terms");
             } else if (response.status === 201) {
                 await refreshBalance();
+                await cacheNews();
                 await router.push("/balance");
             } else if (
                 response.status === 404 ||

@@ -44,7 +44,7 @@
             <transition mode="out-in" name="fade-slide">
                 <div
                     v-if="!isInputFocused"
-                    class="pointer-events-none absolute bottom-[120px] left-0 mx-auto"
+                    class="pointer-events-none absolute bottom-[220px] left-0 mx-auto"
                 >
                     <img
                         alt=""
@@ -79,7 +79,7 @@
                     </p>
                 </div>
             </div>
-            <div class="absolute bottom-[120px] left-0 mx-[20px] ">
+            <div class="absolute bottom-[220px] left-0 mx-[20px] ">
                 <img
                     alt=""
                     class="w-full rounded-[10px]"
@@ -137,7 +137,7 @@ const userAnswers = ref<string[]>([]);
 const correctAnswersCount = ref<number>(0);
 const correctAnswersUsdt = ref<number>(0);
 const correctAnswersGovno = ref<number>(0);
-const { user, fetchWithValidate } = useUserStore();
+const { user, fetchWithValidate, checkQuestionsExists, refreshBalance } = useUserStore();
 const { focusScrollUnlock, focusScroll } = useAdaptiveStore();
 const userId = user?.id;
 const date = new Date();
@@ -178,6 +178,7 @@ async function generateAndSaveQuestions() {
                 user_id: user?.id,
             },
         });
+console.log('asdasd');
 
         if (response.data && response.status == "success") {
             questions.value = response.data as string[];
@@ -223,12 +224,7 @@ async function nextQuestion() {
 }
 
 async function checkQuestion() {
-    const response = await fetchWithValidate("/quiz/check_question", {
-        method: "POST",
-        body: {
-            user_id: userId,
-        },
-    });
+const response = await checkQuestionsExists()    
 
     if (response.status == "success") {
         surveyState.value = 1;
@@ -262,6 +258,7 @@ async function sendAnswers() {
             ).correctAnswersCount;
             correctAnswersUsdt.value = (response.data as ResponseData).usdt;
             correctAnswersGovno.value = (response.data as ResponseData).govno;
+            await refreshBalance()
             localStorage.removeItem(storageKey);
         }
     } catch (error) {

@@ -15,7 +15,7 @@ provide("open", {
 const navigation = [
     {
         name: "Задания",
-        link: "/tasks",
+        link: "/balance",
     },
     {
         name: "Магазин",
@@ -31,7 +31,7 @@ const navigation = [
     },
     {
         name: "Партнеры",
-        link: "/partners",
+        link: "/balance",
     },
 ];
 

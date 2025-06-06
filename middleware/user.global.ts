@@ -5,6 +5,7 @@ export default defineNuxtRouteMiddleware(async () => {
     const cacheStore = useCacheStore();
 
     try {
+        console.log(cacheStore.news)
         if (
             (!userStore.user && !userStore.token && !userStore.toRubExchange) ||
             userStore.token
@@ -12,11 +13,8 @@ export default defineNuxtRouteMiddleware(async () => {
             userStore.setUser();
             await userStore.validateUser();
             await userStore.refreshBalance();
-        } else if (cacheStore.news) {
-            console.log("кеширует");
+        }else{
             cacheStore.cacheNews();
-        } else {
-            await userStore.refreshBalance();
         }
     } catch (error) {}
 });

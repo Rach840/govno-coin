@@ -114,7 +114,7 @@ export default defineAppConfig({
         },
         drawer: {
             slots: {
-                content: "!z-50 ",
+                content: "!z-70 ",
             },
         },
     },

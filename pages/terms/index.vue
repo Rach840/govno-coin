@@ -19,10 +19,10 @@ function replace() {
 <template>
     <div class="flex flex-col gap-4">
         <div class="flex flex-col gap-2.5">
-            <h1 class="text-(length:--h2)">
+            <h1 class="text-(length:--h2) text-center">
                 📜 Пользовательское соглашение GOVNO COIN (18+)
             </h1>
-            <p class="">
+            <p class=" text-center">
                 Вступает в силу с момента первого взаимодействия с Приложением,
                 включая его загрузку, открытие или использование любых функций.
             </p>
@@ -32,30 +32,30 @@ function replace() {
             :key="termIndex"
             class="box-border flex max-w-5/6 flex-col gap-2.5"
         >
-            <h1 class="text-(length:--h4)">
+            <h1 class="text-(length:--h4) text-center">
                 {{ term.title }}
             </h1>
-            <p v-if="term.text" class="font-normal">
+            <p v-if="term.text" class="font-normal text-center">
                 {{ term.text }}
             </p>
             <div
                 v-for="(content, contentIndex) in term.content"
                 :key="contentIndex"
-                class="text-support flex flex-col items-center justify-center gap-5 font-normal"
+                class="text-support flex text-center flex-col items-center justify-center gap-5 font-normal"
             >
-                <h2 v-if="content.subtitle1">
+                <h2 class="text-center" v-if="content.subtitle1">
                     {{ content.subtitle1 }}
                 </h2>
-                <p v-if="content.subtitle2">
+                <p class="text-center" v-if="content.subtitle2">
                     {{ content.subtitle2 }}
                 </p>
             </div>
         </div>
-        <p class="">
+        <p class="text-center">
             DAO GOVNO COIN не обязано ничего никому. Добро пожаловать в
             Свободный Децентрализованный Беспредел.
         </p>
-        <p class="text-support">
+        <p class="text-support text-center">
             Приложение разработано децентрализованной группой разработчиков, не
             являющейся юридическим лицом. Все действия осуществляются на
             добровольной основе, вне рамок какой-либо юрисдикции.

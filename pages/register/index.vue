@@ -23,6 +23,7 @@ onBeforeUnmount(() => {
     document.documentElement.style.overflow = "";
 });
 const loading = ref(false)
+const cache = useCacheStore()
 const schema = z.object({
     weight: z
         .number({
@@ -194,7 +195,9 @@ async function submitForm() {
 
         if (response.status === 200) {
             loading.value = true
+            
             await userStore.refreshBalance();
+            await cache.cacheNews();
             await router.push("/balance");
         }
     } catch (err) {
@@ -269,6 +272,9 @@ v-else
                                 min="1"
                                 placeholder="Вес (кг)"
                                 size="xl"
+                                :ui="{
+                                    base:'placeholder:!text-[#B8B8B8]'
+                                }"
                                 type="number"
                                 variant="none"
                                 @focus="
@@ -291,6 +297,9 @@ v-else
                                 max="250"
                                 min="1"
                                 placeholder="Рост (см)"
+                                :ui="{
+                                    base:'placeholder:!text-[#B8B8B8]'
+                                }"
                                 size="xl"
                                 type="number"
                                 variant="none"
@@ -318,6 +327,9 @@ v-else
                             max="110"
                             min="1"
                             placeholder="Возраст (лет)"
+                            :ui="{
+                                    base:'placeholder:!text-[#B8B8B8]'
+                                }"
                             size="xl"
                             type="number"
                             variant="none"
@@ -369,6 +381,9 @@ v-else
                             min="1"
                             placeholder="Сколько раз в день майнишь в туалете?"
                             size="xl"
+                            :ui="{
+                                    base:'placeholder:!text-[#B8B8B8]'
+                                }"
                             type="number"
                             variant="none"
                             @focus="

@@ -1,5 +1,4 @@
 import { defineStore } from "pinia";
-import type { HTTPMethod } from "h3";
 
 interface CacheState {
     news: News[] | null;
@@ -27,13 +26,17 @@ export const useCacheStore = defineStore("cacheStore", {
             }
 
             const newsExist = localStorage.getItem("news");
-            const newsDate = localStorage.getItem("newsLastDate");
+            const newsDate = JSON.parse(localStorage.getItem("newsLastDate"));
             const now = new Date();
+            
+            console.log(newsDate);
+
             if (
                 !newsDate ||
-                now.getTime() - JSON.parse(newsDate).getTime() >=
+                now.getTime() - new Date(newsDate).getTime() >=
                     12 * 60 * 60 * 1000
             ) {
+                
                 const { data, status } = await userStore.fetchWithValidate(
                     "/news/get_news",
                     {
@@ -43,6 +46,8 @@ export const useCacheStore = defineStore("cacheStore", {
                         },
                     },
                 );
+                console.log(data);
+                
                 if (status == "success") {
                     const dateResponse = (data as ResponseData).date;
                     this.news = (data as ResponseData).news
@@ -79,7 +84,7 @@ export const useCacheStore = defineStore("cacheStore", {
                 this.newsLastDate = now;
             } else {
                 this.news = JSON.parse(newsExist);
-                this.newsLastDate = JSON.parse(newsDate);
+                this.newsLastDate = newsDate;
             }
         },
     },

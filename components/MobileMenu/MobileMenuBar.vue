@@ -28,17 +28,18 @@ const { fullPath } = useRoute();
             class="flex w-full items-center justify-around gap-3 rounded-t-2xl py-4"
         >
             <UButton
-                class="border-light-light-gray point flex size-12 items-center justify-center border"
+                class="border-light-light-gray point flex size-15 items-center justify-center border"
                 color="primary"
                 to="/balance"
                 variant="link"
+                
                 @click="updateOpen(false)"
             >
                 <img class="h-6 w-7" src="/menu/menu-balance.svg" />
             </UButton>
             <UButton
                 v-for="button in otherButtons"
-                class="bg-gray-gradient flex size-12 items-center justify-center"
+                class="bg-gray-gradient flex size-15 items-center justify-center"
                 variant="link"
                 @click="updateOpen(false)"
             >
@@ -46,7 +47,7 @@ const { fullPath } = useRoute();
             </UButton>
 
             <UButton
-                class="border-light-light-gray flex size-12 items-center justify-center border"
+                class="border-light-light-gray flex size-15 items-center justify-center border"
                 icon="i-lucide-ellipsis"
                 variant="link"
                 @click="updateOpen()"

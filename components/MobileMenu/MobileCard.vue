@@ -16,7 +16,6 @@ const { user, loading, refreshBalance, govno, usd, fetchWithValidate } =
 watchEffect(async () => {
     if (!loading && user?.id) {
         try {
-            await refreshBalance();
 
             moneyVal.value = {
                 govno: govno,
@@ -26,7 +25,6 @@ watchEffect(async () => {
     }
 });
 watch(open, async () => {
-    await refreshBalance();
 
     moneyVal.value = {
         govno: govno,
@@ -97,7 +95,7 @@ async function handleSubmit() {
 
                     container: '',
                     content:
-                        'z-50 bg-balance  ring-transparent  rounded-t-4xl  pt-4',
+                        'z-[70] bg-balance  ring-transparent  rounded-t-4xl  pt-4',
                     handle: [
                         ' mt-2 py-1 bg-[#616161] px-12 bg-muted ',
                             '  transition-opacity  ',

@@ -142,13 +142,36 @@ export const useUserStore = defineStore("userStore", {
                 await this.validateUser();
                 return this.fetchWithValidate(url, opt, true);
             }
+            console.log(response);
+            
             return {
                 data: await response.json(),
                 status: response.ok ? "success" : "error",
                 statusCode: response.status,
             };
         },
+async checkQuestionsExists(): Promise<{ status: string; statusCode: number }>{
+    const config = useRuntimeConfig();
+    console.log("token:", this.user?.id);
 
+    const response = await fetch(`${config.public.apiUrl}/quiz/check_question`, {
+        method: 'POST',
+        body: JSON.stringify({
+            user_id: this.user?.id,
+        }),
+        headers: new Headers({
+            Authorization: `Bearer ${this.token}`,
+        }),
+    });
+    if (response.status == 401) {
+        await this.validateUser();
+        return this.checkQuestionsExists();
+    }
+    return {
+        status: response.ok ? "success" : "error",
+        statusCode: response.status,
+    };
+},
         setTestUser() {
             const userStr = localStorage.getItem("user");
             if (userStr) {

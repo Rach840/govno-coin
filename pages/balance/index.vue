@@ -76,14 +76,20 @@ async function handleSubmit() {
                 <div class="flex flex-col gap-3.5">
                     <UInputNumber
                         v-model="stateValue"
+                        @input="(e)=> {
+                            console.log('asdsad');
+                            
+                            stateValue = e.target.value
+                            }"
                         :max="1000"
                         :min="1"
                         :ui="{
-                            base: 'text-support bg-transparent p-4',
+                            base: 'text-support placeholder:!text-[#B8B8B8] bg-transparent p-4',
                             decrement: 'hidden',
+                
                             increment: 'h-full'
                         }"
-                        class="border-light-light-gray  text-support rounded-xl border"
+                        class="border-light-light-gray   text-support rounded-xl border"
                         orientation="vertical"
                         placeholder="Сумма пополнения"
                         size="lg"
