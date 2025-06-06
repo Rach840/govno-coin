@@ -22,7 +22,7 @@ const { fullPath } = useRoute();
 <template>
     <div
         v-if="adaptiveStore.menuVisible"
-        :class="`bg-mobile-background sticky inset-x-0 bottom-0 z-20 ${fullPath == '/register/' ? 'hidden' : ''} ${$attrs.class}`"
+        :class="`bg-mobile-background fixed inset-x-0 bottom-0 z-[60] pb-[var(--tg-safe-area-inset-bottom,env(safe-area-inset-bottom,0px))] ${fullPath == '/register/' ? 'hidden' : ''} ${$attrs.class}`"
     >
         <div
             class="flex w-full items-center justify-around gap-3 rounded-t-2xl py-4"

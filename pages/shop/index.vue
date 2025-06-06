@@ -69,53 +69,51 @@ function select(index: number) {
 </script>
 
 <template>
-    <div class="min-h-screen">
-        <h1 class="mb-3 text-3xl text-white lg:text-2xl">Магазин</h1>
-        <div class="mx-auto flex max-w-xs justify-between gap-1 ">
-            <div class=" mb-4 flex w-full gap-4 overflow-y-scroll">
-                <UButton
-                    v-for="(item, index) in itemsMenu"
-                    :key="index"
-                    :color="activeIndex == index ? 'info' : 'primary'"
-                    :ui="{
-                        label: 'text-sm ',
-                    }"
-                    class="bg-light-blue flex min-w-[111px] justify-center"
-                    size="lg"
-                    variant="solid"
-                    @click="select(index)"
-                    >{{ item.label }}
-                </UButton>
-            </div>
-        </div>
-
-        <div class="w-full flex-1">
-            <UCarousel
-                ref="carousel"
-                v-slot="{ item }"
-                :items="items"
+    <h1 class="mb-3 text-3xl text-white lg:text-2xl">Магазин</h1>
+    <div class="mx-auto flex max-w-xs justify-between gap-1">
+        <div class="mb-4 flex w-full gap-4 overflow-y-scroll">
+            <UButton
+                v-for="(item, index) in itemsMenu"
+                :key="index"
+                :color="activeIndex == index ? 'info' : 'primary'"
                 :ui="{
-                    container: 'm-0 space-x-2',
-                    item: 'w-full p-0 ',
+                    label: 'text-sm ',
                 }"
-                class="m-0 w-full"
-            >
-                <div class="space-y-3">
-                    <ShopCard
-                        v-for="product in products"
-                        v-if="item == 'skins' || item == 'all'"
-                        :product="product"
-                    />
-                    <ShopCard
-                        v-for="sub in subs"
-                        v-if="item == 'other' || item == 'all'"
-                        :product="sub"
-                        type="skin"
-                    />
-                    <h2 v-if="item == 'interface'" class="text-2xl">Скоро!</h2>
-                </div>
-            </UCarousel>
+                class="bg-light-blue flex min-w-[111px] justify-center"
+                size="lg"
+                variant="solid"
+                @click="select(index)"
+                >{{ item.label }}
+            </UButton>
         </div>
+    </div>
+
+    <div class="w-full flex-1">
+        <UCarousel
+            ref="carousel"
+            v-slot="{ item }"
+            :items="items"
+            :ui="{
+                container: 'm-0 space-x-2',
+                item: 'w-full p-0 ',
+            }"
+            class="m-0 w-full"
+        >
+            <div class="space-y-3">
+                <ShopCard
+                    v-for="product in products"
+                    v-if="item == 'skins' || item == 'all'"
+                    :product="product"
+                />
+                <ShopCard
+                    v-for="sub in subs"
+                    v-if="item == 'other' || item == 'all'"
+                    :product="sub"
+                    type="skin"
+                />
+                <h2 v-if="item == 'interface'" class="text-2xl">Скоро!</h2>
+            </div>
+        </UCarousel>
     </div>
 </template>
 <style>
