@@ -19,10 +19,10 @@ function replace() {
 <template>
     <div class="flex flex-col gap-4">
         <div class="flex flex-col gap-2.5">
-            <h1 class="text-(length:--h2) text-center">
+            <h1 class="text-center text-(length:--h2)">
                 📜 Пользовательское соглашение GOVNO COIN (18+)
             </h1>
-            <p class=" text-center">
+            <p class="text-center">
                 Вступает в силу с момента первого взаимодействия с Приложением,
                 включая его загрузку, открытие или использование любых функций.
             </p>
@@ -30,18 +30,18 @@ function replace() {
         <div
             v-for="(term, termIndex) in mockTerms"
             :key="termIndex"
-            class="box-border flex max-w-5/6 flex-col gap-2.5"
+            class="mx-auto box-border flex max-w-5/6 flex-col gap-2.5"
         >
-            <h1 class="text-(length:--h4) text-center">
+            <h1 class="text-center text-(length:--h4)">
                 {{ term.title }}
             </h1>
-            <p v-if="term.text" class="font-normal text-center">
+            <p v-if="term.text" class="text-center font-normal">
                 {{ term.text }}
             </p>
             <div
                 v-for="(content, contentIndex) in term.content"
                 :key="contentIndex"
-                class="text-support flex text-center flex-col items-center justify-center gap-5 font-normal"
+                class="text-support flex flex-col items-center justify-center gap-5 text-center font-normal"
             >
                 <h2 class="text-center" v-if="content.subtitle1">
                     {{ content.subtitle1 }}

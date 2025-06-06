@@ -4,7 +4,7 @@ import { z } from "zod";
 definePageMeta({
     layout: "register",
 });
-const userStore = useUserStore()
+const userStore = useUserStore();
 const router = useRouter();
 const step = ref(1);
 const direction = ref<"forward" | "backward">("forward");
@@ -22,8 +22,8 @@ onBeforeUnmount(() => {
     document.body.style.overflow = "";
     document.documentElement.style.overflow = "";
 });
-const loading = ref(false)
-const cache = useCacheStore()
+const loading = ref(false);
+const cache = useCacheStore();
 const schema = z.object({
     weight: z
         .number({
@@ -180,7 +180,19 @@ function goToStep(target: number) {
 async function submitForm() {
     const config = useRuntimeConfig();
     try {
+        console.log({
+            user_id: tg?.initDataUnsafe?.user?.id,
+            username: tg?.initDataUnsafe?.user?.first_name,
+            user_age: form.age,
+            user_height: form.height,
+            user_weight: form.weight,
+            user_sex: form.gender,
+            user_toilet_visits: form.amt,
+            referredCode: tg?.initDataUnsafe?.start_param || "None",
+        });
+
         const response = await fetch(`${config.public.apiUrl}/auth/user_reg`, {
+            method: "post",
             body: JSON.stringify({
                 user_id: tg?.initDataUnsafe?.user?.id,
                 username: tg?.initDataUnsafe?.user?.first_name,
@@ -194,8 +206,8 @@ async function submitForm() {
         });
 
         if (response.status === 200) {
-            loading.value = true
-            
+            loading.value = true;
+
             await userStore.refreshBalance();
             await cache.cacheNews();
             await router.push("/balance");
@@ -209,9 +221,9 @@ const isInputFocused = ref(false);
 </script>
 
 <template>
-      <TelegramPreloader  v-if="loading"/>
+    <TelegramPreloader v-if="loading" />
     <div
-v-else
+        v-else
         class="pointer-events-none absolute inset-0 z-0 h-screen duration-[999999999s]"
     >
         <img
@@ -273,7 +285,7 @@ v-else
                                 placeholder="Вес (кг)"
                                 size="xl"
                                 :ui="{
-                                    base:'placeholder:!text-[#B8B8B8]'
+                                    base: 'placeholder:!text-[#B8B8B8]',
                                 }"
                                 type="number"
                                 variant="none"
@@ -298,7 +310,7 @@ v-else
                                 min="1"
                                 placeholder="Рост (см)"
                                 :ui="{
-                                    base:'placeholder:!text-[#B8B8B8]'
+                                    base: 'placeholder:!text-[#B8B8B8]',
                                 }"
                                 size="xl"
                                 type="number"
@@ -328,8 +340,8 @@ v-else
                             min="1"
                             placeholder="Возраст (лет)"
                             :ui="{
-                                    base:'placeholder:!text-[#B8B8B8]'
-                                }"
+                                base: 'placeholder:!text-[#B8B8B8]',
+                            }"
                             size="xl"
                             type="number"
                             variant="none"
@@ -382,8 +394,8 @@ v-else
                             placeholder="Сколько раз в день майнишь в туалете?"
                             size="xl"
                             :ui="{
-                                    base:'placeholder:!text-[#B8B8B8]'
-                                }"
+                                base: 'placeholder:!text-[#B8B8B8]',
+                            }"
                             type="number"
                             variant="none"
                             @focus="

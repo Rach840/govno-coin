@@ -16,7 +16,6 @@ const { user, loading, refreshBalance, govno, usd, fetchWithValidate } =
 watchEffect(async () => {
     if (!loading && user?.id) {
         try {
-
             moneyVal.value = {
                 govno: govno,
                 usd: usd,
@@ -25,7 +24,6 @@ watchEffect(async () => {
     }
 });
 watch(open, async () => {
-
     moneyVal.value = {
         govno: govno,
         usd: usd,
@@ -98,7 +96,7 @@ async function handleSubmit() {
                         'z-[70] bg-balance  ring-transparent  rounded-t-4xl  pt-4',
                     handle: [
                         ' mt-2 py-1 bg-[#616161] px-12 bg-muted ',
-                            '  transition-opacity  ',
+                        '  transition-opacity  ',
                     ],
                     overlay: 'bg-black/40',
                 }"
@@ -131,7 +129,7 @@ async function handleSubmit() {
 
                                 decrement: 'hidden',
                             }"
-                            class="border-light-light-gray  text-support rounded-xl border w-full"
+                            class="border-light-light-gray text-support w-full rounded-xl border"
                             color="secondary"
                             orientation="vertical"
                             placeholder="Сумма пополнения"
@@ -141,10 +139,13 @@ async function handleSubmit() {
                             @focus="focusScroll"
                             @focusout="focusScrollUnlock"
                         >
-                       <template #increment>
-                  <UIcon name="i-lucide-dollar-sign" class="size-7 text-[#737373]" />
-                </template>
-                    </UInputNumber>
+                            <template #increment>
+                                <UIcon
+                                    name="i-lucide-dollar-sign"
+                                    class="size-7 text-[#737373]"
+                                />
+                            </template>
+                        </UInputNumber>
                         <BalanceExchange :num="stateValue" />
                         <div
                             class="mx-auto h-[189px] w-[234px] bg-[url(/balance/coin-balance.svg)] bg-cover"

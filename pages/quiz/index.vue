@@ -41,18 +41,14 @@
             >
                 Продолжить
             </UButton>
-            <transition mode="out-in" name="fade-slide">
-                <div
-                    v-if="!isInputFocused"
-                    class="pointer-events-none absolute bottom-[220px] left-0 mx-auto"
-                >
-                    <img
-                        alt=""
-                        class="w-full rounded-[10px]"
-                        src="/surveys/ad.svg"
-                    />
-                </div>
-            </transition>
+
+            <div class="pointer-events-none left-0 mx-auto mt-[220px]">
+                <img
+                    alt=""
+                    class="w-full rounded-[10px]"
+                    src="/surveys/ad.svg"
+                />
+            </div>
         </section>
 
         <section v-else-if="surveyState == 2" class="results-section">
@@ -79,7 +75,7 @@
                     </p>
                 </div>
             </div>
-            <div class="absolute bottom-[220px] left-0 mx-[20px] ">
+            <div class="absolute bottom-[220px] left-0 mx-[20px]">
                 <img
                     alt=""
                     class="w-full rounded-[10px]"
@@ -104,9 +100,7 @@
             <h2 class="mx-4 mt-10 text-2xl lg:mb-4 lg:text-2xl">
                 ✅ Опросы на сегодня завершены!
             </h2>
-            <div
-                class="absolute bottom-[120px] left-0 mx-[20px]  lg:static"
-            >
+            <div class="absolute bottom-[120px] left-0 mx-[20px] lg:static">
                 <img
                     alt=""
                     class="w-full rounded-[10px]"
@@ -137,7 +131,8 @@ const userAnswers = ref<string[]>([]);
 const correctAnswersCount = ref<number>(0);
 const correctAnswersUsdt = ref<number>(0);
 const correctAnswersGovno = ref<number>(0);
-const { user, fetchWithValidate, checkQuestionsExists, refreshBalance } = useUserStore();
+const { user, fetchWithValidate, checkQuestionsExists, refreshBalance } =
+    useUserStore();
 const { focusScrollUnlock, focusScroll } = useAdaptiveStore();
 const userId = user?.id;
 const date = new Date();
@@ -178,7 +173,7 @@ async function generateAndSaveQuestions() {
                 user_id: user?.id,
             },
         });
-console.log('asdasd');
+        console.log("asdasd");
 
         if (response.data && response.status == "success") {
             questions.value = response.data as string[];
@@ -224,7 +219,7 @@ async function nextQuestion() {
 }
 
 async function checkQuestion() {
-const response = await checkQuestionsExists()    
+    const response = await checkQuestionsExists();
 
     if (response.status == "success") {
         surveyState.value = 1;
@@ -258,7 +253,7 @@ async function sendAnswers() {
             ).correctAnswersCount;
             correctAnswersUsdt.value = (response.data as ResponseData).usdt;
             correctAnswersGovno.value = (response.data as ResponseData).govno;
-            await refreshBalance()
+            await refreshBalance();
             localStorage.removeItem(storageKey);
         }
     } catch (error) {

@@ -3,12 +3,15 @@ import { defineStore } from "pinia";
 interface CacheState {
     news: News[] | null;
     newsLastDate: Date | null;
+    tonExchange: number;
+    tonExchangeDate?: Date;
 }
 
 export const useCacheStore = defineStore("cacheStore", {
     state: (): CacheState => ({
         news: null,
         newsLastDate: null,
+        tonExchange: 0,
     }),
 
     actions: {
@@ -28,7 +31,7 @@ export const useCacheStore = defineStore("cacheStore", {
             const newsExist = localStorage.getItem("news");
             const newsDate = JSON.parse(localStorage.getItem("newsLastDate"));
             const now = new Date();
-            
+
             console.log(newsDate);
 
             if (
@@ -36,7 +39,6 @@ export const useCacheStore = defineStore("cacheStore", {
                 now.getTime() - new Date(newsDate).getTime() >=
                     12 * 60 * 60 * 1000
             ) {
-                
                 const { data, status } = await userStore.fetchWithValidate(
                     "/news/get_news",
                     {
@@ -47,7 +49,7 @@ export const useCacheStore = defineStore("cacheStore", {
                     },
                 );
                 console.log(data);
-                
+
                 if (status == "success") {
                     const dateResponse = (data as ResponseData).date;
                     this.news = (data as ResponseData).news
@@ -84,7 +86,44 @@ export const useCacheStore = defineStore("cacheStore", {
                 this.newsLastDate = now;
             } else {
                 this.news = JSON.parse(newsExist);
-                this.newsLastDate = newsDate;
+                this.newsLastDate = now;
+            }
+        },
+        async exchangeCache() {
+            const tonExchangeExist = localStorage.getItem("ton");
+            const tonExchangeDate = localStorage.getItem("tonDate");
+            const now = new Date();
+
+            console.log(tonExchangeDate);
+
+            if (
+                !tonExchangeDate ||
+                now.getTime() - new Date(tonExchangeDate).getTime() >=
+                    5 * 60 * 1000
+            ) {
+                const response = await fetch(
+                    "https://tonapi.io/v2/rates?tokens=ton&currencies=usd",
+                );
+
+                const data = (await response.json()) as {
+                    rates: {
+                        TON: {
+                            prices: {
+                                USD: number;
+                            };
+                        };
+                    };
+                };
+                this.tonExchange = JSON.parse(data?.rates.TON.prices.USD);
+                this.tonExchangeDate = now;
+                localStorage.setItem(
+                    "ton",
+                    JSON.stringify(data?.rates.TON.prices.USD),
+                );
+                localStorage.setItem("tonDate", JSON.stringify(now));
+            } else {
+                this.tonExchange = JSON.parse(tonExchangeExist);
+                this.tonExchangeDate = now;
             }
         },
     },

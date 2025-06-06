@@ -76,20 +76,20 @@ async function handleSubmit() {
                 <div class="flex flex-col gap-3.5">
                     <UInputNumber
                         v-model="stateValue"
-                        @input="(e)=> {
-                            console.log('asdsad');
-                            
-                            stateValue = e.target.value
-                            }"
+                        @input="
+                            (e) => {
+                                stateValue = e.target.value;
+                            }
+                        "
                         :max="1000"
                         :min="1"
                         :ui="{
                             base: 'text-support placeholder:!text-[#B8B8B8] bg-transparent p-4',
                             decrement: 'hidden',
-                
-                            increment: 'h-full'
+
+                            increment: 'h-full',
                         }"
-                        class="border-light-light-gray   text-support rounded-xl border"
+                        class="border-light-light-gray text-support rounded-xl border"
                         orientation="vertical"
                         placeholder="Сумма пополнения"
                         size="lg"
@@ -99,13 +99,16 @@ async function handleSubmit() {
                         @focus="focusScroll"
                         @focusout="focusScrollUnlock"
                     >
-                <template #increment>
-                  <UIcon name="i-lucide-dollar-sign" class="size-7 text-[#737373]" />
-                </template>
-                </UInputNumber>
+                        <template #increment>
+                            <UIcon
+                                name="i-lucide-dollar-sign"
+                                class="size-7 text-[#737373]"
+                            />
+                        </template>
+                    </UInputNumber>
                     <UButton
                         v-if="actionSelect == 'withdrawal'"
-                        class="bg-red-500 flex h-12 items-center justify-center rounded-lg text-black"
+                        class="flex h-12 items-center justify-center rounded-lg bg-red-500 text-black"
                         @click="handleSubmit"
                     >
                         Вывести

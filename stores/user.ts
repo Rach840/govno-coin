@@ -6,9 +6,9 @@ interface UserState {
     loading: Promise<void>;
     govno: number;
     usd: number;
-    token?: string;
     toRubExchange: number;
     toUsdtExchange: number;
+    token?: string;
 }
 
 export const useUserStore = defineStore("userStore", {
@@ -70,32 +70,17 @@ export const useUserStore = defineStore("userStore", {
         async calcUsdExchange(
             num: number,
         ): Promise<Record<string, string> | null> {
-            const response = await fetch(
-                "https://tonapi.io/v2/rates?tokens=ton&currencies=usd",
-            );
-            const data = (await response.json()) as {
-                rates: {
-                    TON: {
-                        prices: {
-                            USD: number;
-                        };
-                    };
-                };
-            };
-            if (
-                !response.ok ||
-                !data ||
-                !(this.toRubExchange && this.toUsdtExchange)
-            ) {
+            const { tonExchange, exchangeCache } = useCacheStore();
+            if (!tonExchange) {
+                exchangeCache();
+            }
+            if (!tonExchange || !(this.toRubExchange && this.toUsdtExchange)) {
                 console.error("Не удалось получить данные обмена USD");
                 return null;
             }
 
             return {
-                toTon:
-                    num >= 0
-                        ? (num / data?.rates.TON.prices.USD).toFixed(2)
-                        : "0.00",
+                toTon: num >= 0 ? (num / tonExchange).toFixed(2) : "0.00",
                 toUsdt:
                     num >= 0 ? (num / this.toUsdtExchange).toFixed(2) : "0.00",
                 toRub:
@@ -143,35 +128,41 @@ export const useUserStore = defineStore("userStore", {
                 return this.fetchWithValidate(url, opt, true);
             }
             console.log(response);
-            
+
             return {
                 data: await response.json(),
                 status: response.ok ? "success" : "error",
                 statusCode: response.status,
             };
         },
-async checkQuestionsExists(): Promise<{ status: string; statusCode: number }>{
-    const config = useRuntimeConfig();
-    console.log("token:", this.user?.id);
+        async checkQuestionsExists(): Promise<{
+            status: string;
+            statusCode: number;
+        }> {
+            const config = useRuntimeConfig();
+            console.log("token:", this.user?.id);
 
-    const response = await fetch(`${config.public.apiUrl}/quiz/check_question`, {
-        method: 'POST',
-        body: JSON.stringify({
-            user_id: this.user?.id,
-        }),
-        headers: new Headers({
-            Authorization: `Bearer ${this.token}`,
-        }),
-    });
-    if (response.status == 401) {
-        await this.validateUser();
-        return this.checkQuestionsExists();
-    }
-    return {
-        status: response.ok ? "success" : "error",
-        statusCode: response.status,
-    };
-},
+            const response = await fetch(
+                `${config.public.apiUrl}/quiz/check_question`,
+                {
+                    method: "POST",
+                    body: JSON.stringify({
+                        user_id: this.user?.id,
+                    }),
+                    headers: new Headers({
+                        Authorization: `Bearer ${this.token}`,
+                    }),
+                },
+            );
+            if (response.status == 401) {
+                await this.validateUser();
+                return this.checkQuestionsExists();
+            }
+            return {
+                status: response.ok ? "success" : "error",
+                statusCode: response.status,
+            };
+        },
         setTestUser() {
             const userStr = localStorage.getItem("user");
             if (userStr) {
