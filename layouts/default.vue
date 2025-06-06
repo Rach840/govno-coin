@@ -1,52 +1,55 @@
-<template>
-   <UApp class="">
-      <TelegramPreloader v-if="loading" />
-      <UContainer
-         class="padding-container min-h-[100vh]  mx-auto w-[90vw] mb-[100px]"
-         v-if="isMobile"
-      >
-         <slot />
-         <MobileMenu />
-      </UContainer>
-
-      <main class="w-full" v-else>
-         <UContainer
-            ref="container"
-            class="padding-container mx-auto w-[80vw] py-6"
-         >
-            <h1 class="text-6xl text-center text-white">
-               Данное приложение пока работает только в мобильном режиме
-            </h1>
-         </UContainer>
-      </main>
-   </UApp>
-</template>
-
-<script setup lang="ts">
+<script lang="ts" setup>
 import { useMediaQuery } from "@vueuse/core";
-// Показываем прелоадер до готовности Telegram WebApp
-const { loading } = useUserStore();
+
+const isMobile = useMediaQuery("(max-width: 1024px)");
+const user = useUserStore();
+await user.loading;
 
 onMounted(() => {
-  if (window.Telegram?.WebApp) {
-    window.Telegram?.WebApp?.ready()
-    window.Telegram?.WebApp?.expand()
+    if (window.Telegram?.WebApp) {
+        window.Telegram?.WebApp?.ready();
+        window.Telegram?.WebApp?.expand();
+    }
+});
+const scrollableContainer = useTemplateRef("scrollable-container");
 
-  }
-})
-const isLoading = ref(true);
-const menuV = ref(true);
-const isMobile = useMediaQuery("(max-width: 900px)");
+provide("scroll", { scrollableContainer });
 </script>
+
+<template>
+    <div
+        v-if="isMobile"
+        ref="scrollable-container"
+        class="padding-container-bar h-screen overflow-y-auto lg:hidden"
+    >
+        <UContainer>
+            <div class="px-5 py-10">
+                <slot />
+            </div>
+            <MobileMenu />
+        </UContainer>
+    </div>
+
+    <main v-else class="hidden w-full lg:block">
+        <UContainer class="padding-container mx-auto w-3/4 py-6">
+            <h1 class="text-center text-6xl text-white">
+                Данное приложение пока работает только в мобильном режиме
+            </h1>
+        </UContainer>
+    </main>
+</template>
+
 <style>
 .page-enter-active,
 .page-leave-active {
-  transition: opacity 0.5s ease, transform 0.4s ease;
+    transition:
+        opacity 0.5s ease,
+        transform 0.4s ease;
 }
 
 .page-enter-from,
 .page-leave-to {
-  opacity: 0;
-  transform: translateY(10px);
+    opacity: 0;
+    transform: translateY(10px);
 }
 </style>

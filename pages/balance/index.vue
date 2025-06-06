@@ -1,120 +1,124 @@
-<template>
-   <div ref="block" class="flex flex-col gap-5">
-      <p class="text-(length:--h1) font-semibold text-center">$GOVNO кошелёк</p>
-      <div
-         class="relative bg-[linear-gradient(162deg,_#3C3C3C_0%,_#2F2F2F_100%)] rounded-[4vw] p-3.5 flex flex-col gap-5"
-      >
-         <BalanceCard :moneyVal="moneyVal" />
-         <div class="w-full flex flex-col gap-2.5">
-            <div class="text-(length:--h3) flex gap-3.5">
-               <UButton
-                  variant="link"
-                  class="balance-interaction-select-point text-(--support-text-color) p-0 text-(length:--h4)"
-                  @click="actionSelect = 'replenishment'"
-                  :class="{
-                     'underline underline-offset-6 decoration-(--main-blue) text-white':
-                        actionSelect === 'replenishment',
-                  }"
-               >
-                  Пополнение
-               </UButton>
-               <UButton
-                  variant="link"
-                  class="balance-interaction-select-point text-(--support-text-color) p-0 text-(length:--h4)"
-                  @click="actionSelect = 'withdrawal'"
-                  :class="{
-                     'underline underline-offset-6 decoration-(--main-blue) text-white':
-                        actionSelect === 'withdrawal',
-                  }"
-               >
-                  Вывод
-               </UButton>
-            </div>
-            <div class="flex flex-col gap-3.5">
-               <UInputNumber
-                  orientation="vertical"
-                  type="number"
-                  :min="1"
-                  :max="1000"
-                  @focus="(e) => focusScroll(e)"
-                  @focusout="(e) => focusScrollUnlock(e)"
-                  size="xl"
-                  
-                  trailing-icon="i-lucide-dollar-sign"
-                  variant="none"
-                  class="h-[13.1vw] rounded-[3.5vw] !text-(--support-text-color) border-1 !border-(--line-gray) text-(length:--support-text)"
-                  :ui="{
-                     base: '!text-(--support-text-color) bg-transparent p-4',
-                     increment: 'hidden',
-                     decrement: 'hidden',
-
-                  }"
-                  placeholder="Сумма пополнения $"
-                  v-model="stateValue"
-               />
-               <UButton
-                  @click="handleSubmit"
-                  v-if="actionSelect == 'withdrawal'"
-                  class="h-[13.1vw] bg-(--main-blue) flex justify-center items-center text-black rounded-[3.5vw] text-(length:--support-text)"
-               >
-                  Вывести
-               </UButton>
-               <BalanceExchange
-                  :num="stateValue"
-                  v-if="actionSelect == 'replenishment'"
-               />
-            </div>
-         </div>
-      </div>
-   </div>
-</template>
-
-<script setup lang="ts">
-import { UButton } from "#components";
-
+<script lang="ts" setup>
 type ActionType = "replenishment" | "withdrawal";
 
-const config = useRuntimeConfig();
 const { user, loading, refreshBalance, govno, usd, fetchWithValidate } =
-   useUserStore();
+    useUserStore();
 const { focusScroll, focusScrollUnlock } = useAdaptiveStore();
 const actionSelect = ref<ActionType>("replenishment");
 const moneyVal = ref<MoneyValues>({ usd: 0, govno: 0 });
-const stateValue = ref<number | undefined>();
+const stateValue = ref<number>();
 
 watchEffect(async () => {
-   if (!loading && user?.id) {
-      try {
-         await refreshBalance();
-         moneyVal.value = {
-            govno: govno,
-            usd: usd,
-         };
-      } catch (e) {}
-   }
+    if (!loading && user?.id) {
+        try {
+            await refreshBalance();
+            moneyVal.value = {
+                govno: govno,
+                usd: usd,
+            };
+        } catch (e) {}
+    }
 });
 
 async function handleSubmit() {
-   if (!user?.id) return;
+    if (!user?.id) return;
 
-   try {
-         const { data, status } = await fetchWithValidate(
-            "/balance/withdraw_govno",
-            {
-               method: "post",
-               body: {
-                  user_id: user.id,
-                  amount: stateValue.value,
-               },
+    try {
+        const { status } = await fetchWithValidate("/balance/withdraw_govno", {
+            method: "POST",
+            body: {
+                user_id: user.id,
+                amount: stateValue.value,
             },
-         );
+        });
 
-         if (status.value === "success") {
+        if (status === "success") {
             await refreshBalance();
-         }
-      
-   } catch (error) {
-      console.error("Ошибка при отправке суммы ❌❌❌", error);
-   }
+        }
+    } catch (error) {
+        console.error("Ошибка при отправке суммы ❌❌❌", error);
+    }
 }
 </script>
+
+<template>
+    <div class="mx-auto flex min-w-xs flex-col gap-5">
+        <p class="text-center text-3xl font-semibold">$GOVNO кошелёк</p>
+        <div
+            class="bg-gray-gradient relative flex flex-col gap-5 rounded-lg p-3.5"
+        >
+            <BalanceCard :moneyVal="moneyVal" />
+            <div class="flex w-full flex-col gap-2.5">
+                <div class="flex gap-3.5 text-2xl">
+                    <UButton
+                        :class="{
+                            'text-white underline decoration-(--color-main-blue) underline-offset-6':
+                                actionSelect === 'replenishment',
+                        }"
+                        class="balance-interaction-select-point text-support p-0 text-lg"
+                        variant="link"
+                        @click="actionSelect = 'replenishment'"
+                    >
+                        Пополнение
+                    </UButton>
+                    <UButton
+                        :class="{
+                            'text-white underline decoration-(--color-main-blue) underline-offset-6':
+                                actionSelect === 'withdrawal',
+                        }"
+                        class="balance-interaction-select-point text-support p-0 text-lg"
+                        variant="link"
+                        @click="actionSelect = 'withdrawal'"
+                    >
+                        Вывод
+                    </UButton>
+                </div>
+                <div class="flex flex-col gap-3.5">
+                    <UInputNumber
+                        v-model="stateValue"
+                        @input="
+                            (e) => {
+                                stateValue = e.target.value;
+                            }
+                        "
+                        :max="1000"
+                        :min="1"
+                        :ui="{
+                            base: 'text-support placeholder:!text-[#B8B8B8] bg-transparent p-4',
+                            decrement: 'hidden',
+
+                            increment: 'h-full',
+                        }"
+                        class="border-light-light-gray text-support rounded-xl border"
+                        orientation="vertical"
+                        placeholder="Сумма пополнения"
+                        size="lg"
+                        trailing-icon="i-lucide-dollar-sign"
+                        type="number"
+                        variant="none"
+                        @focus="focusScroll"
+                        @focusout="focusScrollUnlock"
+                    >
+                        <template #increment>
+                            <UIcon
+                                name="i-lucide-dollar-sign"
+                                class="size-7 text-[#737373]"
+                            />
+                        </template>
+                    </UInputNumber>
+                    <UButton
+                        v-if="actionSelect == 'withdrawal'"
+                        class="flex h-12 items-center justify-center rounded-lg bg-red-500 text-black"
+                        @click="handleSubmit"
+                    >
+                        Вывести
+                    </UButton>
+                    <BalanceExchange
+                        v-if="actionSelect == 'replenishment'"
+                        :num="stateValue"
+                    />
+                </div>
+            </div>
+        </div>
+    </div>
+</template>

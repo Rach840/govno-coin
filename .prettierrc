@@ -1,6 +1,6 @@
 {
-   "$schema": "https://json.schemastore.org/prettierrc",
-   "semi": true,
-   "trailingComma": "all",
-   "tabWidth": 3
+    "semi": true,
+    "trailingComma": "all",
+    "tabWidth": 4,
+    "plugins": ["prettier-plugin-tailwindcss"]
 }
