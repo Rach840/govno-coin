@@ -11,20 +11,24 @@ onMounted(() => {
         window.Telegram?.WebApp?.expand();
     }
 });
+const scrollableContainer = useTemplateRef("scrollable-container");
+
+provide("scroll", { scrollableContainer });
 </script>
 
 <template>
-    <UContainer
+    <div
         v-if="isMobile"
-        class="bg-mobile-background padding-container flex min-h-screen flex-col lg:hidden"
+        ref="scrollable-container"
+        class="padding-container-bar h-screen overflow-y-auto lg:hidden"
     >
-        <div class="bg-background flex-1 overflow-y-auto px-5 py-10 pb-10">
-            <slot />
-        </div>
-        <MobileMenu
-            class="pb-[var(--tg-safe-area-inset-bottom,env(safe-area-inset-bottom,0px))]"
-        />
-    </UContainer>
+        <UContainer>
+            <div class="px-5 py-10">
+                <slot />
+            </div>
+            <MobileMenu />
+        </UContainer>
+    </div>
 
     <main v-else class="hidden w-full lg:block">
         <UContainer class="padding-container mx-auto w-3/4 py-6">

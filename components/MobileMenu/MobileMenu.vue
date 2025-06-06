@@ -57,7 +57,7 @@ const drawerOnTouchStart = (e: TouchEvent) => {
 };
 
 const drawerOnTouchMove = (e: TouchEvent) => {
-    const currentY = e.touches[0].clientY;
+    const currentY = e.changedTouches[0].clientY;
     const diffY = currentY - drawerStartY;
     if (diffY > 100 && container.value?.scrollTop === 0) {
         updateOpen(false);
@@ -71,10 +71,12 @@ function handleTouchStart(e: TouchEvent) {
 }
 
 function handleTouchMove(e: TouchEvent) {
-    const deltaY = touchY - e.touches[0].clientY;
+    const currentY = e.changedTouches[0].clientY;
+    const diffY = currentY - touchY;
     if (
-        deltaY > 50 &&
-        window.scrollY === document.body.scrollHeight - window.innerHeight
+        diffY < -100 &&
+        scrollableContainer.value?.scrollTop ===
+            scrollableContainer.value?.scrollHeight - window.innerHeight
     )
         updateOpen(true);
 }
@@ -86,6 +88,14 @@ watch(container, (newVal, oldVal) => {
     oldVal?.removeEventListener("touchmove", drawerOnTouchMove);
 });
 
+const { scrollableContainer } = inject("scroll");
+watch(scrollableContainer, (newVal, oldVal) => {
+    newVal?.addEventListener("touchstart", handleTouchStart);
+    newVal?.addEventListener("touchend", handleTouchMove);
+    oldVal?.removeEventListener("touchstart", handleTouchStart);
+    oldVal?.removeEventListener("touchmove", handleTouchMove);
+});
+
 onMounted(() => {
     window.addEventListener("touchstart", handleTouchStart);
     window.addEventListener("touchmove", handleTouchMove);
@@ -95,27 +105,27 @@ onBeforeUnmount(() => {
     container.value?.removeEventListener("touchstart", drawerOnTouchStart);
     container.value?.removeEventListener("touchmove", drawerOnTouchMove);
 
-    window.removeEventListener("touchstart", handleTouchStart);
-    window.removeEventListener("touchmove", handleTouchMove);
+    scrollableContainer.value?.removeEventListener(
+        "touchstart",
+        handleTouchStart,
+    );
+    scrollableContainer.value?.removeEventListener(
+        "touchmove",
+        handleTouchMove,
+    );
 });
 </script>
 
 <template>
     <Teleport to="body">
-        <MobileMenuBar
-            :class="{
-                '!visible': delayedOpen,
-            }"
-            class="invisible !fixed z-[60] pb-[var(--tg-safe-area-inset-bottom,env(safe-area-inset-bottom,0px))]"
-        />
+        <MobileMenuBar />
     </Teleport>
-    <MobileMenuBar />
 
     <Drawer v-model:open="open">
         <DrawerContent class="bg-mobile-background min-w-sm">
             <div
                 ref="container"
-                class="mt-4 flex flex-col items-center gap-5 overflow-y-auto px-5.5 text-center"
+                class="mt-4 flex flex-col items-center gap-5 overflow-y-auto px-5.5 pb-[calc(80px+var(--tg-safe-area-inset-bottom,env(safe-area-inset-bottom,0px)))] text-center"
             >
                 <MobileMiniProfile />
                 <MobileCard />
@@ -140,9 +150,7 @@ onBeforeUnmount(() => {
                 </div>
             </div>
 
-            <MobileMenuBar
-                class="!m-0 pb-[var(--tg-safe-area-inset-bottom,env(safe-area-inset-bottom,0px))]"
-            />
+            <MobileMenuBar class="!z-20" />
         </DrawerContent>
     </Drawer>
 </template>
